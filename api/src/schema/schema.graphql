@@ -1,0 +1,2 @@
+# import Query, Mutation from "./album/schema.graphql"
+# import Query, Mutation from "./song/schema.graphql"

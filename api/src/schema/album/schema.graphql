@@ -1,0 +1,23 @@
+# import Album, AlbumConnection from "../../generated/prisma.graphql"
+
+# The "Query" type is the root of all GraphQL queries.
+type Query {
+  # Album
+  album(id: ID!): Album
+  albums(first: Int, last: Int, before: ID, after: ID): AlbumConnection
+}
+
+type Mutation {
+  createAlbum(input: AddAlbumInput!): Album
+  deleteAlbum(id: ID!): Album
+  updateAlbum(input: EditAlbumInput!): Album
+}
+
+input AddAlbumInput {
+  name: String!
+}
+
+input EditAlbumInput {
+  id: ID!
+  name: String!
+}
