@@ -1,0 +1,22 @@
+# import Artist, ArtistConnection from "../../generated/prisma.graphql"
+
+# The "Query" type is the root of all GraphQL queries.
+type Query {
+  artist(id: ID!): Artist
+  artists(first: Int, last: Int, before: ID, after: ID): ArtistConnection
+}
+
+type Mutation {
+  createArtist(input: AddArtistInput!): Artist
+  deleteArtist(id: ID!): Artist
+  updateArtist(input: EditArtistInput!): Artist
+}
+
+input AddArtistInput {
+  name: String!
+}
+
+input EditArtistInput {
+  id: ID!
+  name: String!
+}
