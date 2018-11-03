@@ -1,63 +1,9 @@
+import * as _ from 'lodash';
 import { Context } from '../../utils';
 
 export class SongService {
-  public async create(input, context: Context, info) {
-    const { album, artist, featuring, name } = input;
-
-    const albumExists = await context.db.exists.Album({
-      alias: album.alias,
-    });
-
-    const artistExists = await context.db.exists.Artist({
-      alias: artist.alias,
-    });
-
-    const featuringExists = await context.db.exists.Artist({
-      alias: featuring ? featuring.alias : '',
-    });
-
-    /**
-     * TODO: Refactor this for scenario where either album or artist is true
-     */
-
-    if (albumExists && artistExists && featuringExists) {
-      return context.db.mutation.createSong(
-        {
-          data: {
-            album: {
-              connect: { alias: album.alias },
-            },
-            artists: {
-              connect: { alias: artist.alias },
-            },
-            featuring: {
-              connect: { alias: featuring.alias },
-            },
-            name,
-          },
-        },
-        info,
-      );
-    }
-
-    if (albumExists && artistExists) {
-      return context.db.mutation.createSong(
-        {
-          data: {
-            album: {
-              connect: { alias: album.alias },
-            },
-            artists: {
-              connect: { alias: artist.alias },
-            },
-            name,
-          },
-        },
-        info,
-      );
-    }
-
-    const createdArtist = await context.db.mutation.createArtist(
+  private async createFeaturing(artist, context, info) {
+    return await context.db.mutation.createArtist(
       {
         data: {
           alias: artist.alias,
@@ -66,58 +12,160 @@ export class SongService {
       },
       info,
     );
+  }
 
-    const createdAlbum = await context.db.mutation.createAlbum(
-      {
-        data: {
-          alias: album.alias,
-          artists: {
-            connect: {
-              id: createdArtist.id,
-            },
-          },
-          name: album.name,
-        },
-      },
-      info,
-    );
+  private async songExists(input, context) {
+    const { album, name } = input;
 
-    /**
-     * TODO: Refactor to handle creation of more that one artist feature
-     */
-    const createdFeature = await context.db.mutation.createArtist(
-      {
-        data: {
-          alias: featuring.alias,
-          name: featuring.name,
-        },
-      },
-      info,
-    );
+    const getSongs: { songs: Array<{ name: string }> } = await context.db.query.album({
+      where: { alias: album.alias }
+    }, `{ songs { name } }`);
 
-    return context.db.mutation.createSong(
-      {
-        data: {
-          album: {
-            connect: {
-              id: createdAlbum.id,
+    if (getSongs) {
+      const songExists = Array.from(getSongs.songs).findIndex((song) => {
+        return song.name.toLowerCase() === name.toLowerCase();
+      }) !== -1;
+
+      return songExists;
+    }
+
+    return false;
+  }
+
+  public async create(input, context: Context, info) {
+    const { album, artists, featuring, name } = input;
+    // Check if album exists.
+    const albumExists = await context.db.exists.Album({
+      alias: album.alias,
+    });
+    // Check if artist exists.
+    const artistExists = await context.db.exists.Artist({
+      alias: artists[0].alias,
+    });
+    // Check if featuring exists.
+    const featuringExists = await context.db.exists.Artist({
+      alias: featuring ? featuring.alias : '',
+    });
+    // If album and artist already exist...
+    if (albumExists && artistExists) {
+      // ...check if song doesn't already exist in album...
+      const songExists = await this.songExists(input, context);
+
+      if (!songExists) {
+        // ...create feature artist in input if it doesnt exist ...
+        let createdFeature;
+        if (featuring && !featuringExists) {
+          createdFeature = await this.createFeaturing(featuring, context, info);
+        }
+        // ...then create the song.
+        return context.db.mutation.createSong(
+          {
+            data: {
+              album: {
+                connect: { alias: album.alias },
+              },
+              artists: {
+                connect: { alias: artists[0].alias },
+              },
+              // Conditionally handle song with featured artist.
+              ...(
+                featuringExists &&
+                {
+                  featuring: {
+                    connect: { alias: featuring.alias },
+                  },
+                }
+              ),
+              ...(
+                createdFeature &&
+                {
+                  featuring: {
+                    connect: { id: createdFeature.id },
+                  },
+                }
+              ),
+              name,
             },
           },
-          artists: {
-            connect: {
-              id: createdArtist.id,
-            },
+          info,
+        );
+      }
+      // Only reaches here if the song already exists.
+      throw new Error('Song already exists');
+    }
+    // Create artist if it doesn't exist
+    let createdArtist;
+    if (!artistExists) {
+      createdArtist = await context.db.mutation.createArtist(
+        {
+          data: {
+            alias: artists[0].alias,
+            name: artists[0].name,
           },
-          featuring: {
-            connect: {
-              id: createdFeature.id,
-            },
-          },
-          name,
         },
-      },
-      info,
-    );
+        info,
+      );
+    }
+    // Create album if it doesn't exist
+    let createdAlbum;
+    if (!albumExists) {
+      createdAlbum = await context.db.mutation.createAlbum(
+        {
+          data: {
+            alias: album.alias,
+            artists: {
+              connect: {
+                ...(
+                  createdArtist
+                  ? { id: createdArtist.id }
+                  : { alias: artists[0].alias }
+                ),
+              },
+            },
+            name: album.name,
+          },
+        },
+        info,
+      );
+    }
+    // Create feature artist in input
+    let createdFeature;
+    if (featuring) {
+      createdFeature = await this.createFeaturing(featuring, context, info);
+    }
+    // If album and artist did not exist and have benn created...
+    if (createdAlbum && createdArtist) {
+      // ...create the song
+      return context.db.mutation.createSong(
+        {
+          data: {
+            album: {
+              connect: {
+                id: createdAlbum.id,
+              },
+            },
+            artists: {
+              connect: {
+                id: createdArtist.id,
+              },
+            },
+            // Conditionally handle song with featured artist
+            ...(
+              createdFeature &&
+              {
+                featuring: {
+                  connect: {
+                    id: createdFeature.id,
+                  }
+                }
+              }
+            ),
+            name,
+          },
+        },
+        info,
+      );
+    }
   }
 
   public async update(input, context: Context, info) {
