@@ -1,36 +1,34 @@
 # import Song, SongConnection from "../../generated/prisma.graphql"
 
-# The "Query" type is the root of all GraphQL queries.
 type Query {
-  # Song
   song(id: ID!): Song
   songs(first: Int, last: Int, before: ID, after: ID): SongConnection
 }
 
 type Mutation {
-  createSong(input: SongInputPayload!): Song
+  createSong(input: SongCreatePayload!): Song
   deleteSong(id: ID!): Song
-  updateSong(input: EditSongInput!): Song
+  updateSong(input: SongUpdateInput!): Song
 }
 
-input AlbumInputPayload {
+input AlbumPayload {
   alias: String!
   name: String
 }
 
-input ArtistInputPayload {
+input ArtistPayload {
   alias: String!
   name: String
 }
 
-input SongInputPayload {
-  album: AlbumInputPayload
-  artist: ArtistInputPayload
-  featuring: ArtistInputPayload
+input SongCreatePayload {
+  album: AlbumPayload
+  artists: [ArtistPayload!]!
+  featuring: [ArtistPayload!]!
   name: String!
 }
 
-input EditSongInput {
+input SongUpdateInput {
   id: ID!
-  title: String!
+  name: String!
 }
