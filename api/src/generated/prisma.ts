@@ -1,77 +1,8 @@
-import { GraphQLResolveInfo, GraphQLSchema } from 'graphql'
-import { IResolvers } from 'graphql-tools/dist/Interfaces'
-import { Options } from 'graphql-binding'
-import { makePrismaBindingClass, BasePrismaOptions } from 'prisma-binding'
+import { Prisma as BasePrisma, BasePrismaOptions } from 'prisma-binding'
+import { GraphQLResolveInfo } from 'graphql'
 
-export interface Query {
-    songs: <T = Song[]>(args: { where?: SongWhereInput, orderBy?: SongOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    albums: <T = Album[]>(args: { where?: AlbumWhereInput, orderBy?: AlbumOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    artists: <T = Artist[]>(args: { where?: ArtistWhereInput, orderBy?: ArtistOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    song: <T = Song | null>(args: { where: SongWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    album: <T = Album | null>(args: { where: AlbumWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    artist: <T = Artist | null>(args: { where: ArtistWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    songsConnection: <T = SongConnection>(args: { where?: SongWhereInput, orderBy?: SongOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    albumsConnection: <T = AlbumConnection>(args: { where?: AlbumWhereInput, orderBy?: AlbumOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    artistsConnection: <T = ArtistConnection>(args: { where?: ArtistWhereInput, orderBy?: ArtistOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    node: <T = Node | null>(args: { id: ID_Output }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
-  }
-
-export interface Mutation {
-    createSong: <T = Song>(args: { data: SongCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    createAlbum: <T = Album>(args: { data: AlbumCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    createArtist: <T = Artist>(args: { data: ArtistCreateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    updateSong: <T = Song | null>(args: { data: SongUpdateInput, where: SongWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    updateAlbum: <T = Album | null>(args: { data: AlbumUpdateInput, where: AlbumWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    updateArtist: <T = Artist | null>(args: { data: ArtistUpdateInput, where: ArtistWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteSong: <T = Song | null>(args: { where: SongWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteAlbum: <T = Album | null>(args: { where: AlbumWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteArtist: <T = Artist | null>(args: { where: ArtistWhereUniqueInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    upsertSong: <T = Song>(args: { where: SongWhereUniqueInput, create: SongCreateInput, update: SongUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    upsertAlbum: <T = Album>(args: { where: AlbumWhereUniqueInput, create: AlbumCreateInput, update: AlbumUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    upsertArtist: <T = Artist>(args: { where: ArtistWhereUniqueInput, create: ArtistCreateInput, update: ArtistUpdateInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    updateManySongs: <T = BatchPayload>(args: { data: SongUpdateManyMutationInput, where?: SongWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    updateManyAlbums: <T = BatchPayload>(args: { data: AlbumUpdateManyMutationInput, where?: AlbumWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    updateManyArtists: <T = BatchPayload>(args: { data: ArtistUpdateManyMutationInput, where?: ArtistWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteManySongs: <T = BatchPayload>(args: { where?: SongWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteManyAlbums: <T = BatchPayload>(args: { where?: AlbumWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> ,
-    deleteManyArtists: <T = BatchPayload>(args: { where?: ArtistWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<T> 
-  }
-
-export interface Subscription {
-    song: <T = SongSubscriptionPayload | null>(args: { where?: SongSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
-    album: <T = AlbumSubscriptionPayload | null>(args: { where?: AlbumSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> ,
-    artist: <T = ArtistSubscriptionPayload | null>(args: { where?: ArtistSubscriptionWhereInput }, info?: GraphQLResolveInfo | string, options?: Options) => Promise<AsyncIterator<T>> 
-  }
-
-export interface Exists {
-  Song: (where?: SongWhereInput) => Promise<boolean>
-  Album: (where?: AlbumWhereInput) => Promise<boolean>
-  Artist: (where?: ArtistWhereInput) => Promise<boolean>
-}
-
-export interface Prisma {
-  query: Query
-  mutation: Mutation
-  subscription: Subscription
-  exists: Exists
-  request: <T = any>(query: string, variables?: {[key: string]: any}) => Promise<T>
-  delegate(operation: 'query' | 'mutation', fieldName: string, args: {
-    [key: string]: any;
-}, infoOrQuery?: GraphQLResolveInfo | string, options?: Options): Promise<any>;
-delegateSubscription(fieldName: string, args?: {
-    [key: string]: any;
-}, infoOrQuery?: GraphQLResolveInfo | string, options?: Options): Promise<AsyncIterator<any>>;
-getAbstractResolvers(filterSchema?: GraphQLSchema | string): IResolvers;
-}
-
-export interface BindingConstructor<T> {
-  new(options: BasePrismaOptions): T
-}
-/**
- * Type Defs
-*/
-
-const typeDefs = `type AggregateAlbum {
+export const typeDefs = `
+type AggregateAlbum {
   count: Int!
 }
 
@@ -93,12 +24,17 @@ type Album implements Node {
   updatedAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type AlbumConnection {
-  """Information to aid in pagination."""
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
-
-  """A list of edges."""
+  """
+  A list of edges.
+  """
   edges: [AlbumEdge]!
   aggregate: AggregateAlbum!
 }
@@ -121,12 +57,17 @@ input AlbumCreateWithoutSongsInput {
   artists: ArtistCreateManyInput
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type AlbumEdge {
-  """The item at the end of the edge."""
+  """
+  The item at the end of the edge.
+  """
   node: Album!
-
-  """A cursor for use in pagination."""
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -159,30 +100,30 @@ type AlbumSubscriptionPayload {
 }
 
 input AlbumSubscriptionWhereInput {
-  """Logical AND on all given filters."""
+  """
+  Logical AND on all given filters.
+  """
   AND: [AlbumSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
+  """
+  Logical OR on all given filters.
+  """
   OR: [AlbumSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
+  """
+  Logical NOT on all given filters combined by AND.
+  """
   NOT: [AlbumSubscriptionWhereInput!]
-
   """
   The subscription event gets dispatched when it's listed in mutation_in
   """
   mutation_in: [MutationType!]
-
   """
   The subscription event gets only dispatched when one of the updated fields names is included in this list
   """
   updatedFields_contains: String
-
   """
   The subscription event gets only dispatched when all of the field names included in this list have been updated
   """
   updatedFields_contains_every: [String!]
-
   """
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
@@ -221,177 +162,234 @@ input AlbumUpsertWithoutSongsInput {
 }
 
 input AlbumWhereInput {
-  """Logical AND on all given filters."""
+  """
+  Logical AND on all given filters.
+  """
   AND: [AlbumWhereInput!]
-
-  """Logical OR on all given filters."""
+  """
+  Logical OR on all given filters.
+  """
   OR: [AlbumWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
+  """
+  Logical NOT on all given filters combined by AND.
+  """
   NOT: [AlbumWhereInput!]
   id: ID
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   id_lt: ID
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   id_contains: ID
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   alias: String
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   alias_not: String
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   alias_in: [String!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   alias_not_in: [String!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   alias_lt: String
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   alias_lte: String
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   alias_gt: String
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   alias_gte: String
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   alias_contains: String
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   alias_not_contains: String
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   alias_starts_with: String
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   alias_not_starts_with: String
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   alias_ends_with: String
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   alias_not_ends_with: String
   name: String
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   name_not: String
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   name_in: [String!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   name_not_in: [String!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   name_lt: String
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   name_lte: String
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   name_gt: String
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   name_gte: String
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   name_contains: String
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   name_not_contains: String
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   name_starts_with: String
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   name_not_starts_with: String
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   name_ends_with: String
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   name_not_ends_with: String
   createdAt: DateTime
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   artists_every: ArtistWhereInput
   artists_some: ArtistWhereInput
@@ -416,12 +414,17 @@ type Artist implements Node {
   updatedAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type ArtistConnection {
-  """Information to aid in pagination."""
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
-
-  """A list of edges."""
+  """
+  A list of edges.
+  """
   edges: [ArtistEdge]!
   aggregate: AggregateArtist!
 }
@@ -460,12 +463,17 @@ input ArtistCreateWithoutSongsInput {
   featuredIn: SongCreateManyWithoutFeaturingInput
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type ArtistEdge {
-  """The item at the end of the edge."""
+  """
+  The item at the end of the edge.
+  """
   node: Artist!
-
-  """A cursor for use in pagination."""
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -498,30 +506,30 @@ type ArtistSubscriptionPayload {
 }
 
 input ArtistSubscriptionWhereInput {
-  """Logical AND on all given filters."""
+  """
+  Logical AND on all given filters.
+  """
   AND: [ArtistSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
+  """
+  Logical OR on all given filters.
+  """
   OR: [ArtistSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
+  """
+  Logical NOT on all given filters combined by AND.
+  """
   NOT: [ArtistSubscriptionWhereInput!]
-
   """
   The subscription event gets dispatched when it's listed in mutation_in
   """
   mutation_in: [MutationType!]
-
   """
   The subscription event gets only dispatched when one of the updated fields names is included in this list
   """
   updatedFields_contains: String
-
   """
   The subscription event gets only dispatched when all of the field names included in this list have been updated
   """
   updatedFields_contains_every: [String!]
-
   """
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
@@ -621,177 +629,234 @@ input ArtistUpsertWithWhereUniqueWithoutSongsInput {
 }
 
 input ArtistWhereInput {
-  """Logical AND on all given filters."""
+  """
+  Logical AND on all given filters.
+  """
   AND: [ArtistWhereInput!]
-
-  """Logical OR on all given filters."""
+  """
+  Logical OR on all given filters.
+  """
   OR: [ArtistWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
+  """
+  Logical NOT on all given filters combined by AND.
+  """
   NOT: [ArtistWhereInput!]
   id: ID
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   id_lt: ID
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   id_contains: ID
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   alias: String
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   alias_not: String
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   alias_in: [String!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   alias_not_in: [String!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   alias_lt: String
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   alias_lte: String
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   alias_gt: String
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   alias_gte: String
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   alias_contains: String
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   alias_not_contains: String
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   alias_starts_with: String
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   alias_not_starts_with: String
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   alias_ends_with: String
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   alias_not_ends_with: String
   name: String
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   name_not: String
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   name_in: [String!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   name_not_in: [String!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   name_lt: String
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   name_lte: String
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   name_gt: String
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   name_gte: String
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   name_contains: String
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   name_not_contains: String
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   name_starts_with: String
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   name_not_starts_with: String
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   name_ends_with: String
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   name_not_ends_with: String
   createdAt: DateTime
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   featuredIn_every: SongWhereInput
   featuredIn_some: SongWhereInput
@@ -807,38 +872,19 @@ input ArtistWhereUniqueInput {
 }
 
 type BatchPayload {
-  """The number of nodes that have been affected by the Batch operation."""
+  """
+  The number of nodes that have been affected by the Batch operation.
+  """
   count: Long!
 }
 
 scalar DateTime
 
 """
-The \`Long\` scalar type represents non-fractional signed whole numeric values.
+The 'Long' scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
-
-type Mutation {
-  createSong(data: SongCreateInput!): Song!
-  createAlbum(data: AlbumCreateInput!): Album!
-  createArtist(data: ArtistCreateInput!): Artist!
-  updateSong(data: SongUpdateInput!, where: SongWhereUniqueInput!): Song
-  updateAlbum(data: AlbumUpdateInput!, where: AlbumWhereUniqueInput!): Album
-  updateArtist(data: ArtistUpdateInput!, where: ArtistWhereUniqueInput!): Artist
-  deleteSong(where: SongWhereUniqueInput!): Song
-  deleteAlbum(where: AlbumWhereUniqueInput!): Album
-  deleteArtist(where: ArtistWhereUniqueInput!): Artist
-  upsertSong(where: SongWhereUniqueInput!, create: SongCreateInput!, update: SongUpdateInput!): Song!
-  upsertAlbum(where: AlbumWhereUniqueInput!, create: AlbumCreateInput!, update: AlbumUpdateInput!): Album!
-  upsertArtist(where: ArtistWhereUniqueInput!, create: ArtistCreateInput!, update: ArtistUpdateInput!): Artist!
-  updateManySongs(data: SongUpdateManyMutationInput!, where: SongWhereInput): BatchPayload!
-  updateManyAlbums(data: AlbumUpdateManyMutationInput!, where: AlbumWhereInput): BatchPayload!
-  updateManyArtists(data: ArtistUpdateManyMutationInput!, where: ArtistWhereInput): BatchPayload!
-  deleteManySongs(where: SongWhereInput): BatchPayload!
-  deleteManyAlbums(where: AlbumWhereInput): BatchPayload!
-  deleteManyArtists(where: ArtistWhereInput): BatchPayload!
-}
 
 enum MutationType {
   CREATED
@@ -846,43 +892,36 @@ enum MutationType {
   DELETED
 }
 
-"""An object with an ID"""
+"""
+An object with an ID
+"""
 interface Node {
-  """The id of the object."""
+  """
+  The id of the object.
+  """
   id: ID!
 }
 
-"""Information about pagination in a connection."""
+"""
+Information about pagination in a connection.
+"""
 type PageInfo {
-  """When paginating forwards, are there more items?"""
+  """
+  When paginating forwards, are there more items?
+  """
   hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
+  """
+  When paginating backwards, are there more items?
+  """
   hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
+  """
+  When paginating backwards, the cursor to continue.
+  """
   startCursor: String
-
-  """When paginating forwards, the cursor to continue."""
+  """
+  When paginating forwards, the cursor to continue.
+  """
   endCursor: String
-}
-
-type Query {
-  songs(where: SongWhereInput, orderBy: SongOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Song]!
-  albums(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Album]!
-  artists(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Artist]!
-  song(where: SongWhereUniqueInput!): Song
-  album(where: AlbumWhereUniqueInput!): Album
-  artist(where: ArtistWhereUniqueInput!): Artist
-  songsConnection(where: SongWhereInput, orderBy: SongOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SongConnection!
-  albumsConnection(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AlbumConnection!
-  artistsConnection(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArtistConnection!
-
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
 }
 
 type Song implements Node {
@@ -895,12 +934,17 @@ type Song implements Node {
   updatedAt: DateTime!
 }
 
-"""A connection to a list of items."""
+"""
+A connection to a list of items.
+"""
 type SongConnection {
-  """Information to aid in pagination."""
+  """
+  Information to aid in pagination.
+  """
   pageInfo: PageInfo!
-
-  """A list of edges."""
+  """
+  A list of edges.
+  """
   edges: [SongEdge]!
   aggregate: AggregateSong!
 }
@@ -945,12 +989,17 @@ input SongCreateWithoutFeaturingInput {
   album: AlbumCreateOneWithoutSongsInput!
 }
 
-"""An edge in a connection."""
+"""
+An edge in a connection.
+"""
 type SongEdge {
-  """The item at the end of the edge."""
+  """
+  The item at the end of the edge.
+  """
   node: Song!
-
-  """A cursor for use in pagination."""
+  """
+  A cursor for use in pagination.
+  """
   cursor: String!
 }
 
@@ -980,30 +1029,30 @@ type SongSubscriptionPayload {
 }
 
 input SongSubscriptionWhereInput {
-  """Logical AND on all given filters."""
+  """
+  Logical AND on all given filters.
+  """
   AND: [SongSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
+  """
+  Logical OR on all given filters.
+  """
   OR: [SongSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
+  """
+  Logical NOT on all given filters combined by AND.
+  """
   NOT: [SongSubscriptionWhereInput!]
-
   """
   The subscription event gets dispatched when it's listed in mutation_in
   """
   mutation_in: [MutationType!]
-
   """
   The subscription event gets only dispatched when one of the updated fields names is included in this list
   """
   updatedFields_contains: String
-
   """
   The subscription event gets only dispatched when all of the field names included in this list have been updated
   """
   updatedFields_contains_every: [String!]
-
   """
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
@@ -1101,137 +1150,181 @@ input SongUpsertWithWhereUniqueWithoutFeaturingInput {
 }
 
 input SongWhereInput {
-  """Logical AND on all given filters."""
+  """
+  Logical AND on all given filters.
+  """
   AND: [SongWhereInput!]
-
-  """Logical OR on all given filters."""
+  """
+  Logical OR on all given filters.
+  """
   OR: [SongWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
+  """
+  Logical NOT on all given filters combined by AND.
+  """
   NOT: [SongWhereInput!]
   id: ID
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   id_not: ID
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   id_in: [ID!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   id_not_in: [ID!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   id_lt: ID
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   id_lte: ID
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   id_gt: ID
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   id_gte: ID
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   id_contains: ID
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   id_not_contains: ID
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   id_starts_with: ID
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   id_not_starts_with: ID
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   id_ends_with: ID
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   id_not_ends_with: ID
   name: String
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   name_not: String
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   name_in: [String!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   name_not_in: [String!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   name_lt: String
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   name_lte: String
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   name_gt: String
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   name_gte: String
-
-  """All values containing the given string."""
+  """
+  All values containing the given string.
+  """
   name_contains: String
-
-  """All values not containing the given string."""
+  """
+  All values not containing the given string.
+  """
   name_not_contains: String
-
-  """All values starting with the given string."""
+  """
+  All values starting with the given string.
+  """
   name_starts_with: String
-
-  """All values not starting with the given string."""
+  """
+  All values not starting with the given string.
+  """
   name_not_starts_with: String
-
-  """All values ending with the given string."""
+  """
+  All values ending with the given string.
+  """
   name_ends_with: String
-
-  """All values not ending with the given string."""
+  """
+  All values not ending with the given string.
+  """
   name_not_ends_with: String
   createdAt: DateTime
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   createdAt_not: DateTime
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   createdAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   createdAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   createdAt_lt: DateTime
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   createdAt_lte: DateTime
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   createdAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   createdAt_gte: DateTime
   updatedAt: DateTime
-
-  """All values that are not equal to given value."""
+  """
+  All values that are not equal to given value.
+  """
   updatedAt_not: DateTime
-
-  """All values that are contained in given list."""
+  """
+  All values that are contained in given list.
+  """
   updatedAt_in: [DateTime!]
-
-  """All values that are not contained in given list."""
+  """
+  All values that are not contained in given list.
+  """
   updatedAt_not_in: [DateTime!]
-
-  """All values less than the given value."""
+  """
+  All values less than the given value.
+  """
   updatedAt_lt: DateTime
-
-  """All values less than or equal the given value."""
+  """
+  All values less than or equal the given value.
+  """
   updatedAt_lte: DateTime
-
-  """All values greater than the given value."""
+  """
+  All values greater than the given value.
+  """
   updatedAt_gt: DateTime
-
-  """All values greater than or equal the given value."""
+  """
+  All values greater than or equal the given value.
+  """
   updatedAt_gte: DateTime
   artists_every: ArtistWhereInput
   artists_some: ArtistWhereInput
@@ -1246,6 +1339,46 @@ input SongWhereUniqueInput {
   id: ID
 }
 
+type Mutation {
+  createSong(data: SongCreateInput!): Song!
+  createAlbum(data: AlbumCreateInput!): Album!
+  createArtist(data: ArtistCreateInput!): Artist!
+  updateSong(data: SongUpdateInput!, where: SongWhereUniqueInput!): Song
+  updateAlbum(data: AlbumUpdateInput!, where: AlbumWhereUniqueInput!): Album
+  updateArtist(data: ArtistUpdateInput!, where: ArtistWhereUniqueInput!): Artist
+  deleteSong(where: SongWhereUniqueInput!): Song
+  deleteAlbum(where: AlbumWhereUniqueInput!): Album
+  deleteArtist(where: ArtistWhereUniqueInput!): Artist
+  upsertSong(where: SongWhereUniqueInput!, create: SongCreateInput!, update: SongUpdateInput!): Song!
+  upsertAlbum(where: AlbumWhereUniqueInput!, create: AlbumCreateInput!, update: AlbumUpdateInput!): Album!
+  upsertArtist(where: ArtistWhereUniqueInput!, create: ArtistCreateInput!, update: ArtistUpdateInput!): Artist!
+  updateManySongs(data: SongUpdateManyMutationInput!, where: SongWhereInput): BatchPayload!
+  updateManyAlbums(data: AlbumUpdateManyMutationInput!, where: AlbumWhereInput): BatchPayload!
+  updateManyArtists(data: ArtistUpdateManyMutationInput!, where: ArtistWhereInput): BatchPayload!
+  deleteManySongs(where: SongWhereInput): BatchPayload!
+  deleteManyAlbums(where: AlbumWhereInput): BatchPayload!
+  deleteManyArtists(where: ArtistWhereInput): BatchPayload!
+}
+
+type Query {
+  songs(where: SongWhereInput, orderBy: SongOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Song]!
+  albums(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Album]!
+  artists(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Artist]!
+  song(where: SongWhereUniqueInput!): Song
+  album(where: AlbumWhereUniqueInput!): Album
+  artist(where: ArtistWhereUniqueInput!): Artist
+  songsConnection(where: SongWhereInput, orderBy: SongOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SongConnection!
+  albumsConnection(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AlbumConnection!
+  artistsConnection(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArtistConnection!
+  """
+  Fetches an object given its ID
+  """
+  node("""
+  The ID of an object
+  """
+  id: ID!): Node
+}
+
 type Subscription {
   song(where: SongSubscriptionWhereInput): SongSubscriptionPayload
   album(where: AlbumSubscriptionWhereInput): AlbumSubscriptionPayload
@@ -1253,13 +1386,8 @@ type Subscription {
 }
 `
 
-export const Prisma = makePrismaBindingClass<BindingConstructor<Prisma>>({typeDefs})
-
-/**
- * Types
-*/
-
-export type SongOrderByInput =   'id_ASC' |
+export type SongOrderByInput = 
+  'id_ASC' |
   'id_DESC' |
   'name_ASC' |
   'name_DESC' |
@@ -1268,7 +1396,8 @@ export type SongOrderByInput =   'id_ASC' |
   'updatedAt_ASC' |
   'updatedAt_DESC'
 
-export type ArtistOrderByInput =   'id_ASC' |
+export type ArtistOrderByInput = 
+  'id_ASC' |
   'id_DESC' |
   'alias_ASC' |
   'alias_DESC' |
@@ -1279,7 +1408,8 @@ export type ArtistOrderByInput =   'id_ASC' |
   'updatedAt_ASC' |
   'updatedAt_DESC'
 
-export type AlbumOrderByInput =   'id_ASC' |
+export type AlbumOrderByInput = 
+  'id_ASC' |
   'id_DESC' |
   'alias_ASC' |
   'alias_DESC' |
@@ -1290,7 +1420,8 @@ export type AlbumOrderByInput =   'id_ASC' |
   'updatedAt_ASC' |
   'updatedAt_DESC'
 
-export type MutationType =   'CREATED' |
+export type MutationType = 
+  'CREATED' |
   'UPDATED' |
   'DELETED'
 
@@ -2007,7 +2138,7 @@ export interface ArtistConnection {
 }
 
 /*
-The `Long` scalar type represents non-fractional signed whole numeric values.
+The 'Long' scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 */
 export type Long = string
@@ -2028,9 +2159,108 @@ The `ID` scalar type represents a unique identifier, often used to refetch an ob
 export type ID_Input = string | number
 export type ID_Output = string
 
-export type DateTime = Date | string
+export type DateTime = string
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string
+
+export interface Schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+export type Query = {
+  songs: (args: { where?: SongWhereInput, orderBy?: SongOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Song[]>
+  albums: (args: { where?: AlbumWhereInput, orderBy?: AlbumOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Album[]>
+  artists: (args: { where?: ArtistWhereInput, orderBy?: ArtistOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Artist[]>
+  song: (args: { where: SongWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Song | null>
+  album: (args: { where: AlbumWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Album | null>
+  artist: (args: { where: ArtistWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Artist | null>
+  songsConnection: (args: { where?: SongWhereInput, orderBy?: SongOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<SongConnection>
+  albumsConnection: (args: { where?: AlbumWhereInput, orderBy?: AlbumOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<AlbumConnection>
+  artistsConnection: (args: { where?: ArtistWhereInput, orderBy?: ArtistOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<ArtistConnection>
+  node: (args: { id: ID_Output }, info?: GraphQLResolveInfo | string) => Promise<Node | null>
+}
+
+export type Mutation = {
+  createSong: (args: { data: SongCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Song>
+  createAlbum: (args: { data: AlbumCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Album>
+  createArtist: (args: { data: ArtistCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Artist>
+  updateSong: (args: { data: SongUpdateInput, where: SongWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Song | null>
+  updateAlbum: (args: { data: AlbumUpdateInput, where: AlbumWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Album | null>
+  updateArtist: (args: { data: ArtistUpdateInput, where: ArtistWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Artist | null>
+  deleteSong: (args: { where: SongWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Song | null>
+  deleteAlbum: (args: { where: AlbumWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Album | null>
+  deleteArtist: (args: { where: ArtistWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Artist | null>
+  upsertSong: (args: { where: SongWhereUniqueInput, create: SongCreateInput, update: SongUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Song>
+  upsertAlbum: (args: { where: AlbumWhereUniqueInput, create: AlbumCreateInput, update: AlbumUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Album>
+  upsertArtist: (args: { where: ArtistWhereUniqueInput, create: ArtistCreateInput, update: ArtistUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Artist>
+  updateManySongs: (args: { data: SongUpdateManyMutationInput, where?: SongWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  updateManyAlbums: (args: { data: AlbumUpdateManyMutationInput, where?: AlbumWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  updateManyArtists: (args: { data: ArtistUpdateManyMutationInput, where?: ArtistWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  deleteManySongs: (args: { where?: SongWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  deleteManyAlbums: (args: { where?: AlbumWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  deleteManyArtists: (args: { where?: ArtistWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+}
+
+export type Subscription = {
+  song: (args: { where?: SongSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<SongSubscriptionPayload>>
+  album: (args: { where?: AlbumSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<AlbumSubscriptionPayload>>
+  artist: (args: { where?: ArtistSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<ArtistSubscriptionPayload>>
+}
+
+export class Prisma extends BasePrisma {
+  
+  constructor({ endpoint, secret, fragmentReplacements, debug }: BasePrismaOptions) {
+    super({ typeDefs, endpoint, secret, fragmentReplacements, debug });
+  }
+
+  exists = {
+    Song: (where: SongWhereInput): Promise<boolean> => super.existsDelegate('query', 'songs', { where }, {}, '{ id }'),
+    Album: (where: AlbumWhereInput): Promise<boolean> => super.existsDelegate('query', 'albums', { where }, {}, '{ id }'),
+    Artist: (where: ArtistWhereInput): Promise<boolean> => super.existsDelegate('query', 'artists', { where }, {}, '{ id }')
+  }
+
+  query: Query = {
+    songs: (args, info): Promise<Song[]> => super.delegate('query', 'songs', args, {}, info),
+    albums: (args, info): Promise<Album[]> => super.delegate('query', 'albums', args, {}, info),
+    artists: (args, info): Promise<Artist[]> => super.delegate('query', 'artists', args, {}, info),
+    song: (args, info): Promise<Song | null> => super.delegate('query', 'song', args, {}, info),
+    album: (args, info): Promise<Album | null> => super.delegate('query', 'album', args, {}, info),
+    artist: (args, info): Promise<Artist | null> => super.delegate('query', 'artist', args, {}, info),
+    songsConnection: (args, info): Promise<SongConnection> => super.delegate('query', 'songsConnection', args, {}, info),
+    albumsConnection: (args, info): Promise<AlbumConnection> => super.delegate('query', 'albumsConnection', args, {}, info),
+    artistsConnection: (args, info): Promise<ArtistConnection> => super.delegate('query', 'artistsConnection', args, {}, info),
+    node: (args, info): Promise<Node | null> => super.delegate('query', 'node', args, {}, info)
+  }
+
+  mutation: Mutation = {
+    createSong: (args, info): Promise<Song> => super.delegate('mutation', 'createSong', args, {}, info),
+    createAlbum: (args, info): Promise<Album> => super.delegate('mutation', 'createAlbum', args, {}, info),
+    createArtist: (args, info): Promise<Artist> => super.delegate('mutation', 'createArtist', args, {}, info),
+    updateSong: (args, info): Promise<Song | null> => super.delegate('mutation', 'updateSong', args, {}, info),
+    updateAlbum: (args, info): Promise<Album | null> => super.delegate('mutation', 'updateAlbum', args, {}, info),
+    updateArtist: (args, info): Promise<Artist | null> => super.delegate('mutation', 'updateArtist', args, {}, info),
+    deleteSong: (args, info): Promise<Song | null> => super.delegate('mutation', 'deleteSong', args, {}, info),
+    deleteAlbum: (args, info): Promise<Album | null> => super.delegate('mutation', 'deleteAlbum', args, {}, info),
+    deleteArtist: (args, info): Promise<Artist | null> => super.delegate('mutation', 'deleteArtist', args, {}, info),
+    upsertSong: (args, info): Promise<Song> => super.delegate('mutation', 'upsertSong', args, {}, info),
+    upsertAlbum: (args, info): Promise<Album> => super.delegate('mutation', 'upsertAlbum', args, {}, info),
+    upsertArtist: (args, info): Promise<Artist> => super.delegate('mutation', 'upsertArtist', args, {}, info),
+    updateManySongs: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManySongs', args, {}, info),
+    updateManyAlbums: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyAlbums', args, {}, info),
+    updateManyArtists: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyArtists', args, {}, info),
+    deleteManySongs: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManySongs', args, {}, info),
+    deleteManyAlbums: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyAlbums', args, {}, info),
+    deleteManyArtists: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyArtists', args, {}, info)
+  }
+
+  subscription: Subscription = {
+    song: (args, infoOrQuery): Promise<AsyncIterator<SongSubscriptionPayload>> => super.delegateSubscription('song', args, {}, infoOrQuery),
+    album: (args, infoOrQuery): Promise<AsyncIterator<AlbumSubscriptionPayload>> => super.delegateSubscription('album', args, {}, infoOrQuery),
+    artist: (args, infoOrQuery): Promise<AsyncIterator<ArtistSubscriptionPayload>> => super.delegateSubscription('artist', args, {}, infoOrQuery)
+  }
+}

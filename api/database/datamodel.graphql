@@ -1,7 +1,7 @@
 type Artist {
   id: ID! @unique
   alias: String! @unique
-  featuredIn: [Song!]! @relation(name: "Featuring", onDelete: CASCADE)
+  featuredIn: [Song!]! @relation(name: "Featuring")
   name: String!
   songs: [Song!]! @relation(name: "CreatedBy", onDelete: CASCADE)
   createdAt: DateTime!
@@ -11,7 +11,7 @@ type Artist {
 type Song {
   id: ID! @unique
   artists: [Artist!]! @relation(name: "CreatedBy")
-  album: Album!
+  album: Album! @relation(name: "BelongsTo")
   featuring: [Artist!]! @relation(name: "Featuring")
   name: String!
   createdAt: DateTime!
@@ -23,7 +23,7 @@ type Album {
   alias: String! @unique
   artists: [Artist!]!
   name: String!
-  songs: [Song!]!
+  songs: [Song!]! @relation(name: "BelongsTo", onDelete: CASCADE)
   createdAt: DateTime!
   updatedAt: DateTime!
 }
