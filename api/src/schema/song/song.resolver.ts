@@ -24,6 +24,11 @@ export default {
     song: (_, { id }, context: Context, info) =>
       service.findOne(id, context, info),
   },
+  Subscription: {
+    songCreated: {
+      subscribe: (_,__,{ pubsub }) => pubsub.asyncIterator('SONG_CREATED'),
+    }
+  },
   Node: {
     __resolveType() {
       return null;

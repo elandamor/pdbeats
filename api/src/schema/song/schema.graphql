@@ -11,6 +11,10 @@ type Mutation {
   updateSong(input: SongUpdateInput!): Song
 }
 
+type Subscription {
+  songCreated: Song
+}
+
 input AlbumPayload {
   alias: String!
   name: String
@@ -24,7 +28,7 @@ input ArtistPayload {
 input SongCreatePayload {
   album: AlbumPayload
   artists: [ArtistPayload!]!
-  featuring: [ArtistPayload!]!
+  featuring: [ArtistPayload!]
   name: String!
 }
 

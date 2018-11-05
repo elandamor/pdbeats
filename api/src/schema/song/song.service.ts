@@ -26,7 +26,7 @@ export class SongService {
       // If album already exist...
       if (albumExists) {
         // ...then create the song.
-        return context.db.mutation.createSong(
+        const dbSong = context.db.mutation.createSong(
           {
             data: {
               album: {
@@ -49,6 +49,12 @@ export class SongService {
           },
           info,
         );
+
+        context.pubsub.publish('SONG_CREATED', {
+          songCreated: dbSong,
+        });
+
+        return dbSong;
       }
       // Create album if it doesn't exist
       let createdAlbum;
@@ -69,7 +75,7 @@ export class SongService {
       // If album didn't exist and has been created...
       if (createdAlbum) {
         // ...create the song
-        return context.db.mutation.createSong(
+        const dbSong = await context.db.mutation.createSong(
           {
             data: {
               album: {
@@ -94,6 +100,12 @@ export class SongService {
           },
           info,
         );
+
+        context.pubsub.publish('SONG_CREATED', {
+          songCreated: dbSong,
+        });
+
+        return dbSong;
       }
     }
     // Only reaches here if the song already exists.
@@ -195,6 +207,10 @@ export class SongService {
         }
       })
     });
+
+    if (!artists) {
+      return;
+    }
 
     const EXISTING_ARTISTS = await context.db.query.artists({
       where: {

@@ -1,6 +1,8 @@
-import { GraphQLServer } from 'graphql-yoga'
-import { Prisma } from './generated/prisma'
+import { GraphQLServer, PubSub } from 'graphql-yoga';
+import { Prisma } from './generated/prisma';
 import * as schema from './schema';
+
+const pubsub = new PubSub();
 
 const server = new GraphQLServer({
   typeDefs: './src/schema.graphql',
@@ -15,6 +17,7 @@ const server = new GraphQLServer({
       debug: false, // log all GraphQL queries & mutations sent to the Prisma API
       // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
     }),
+    pubsub,
   }),
 })
 
