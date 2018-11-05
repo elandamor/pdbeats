@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { Context } from '../../utils';
 
 export class SongService {
@@ -26,7 +25,7 @@ export class SongService {
       // If album already exist...
       if (albumExists) {
         // ...then create the song.
-        const dbSong = context.db.mutation.createSong(
+        const dbSong = await context.db.mutation.createSong(
           {
             data: {
               album: {
