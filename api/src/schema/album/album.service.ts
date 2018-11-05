@@ -1,6 +1,12 @@
 import { Context } from '../../utils';
 
 export class AlbumService {
+  /**
+   * Creates an album
+   * @param input
+   * @param context
+   * @param info
+   */
   public create(input, context: Context, info) {
     return context.db.mutation.createAlbum(
       {
@@ -10,12 +16,18 @@ export class AlbumService {
     );
   }
 
+  /**
+   * Updates an album
+   * @param input
+   * @param context
+   * @param info
+   */
   public async update(input, context: Context, info) {
     const { id, name } = input;
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
-      throw new Error('Album not found');
+      throw new Error('NOT_FOUND');
     }
 
     return context.db.mutation.updateAlbum(
@@ -27,20 +39,37 @@ export class AlbumService {
     );
   }
 
+  /**
+   * Deletes an album
+   * @param id
+   * @param context
+   */
   public async delete(id, context: Context) {
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
-      throw new Error(`Album not found or you're not authorized to perform action`);
+      throw new Error('NOT_FOUND');
     }
 
     return context.db.mutation.deleteAlbum({ where: { id } });
   }
 
+  /**
+   * Returns an album
+   * @param id
+   * @param context
+   * @param info
+   */
   public findOne(id, context: Context, info) {
     return context.db.query.album({ where: { id } }, info);
   }
 
+  /**
+   * Returns a collection of albums
+   * @param input
+   * @param context
+   * @param info
+   */
   public findMany(input, context: Context, info) {
     const { first, last, after, before } = input;
     return context.db.query.albumsConnection(

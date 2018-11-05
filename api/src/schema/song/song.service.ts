@@ -3,78 +3,7 @@ import { Context } from '../../utils';
 
 export class SongService {
   /**
-   *
-   * @param artists
-   * @param context
-   */
-  private async artistFactory(artists, context: Context) {
-    const _createArtists = (arr) => new Promise<Array<{ alias: string }>>((resolve) => {
-      const CREATED_ARTISTS = [];
-
-      arr.forEach(async (artist, index) => {
-        const CREATED_ARTIST = await context.db.mutation.createArtist(
-          {
-            data: {
-              alias: artist.alias,
-              name: artist.name,
-            },
-          },
-          `{ alias }`,
-        );
-
-        CREATED_ARTISTS.push({ alias: CREATED_ARTIST.alias });
-
-        if (index === arr.length - 1) {
-          resolve(CREATED_ARTISTS);
-        }
-      })
-    });
-
-    const EXISTING_ARTISTS = await context.db.query.artists({
-      where: {
-        alias_in: artists.map((artist) => artist.alias),
-      }
-    });
-
-    if (EXISTING_ARTISTS.length === 0) {
-      return _createArtists(artists);
-    }
-
-    if (EXISTING_ARTISTS.length > 0 && EXISTING_ARTISTS.length < artists.length) {
-      const NEW_ARTISTS =  EXISTING_ARTISTS.map((artist) => {
-        const [FILTERED_ARTISTS] = artists.filter((item) => {
-          return item.alias !== artist.alias;
-        });
-        return FILTERED_ARTISTS;
-      });
-
-      const CREATED_ARTISTS = await _createArtists(NEW_ARTISTS);
-      const CLEANED_EXISTING_ARTISTS  = EXISTING_ARTISTS.map((artist) => {
-        const obj = {
-          alias: artist.alias,
-        };
-
-        return obj;
-      });
-
-      return CLEANED_EXISTING_ARTISTS.concat(CREATED_ARTISTS);
-    }
-
-    if (EXISTING_ARTISTS.length === artists.length) {
-      const ALIASES = artists.map((artist) => {
-        const obj = {
-          alias: artist.alias,
-        };
-
-        return obj;
-      });
-
-      return ALIASES;
-    }
-  }
-
-  /**
-   *
+   * Creates a song
    * @param input
    * @param context
    * @param info
@@ -172,7 +101,7 @@ export class SongService {
   }
 
   /**
-   *
+   * Updates a song
    * @param input
    * @param context
    * @param info
@@ -182,7 +111,7 @@ export class SongService {
     const songExists = await context.db.exists.Song({ id });
 
     if (!songExists) {
-      throw new Error('Song not found');
+      throw new Error('NOT_FOUND');
     }
 
     return context.db.mutation.updateSong(
@@ -195,7 +124,7 @@ export class SongService {
   }
 
   /**
-   *
+   * Deletes a song
    * @param id
    * @param context
    */
@@ -203,14 +132,14 @@ export class SongService {
     const songExists = await context.db.exists.Song({ id });
 
     if (!songExists) {
-      throw new Error(`Song not found or you're not authorized to perform action`);
+      throw new Error('NOT_FOUND');
     }
 
     return context.db.mutation.deleteSong({ where: { id } });
   }
 
   /**
-   *
+   * Returns a song
    * @param id
    * @param context
    * @param info
@@ -220,7 +149,7 @@ export class SongService {
   }
 
   /**
-   *
+   * Returns a collection of songs
    * @param input
    * @param context
    * @param info
@@ -240,7 +169,78 @@ export class SongService {
   }
 
   /**
-   *
+   * Handles the creation of artists
+   * @param artists
+   * @param context
+   */
+  private async artistFactory(artists, context: Context) {
+    const _createArtists = (arr) => new Promise<Array<{ alias: string }>>((resolve) => {
+      const CREATED_ARTISTS = [];
+
+      arr.forEach(async (artist, index) => {
+        const CREATED_ARTIST = await context.db.mutation.createArtist(
+          {
+            data: {
+              alias: artist.alias,
+              name: artist.name,
+            },
+          },
+          `{ alias }`,
+        );
+
+        CREATED_ARTISTS.push({ alias: CREATED_ARTIST.alias });
+
+        if (index === arr.length - 1) {
+          resolve(CREATED_ARTISTS);
+        }
+      })
+    });
+
+    const EXISTING_ARTISTS = await context.db.query.artists({
+      where: {
+        alias_in: artists.map((artist) => artist.alias),
+      }
+    });
+
+    if (EXISTING_ARTISTS.length === 0) {
+      return _createArtists(artists);
+    }
+
+    if (EXISTING_ARTISTS.length > 0 && EXISTING_ARTISTS.length < artists.length) {
+      const NEW_ARTISTS =  EXISTING_ARTISTS.map((artist) => {
+        const [FILTERED_ARTISTS] = artists.filter((item) => {
+          return item.alias !== artist.alias;
+        });
+        return FILTERED_ARTISTS;
+      });
+
+      const CREATED_ARTISTS = await _createArtists(NEW_ARTISTS);
+      const CLEANED_EXISTING_ARTISTS  = EXISTING_ARTISTS.map((artist) => {
+        const obj = {
+          alias: artist.alias,
+        };
+
+        return obj;
+      });
+
+      return CLEANED_EXISTING_ARTISTS.concat(CREATED_ARTISTS);
+    }
+
+    if (EXISTING_ARTISTS.length === artists.length) {
+      const ALIASES = artists.map((artist) => {
+        const obj = {
+          alias: artist.alias,
+        };
+
+        return obj;
+      });
+
+      return ALIASES;
+    }
+  }
+
+  /**
+   * Checks if a song exists in the database
    * @param input
    * @param context
    */
