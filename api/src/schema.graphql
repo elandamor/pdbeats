@@ -1,3 +1,10 @@
 # import Query, Mutation from "./schema/album/schema.graphql"
 # import Query, Mutation from "./schema/artist/schema.graphql"
 # import Query, Mutation from "./schema/song/schema.graphql"
+
+enum ReleaseType {
+  ALBUM
+  EP
+  LP
+  SINGLE
+}
