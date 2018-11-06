@@ -1,5 +1,5 @@
 import { PubSub } from 'graphql-yoga';
-import { Prisma } from './generated/prisma'
+import { Prisma } from '../generated/prisma'
 
 export interface Context {
   db: Prisma
