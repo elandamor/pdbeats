@@ -1,6 +1,11 @@
-import { GraphQLServer, PubSub } from 'graphql-yoga';
+import { GraphQLServer, Options, PubSub } from 'graphql-yoga';
 import { Prisma } from './generated/prisma';
 import * as schema from './schema';
+import { formatError } from './utils/apollo-errors';
+
+const options: Options = {
+  formatError
+};
 
 const pubsub = new PubSub();
 
@@ -22,4 +27,4 @@ const server = new GraphQLServer({
 })
 
 // tslint:disable:no-console
-server.start(() => console.log('Server is running on http://localhost:4000'));
+server.start(options, () => console.log('Server is running on http://localhost:4000'));

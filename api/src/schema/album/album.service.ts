@@ -1,4 +1,5 @@
 import { Context } from '../../utils';
+import { NodeNotFoundError } from '../../utils/errors';
 
 export class AlbumService {
   /**
@@ -27,7 +28,9 @@ export class AlbumService {
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
-      throw new Error('NOT_FOUND');
+      throw new NodeNotFoundError({
+        message: `Album:id:${id} could not be found`
+      });
     }
 
     return context.db.mutation.updateAlbum(
@@ -48,7 +51,9 @@ export class AlbumService {
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
-      throw new Error('NOT_FOUND');
+      throw new NodeNotFoundError({
+        message: `Album:id:${id} could not be found`
+      });
     }
 
     return context.db.mutation.deleteAlbum({ where: { id } });
