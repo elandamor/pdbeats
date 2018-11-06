@@ -14,11 +14,11 @@ type Track {
   id: ID! @unique
   album: Album! @relation(name: "InAlbum")
   artists: [Artist!]! @relation(name: "ByArtist")
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean! @default(value: "false")
   featuring: [Artist!]! @relation(name: "FeaturesIn")
-  genre: String!
+  genre: String! @default(value: "Other")
   inPlaylist: [Playlist!]! @relation(name: "InPlaylist")
   isPlayable: Boolean! @default(value: "true")
   name: String!

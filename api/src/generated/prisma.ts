@@ -2106,7 +2106,7 @@ type Track implements Node {
   id: ID!
   album: Album!
   artists(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Artist!]
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean!
   featuring(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Artist!]
@@ -2135,10 +2135,10 @@ type TrackConnection {
 }
 
 input TrackCreateInput {
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean
-  genre: String!
+  genre: String
   isPlayable: Boolean
   name: String!
   trackNumber: Int!
@@ -2169,10 +2169,10 @@ input TrackCreateManyWithoutInPlaylistInput {
 }
 
 input TrackCreateWithoutAlbumInput {
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean
-  genre: String!
+  genre: String
   isPlayable: Boolean
   name: String!
   trackNumber: Int!
@@ -2182,10 +2182,10 @@ input TrackCreateWithoutAlbumInput {
 }
 
 input TrackCreateWithoutArtistsInput {
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean
-  genre: String!
+  genre: String
   isPlayable: Boolean
   name: String!
   trackNumber: Int!
@@ -2195,10 +2195,10 @@ input TrackCreateWithoutArtistsInput {
 }
 
 input TrackCreateWithoutFeaturingInput {
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean
-  genre: String!
+  genre: String
   isPlayable: Boolean
   name: String!
   trackNumber: Int!
@@ -2208,10 +2208,10 @@ input TrackCreateWithoutFeaturingInput {
 }
 
 input TrackCreateWithoutInPlaylistInput {
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean
-  genre: String!
+  genre: String
   isPlayable: Boolean
   name: String!
   trackNumber: Int!
@@ -2259,7 +2259,7 @@ enum TrackOrderByInput {
 
 type TrackPreviousValues {
   id: ID!
-  discNumber: Int!
+  discNumber: Int
   duration: Int!
   explicit: Boolean!
   genre: String!
@@ -3720,10 +3720,10 @@ export interface ImageWhereInput {
 }
 
 export interface TrackCreateWithoutFeaturingInput {
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit?: Boolean
-  genre: String
+  genre?: String
   isPlayable?: Boolean
   name: String
   trackNumber: Int
@@ -3851,10 +3851,10 @@ export interface PlaylistWhereUniqueInput {
 }
 
 export interface TrackCreateWithoutArtistsInput {
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit?: Boolean
-  genre: String
+  genre?: String
   isPlayable?: Boolean
   name: String
   trackNumber: Int
@@ -3903,10 +3903,10 @@ export interface PlaylistUpdateManyMutationInput {
 }
 
 export interface TrackCreateWithoutAlbumInput {
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit?: Boolean
-  genre: String
+  genre?: String
   isPlayable?: Boolean
   name: String
   trackNumber: Int
@@ -4208,10 +4208,10 @@ export interface PlaylistUpdateWithWhereUniqueWithoutCreatorInput {
 }
 
 export interface TrackCreateWithoutInPlaylistInput {
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit?: Boolean
-  genre: String
+  genre?: String
   isPlayable?: Boolean
   name: String
   trackNumber: Int
@@ -4725,10 +4725,10 @@ export interface AlbumUpdateManyMutationInput {
 }
 
 export interface TrackCreateInput {
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit?: Boolean
-  genre: String
+  genre?: String
   isPlayable?: Boolean
   name: String
   trackNumber: Int
@@ -4841,7 +4841,7 @@ export interface Track extends Node {
   id: ID_Output
   album: Album
   artists?: Artist[]
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit: Boolean
   featuring?: Artist[]
@@ -4947,7 +4947,7 @@ export interface PlaylistEdge {
 
 export interface TrackPreviousValues {
   id: ID_Output
-  discNumber: Int
+  discNumber?: Int
   duration: Int
   explicit: Boolean
   genre: String

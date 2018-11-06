@@ -10,7 +10,7 @@ export class TrackService {
    */
   public async create(input, context: Context, info) {
     // TODO: Sanitize input from frontend
-    const { album, artists, featuring, name } = input;
+    const { album, artists, duration, featuring, name, trackNumber } = input;
     // Check if track already exists...
     const trackExists = await this.trackExists(input, context);
 
@@ -42,7 +42,9 @@ export class TrackService {
                   }
                 }
               ),
+              duration,
               name,
+              trackNumber,
             },
           },
           info,
@@ -65,7 +67,11 @@ export class TrackService {
                 connect: mainArtists,
               },
               artwork: album.artwork,
+              duration: album.duration,
               name: album.name,
+              numTracks: album.numTracks,
+              releaseDate: album.releaseDate,
+              releaseType: album.releaseType,
             },
           },
           info,
@@ -94,6 +100,8 @@ export class TrackService {
                   }
                 }
               ),
+              duration,
+              trackNumber,
               name,
             },
           },
