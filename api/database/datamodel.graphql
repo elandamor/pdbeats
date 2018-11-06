@@ -1,19 +1,28 @@
 type Artist {
   id: ID! @unique
   alias: String! @unique
-  featuredIn: [Song!]! @relation(name: "Featuring")
+  avatar: Image
+  featuresIn: [Track!]! @relation(name: "FeaturesIn")
+  genres: [String!]
   name: String!
-  songs: [Song!]! @relation(name: "CreatedBy", onDelete: CASCADE)
+  tracks: [Track!]! @relation(name: "ByArtist", onDelete: CASCADE)
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
-type Song {
+type Track {
   id: ID! @unique
-  artists: [Artist!]! @relation(name: "CreatedBy")
-  album: Album! @relation(name: "BelongsTo")
-  featuring: [Artist!]! @relation(name: "Featuring")
+  album: Album! @relation(name: "InAlbum")
+  artists: [Artist!]! @relation(name: "ByArtist")
+  discNumber: Int!
+  duration: Int!
+  explicit: Boolean! @default(value: "false")
+  featuring: [Artist!]! @relation(name: "FeaturesIn")
+  genre: String!
+  inPlaylist: [Playlist!]! @relation(name: "InPlaylist")
+  isPlayable: Boolean! @default(value: "true")
   name: String!
+  trackNumber: Int!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -22,8 +31,70 @@ type Album {
   id: ID! @unique
   alias: String! @unique
   artists: [Artist!]!
+  duration: Int!
+  genres: [String!]
+  artwork: Image
   name: String!
-  songs: [Song!]! @relation(name: "BelongsTo", onDelete: CASCADE)
+  numTracks: Int!
+  releaseDate: DateTime!
+  releaseType: ReleaseType!
+  tracks: [Track!]! @relation(name: "InAlbum", onDelete: CASCADE)
   createdAt: DateTime!
   updatedAt: DateTime!
 }
+
+type Image {
+  id: ID! @unique
+  uploadedBy: User!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Playlist {
+  id: ID! @unique
+  alias: String! @unique
+  artwork: [Image!]!
+  collaborative: Boolean! @default(value: "false")
+  creator: User! @relation(name: "CreatedBy")
+  description: String
+  duration: Int!
+  name: String!
+  numTracks: Int!
+  privacy: Privacy! @default(value: "PRIVATE")
+  tracks: [Track!]! @relation(name: "InPlaylist")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# type PlaylistTrack {
+#   addedAt: DateTime!
+#   addedBy: User!
+#   track: Track!
+# }
+
+type User {
+  id: ID! @unique
+  isAdmin: Boolean! @default(value: "false")
+  name: String!
+  playlists: [Playlist!]! @relation(name: "CreatedBy")
+  username: String! @unique
+  verified: Boolean! @default(value: "false")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ReleaseType {
+  ALBUM
+  EP
+  LP
+  PODCAST
+  SINGLE
+}
+
+enum Privacy {
+  PRIVATE
+  PUBLIC
+  UNLISTED
+}
+
