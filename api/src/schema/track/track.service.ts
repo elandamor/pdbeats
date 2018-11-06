@@ -1,8 +1,9 @@
 import { Context } from '../../utils';
+import { NodeNotFoundError, TrackExistsError } from '../../utils/errors';
 
-export class SongService {
+export class TrackService {
   /**
-   * Creates a song
+   * Creates a track
    * @param input
    * @param context
    * @param info
@@ -10,36 +11,34 @@ export class SongService {
   public async create(input, context: Context, info) {
     // TODO: Sanitize input from frontend
     const { album, artists, featuring, name } = input;
-    // Check if song already exists...
-    const songExists = await this.songExists(input, context);
+    // Check if track already exists...
+    const trackExists = await this.trackExists(input, context);
 
-    if (!songExists) {
-      // TODO: Give this better naming (holds response from artistFactory for main artists)
-      const artistsPlug = await this.artistFactory(artists, context);
-      // TODO: Give this better naming (holds response from artistFactory for featuring artists)
-      const featuringPlug = await this.artistFactory(featuring, context);
+    if (!trackExists) {
+      const mainArtists = await this.artistFactory(artists, context);
+      const featuringArtists = await this.artistFactory(featuring, context);
       // Check if album exists.
       const albumExists = await context.db.exists.Album({
         alias: album.alias,
       });
       // If album already exist...
       if (albumExists) {
-        // ...then create the song.
-        const dbSong = await context.db.mutation.createSong(
+        // ...then create the track.
+        const dbTrack = await context.db.mutation.createTrack(
           {
             data: {
               album: {
                 connect: { alias: album.alias },
               },
               artists: {
-                connect: artistsPlug,
+                connect: mainArtists,
               },
-              // Conditionally handle song with featured artist(s).
+              // Conditionally handle track with featured artist(s).
               ...(
                 featuring &&
                 {
                   featuring: {
-                    connect: featuringPlug
+                    connect: featuringArtists,
                   }
                 }
               ),
@@ -49,11 +48,11 @@ export class SongService {
           info,
         );
 
-        context.pubsub.publish('SONG_CREATED', {
-          songCreated: dbSong,
+        context.pubsub.publish('TRACK_CREATED', {
+          trackCreated: dbTrack,
         });
 
-        return dbSong;
+        return dbTrack;
       }
       // Create album if it doesn't exist
       let createdAlbum;
@@ -63,8 +62,9 @@ export class SongService {
             data: {
               alias: album.alias,
               artists: {
-                connect: artistsPlug,
+                connect: mainArtists,
               },
+              artwork: album.artwork,
               name: album.name,
             },
           },
@@ -73,8 +73,8 @@ export class SongService {
       }
       // If album didn't exist and has been created...
       if (createdAlbum) {
-        // ...create the song
-        const dbSong = await context.db.mutation.createSong(
+        // ...create the track
+        const dbTrack = await context.db.mutation.createTrack(
           {
             data: {
               album: {
@@ -83,14 +83,14 @@ export class SongService {
                 },
               },
               artists: {
-                connect: artistsPlug,
+                connect: mainArtists,
               },
-              // Conditionally handle song with featured artist(s).
+              // Conditionally handle track with featured artist(s).
               ...(
                 featuring &&
                 {
                   featuring: {
-                    connect: featuringPlug
+                    connect: featuringArtists
                   }
                 }
               ),
@@ -100,32 +100,39 @@ export class SongService {
           info,
         );
 
-        context.pubsub.publish('SONG_CREATED', {
-          songCreated: dbSong,
+        context.pubsub.publish('TRACK_CREATED', {
+          trackCreated: dbTrack,
         });
 
-        return dbSong;
+        return dbTrack;
       }
     }
-    // Only reaches here if the song already exists.
-    throw new Error('EXISTS');
+
+    return new TrackExistsError({
+      data: {
+        'name': name,
+        'album': album,
+      }
+    });
   }
 
   /**
-   * Updates a song
+   * Updates a track
    * @param input
    * @param context
    * @param info
    */
   public async update(input, context: Context, info) {
     const { id, name } = input;
-    const songExists = await context.db.exists.Song({ id });
+    const trackExists = await context.db.exists.Track({ id });
 
-    if (!songExists) {
-      throw new Error('NOT_FOUND');
+    if (!trackExists) {
+      throw new NodeNotFoundError({
+        message: `Track:id:${id} could not be found`
+      });
     }
 
-    return context.db.mutation.updateSong(
+    return context.db.mutation.updateTrack(
       {
         data: { name },
         where: { id },
@@ -135,39 +142,41 @@ export class SongService {
   }
 
   /**
-   * Deletes a song
+   * Deletes a track
    * @param id
    * @param context
    */
   public async delete(id, context: Context) {
-    const songExists = await context.db.exists.Song({ id });
+    const trackExists = await context.db.exists.Track({ id });
 
-    if (!songExists) {
-      throw new Error('NOT_FOUND');
+    if (!trackExists) {
+      throw new NodeNotFoundError({
+        message: `Track:id:${id} could not be found.`
+      });
     }
 
-    return context.db.mutation.deleteSong({ where: { id } });
+    return context.db.mutation.deleteTrack({ where: { id } });
   }
 
   /**
-   * Returns a song
+   * Returns a track
    * @param id
    * @param context
    * @param info
    */
   public findOne(id, context: Context, info) {
-    return context.db.query.song({ where: { id } }, info);
+    return context.db.query.track({ where: { id } }, info);
   }
 
   /**
-   * Returns a collection of songs
+   * Returns a collection of tracks
    * @param input
    * @param context
    * @param info
    */
   public findMany(input, context: Context, info) {
     const { first, last, after, before } = input;
-    return context.db.query.songsConnection(
+    return context.db.query.tracksConnection(
       {
         after,
         before,
@@ -255,23 +264,23 @@ export class SongService {
   }
 
   /**
-   * Checks if a song exists in the database
+   * Checks if a track exists in the database
    * @param input
    * @param context
    */
-  private async songExists(input, context) {
+  private async trackExists(input, context) {
     const { album, name } = input;
 
-    const getSongs: { songs: Array<{ name: string }> } = await context.db.query.album({
+    const getTracks: { tracks: Array<{ name: string }> } = await context.db.query.album({
       where: { alias: album.alias }
-    }, `{ songs { name } }`);
+    }, `{ tracks { name } }`);
 
-    if (getSongs) {
-      const songExists = Array.from(getSongs.songs).findIndex((song) =>
-        song.name.toLowerCase() === name.toLowerCase()
+    if (getTracks) {
+      const trackExists = Array.from(getTracks.tracks).findIndex((track) =>
+        track.name.toLowerCase() === name.toLowerCase()
       ) !== -1;
 
-      return songExists;
+      return trackExists;
     }
 
     return false;

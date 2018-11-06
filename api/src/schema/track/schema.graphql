@@ -1,0 +1,41 @@
+# import Track, TrackConnection from "../../generated/prisma.graphql"
+
+scalar NonEmptyString
+
+type Query {
+  track(id: ID!): Track
+  tracks(first: Int, last: Int, before: ID, after: ID): TrackConnection
+}
+
+type Mutation {
+  createTrack(input: TrackCreatePayload!): Track
+  deleteTrack(id: ID!): Track
+  updateTrack(input: TrackUpdateInput!): Track
+}
+
+type Subscription {
+  trackCreated: Track
+}
+
+input AlbumPayload {
+  alias: NonEmptyString!
+  artwork: NonEmptyString!
+  name: NonEmptyString!
+}
+
+input ArtistPayload {
+  alias: NonEmptyString!
+  name: NonEmptyString!
+}
+
+input TrackCreatePayload {
+  album: AlbumPayload!
+  artists: [ArtistPayload!]!
+  featuring: [ArtistPayload!]
+  name: NonEmptyString!
+}
+
+input TrackUpdateInput {
+  id: ID!
+  name: NonEmptyString!
+}
