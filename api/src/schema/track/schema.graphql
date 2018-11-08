@@ -10,17 +10,25 @@ type Query {
 type Mutation {
   createTrack(input: TrackCreatePayload!): Track
   deleteTrack(id: ID!): Track
-  updateTrack(input: TrackUpdateInput!): Track
+  updateTrack(input: TrackUpdatePayload!): Track
 }
 
 type Subscription {
   trackCreated: Track
 }
 
+input ArtworkPayload {
+  url: NonEmptyString!
+}
+
 input AlbumPayload {
   alias: NonEmptyString!
-  artwork: NonEmptyString!
+  artwork: ArtworkPayload!
+  duration: Int!
   name: NonEmptyString!
+  numTracks: Int!
+  releaseDate: DateTime!
+  releaseType: ReleaseType!
 }
 
 input ArtistPayload {
@@ -31,11 +39,17 @@ input ArtistPayload {
 input TrackCreatePayload {
   album: AlbumPayload!
   artists: [ArtistPayload!]!
+  duration: Int!
   featuring: [ArtistPayload!]
   name: NonEmptyString!
+  trackNumber: Int!
 }
 
-input TrackUpdateInput {
+input TrackUpdatePayload {
   id: ID!
+  artists: [ArtistPayload!]!
+  duration: Int!
+  featuring: [ArtistPayload!]
   name: NonEmptyString!
+  trackNumber: Int!
 }

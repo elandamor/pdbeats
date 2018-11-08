@@ -66,7 +66,17 @@ export class TrackService {
               artists: {
                 connect: mainArtists,
               },
-              artwork: album.artwork,
+              artwork: {
+                create: {
+                  url: album.artwork.url,
+                  uploadedBy: {
+                    connect: {
+                      // TODO: Request userId from client instead of hard-coding
+                      id: 'cjo6yn74ycxqx0a42rrsl3blv',
+                    }
+                  }
+                }
+              },
               duration: album.duration,
               name: album.name,
               numTracks: album.numTracks,
@@ -131,7 +141,8 @@ export class TrackService {
    * @param info
    */
   public async update(input, context: Context, info) {
-    const { id, name } = input;
+    // TODO: Sanitize input from frontend
+    const { artists, duration, featuring, id, name, trackNumber } = input;
     const trackExists = await context.db.exists.Track({ id });
 
     if (!trackExists) {
@@ -140,13 +151,40 @@ export class TrackService {
       });
     }
 
-    return context.db.mutation.updateTrack(
+    const mainArtists = await this.artistFactory(artists, context);
+    const featuringArtists = await this.artistFactory(featuring, context);
+
+    const dbTrack = await context.db.mutation.updateTrack(
       {
-        data: { name },
+        data: {
+          ...(
+            mainArtists && {
+              artists: {
+                connect: mainArtists,
+              }
+            }
+          ),
+          duration,
+          ...(
+            featuringArtists && {
+              featuring: {
+                connect: featuringArtists,
+              }
+            }
+          ),
+          name,
+          trackNumber
+        },
         where: { id },
       },
       info,
     );
+
+    context.pubsub.publish('TRACK_UPDATED', {
+      trackUpdated: dbTrack,
+    });
+
+    return dbTrack;
   }
 
   /**
@@ -202,6 +240,10 @@ export class TrackService {
    * @param context
    */
   private async artistFactory(artists, context: Context) {
+    if (!artists) {
+      return;
+    }
+
     const _createArtists = (arr) => new Promise<Array<{ alias: string }>>((resolve) => {
       const CREATED_ARTISTS = [];
 
@@ -223,10 +265,6 @@ export class TrackService {
         }
       })
     });
-
-    if (!artists) {
-      return;
-    }
 
     const EXISTING_ARTISTS = await context.db.query.artists({
       where: {
