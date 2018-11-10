@@ -47,15 +47,19 @@ export class TrackService {
               trackNumber,
             },
           },
-          info,
+          `
+            name
+            artists { name }
+            featuring { name }
+            album { name }
+            genre
+          `,
         );
-
-        const track = await context.db.query.track({ where: { id: dbTrack.id } }, info);
 
         const index = context.algolia.initIndex('tracks');
         index.addObject({
-          objectID: track.id,
-          object: track,
+          objectID: dbTrack.id,
+          object: dbTrack,
         }, (err, content) => {
           if (err) {
             console.error(err);
@@ -127,15 +131,19 @@ export class TrackService {
               name,
             },
           },
-          info,
+          `
+            name
+            artists { name }
+            featuring { name }
+            album { name }
+            genre
+          `,
         );
-
-        const track = await context.db.query.track({ where: { id: dbTrack.id } }, info);
 
         const index = context.algolia.initIndex('tracks');
         index.addObject({
-          objectID: track.id,
-          object: track,
+          objectID: dbTrack.id,
+          object: dbTrack,
         }, (err) => {
           if (err) {
             console.error(err);
@@ -201,15 +209,19 @@ export class TrackService {
         },
         where: { id },
       },
-      info,
+      `
+        name
+        artists { name }
+        featuring { name }
+        album { name }
+        genre
+      `,
     );
-
-    const track = await context.db.query.track({ where: { id: dbTrack.id } }, info);
 
     const index = context.algolia.initIndex('tracks');
     index.saveObject({
       objectID: id,
-      object: track,
+      object: dbTrack,
     }, (err) => {
       if (err) {
         console.error(err);
