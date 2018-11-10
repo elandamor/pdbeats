@@ -50,6 +50,18 @@ export class TrackService {
           info,
         );
 
+        const track = await context.db.query.track({ where: { id: dbTrack.id } }, info);
+
+        const index = context.algolia.initIndex('tracks');
+        index.addObject({
+          objectID: track.id,
+          object: track,
+        }, (err, content) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+
         context.pubsub.publish('TRACK_CREATED', {
           trackCreated: dbTrack,
         });
@@ -118,6 +130,18 @@ export class TrackService {
           info,
         );
 
+        const track = await context.db.query.track({ where: { id: dbTrack.id } }, info);
+
+        const index = context.algolia.initIndex('tracks');
+        index.addObject({
+          objectID: track.id,
+          object: track,
+        }, (err) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+
         context.pubsub.publish('TRACK_CREATED', {
           trackCreated: dbTrack,
         });
@@ -180,6 +204,18 @@ export class TrackService {
       info,
     );
 
+    const track = await context.db.query.track({ where: { id: dbTrack.id } }, info);
+
+    const index = context.algolia.initIndex('tracks');
+    index.saveObject({
+      objectID: id,
+      object: track,
+    }, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+
     context.pubsub.publish('TRACK_UPDATED', {
       trackUpdated: dbTrack,
     });
@@ -201,7 +237,20 @@ export class TrackService {
       });
     }
 
-    return context.db.mutation.deleteTrack({ where: { id } });
+    const dbTrack = await context.db.mutation.deleteTrack({ where: { id } });
+
+    const index = context.algolia.initIndex('tracks');
+    index.deleteObject(id, (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+
+    context.pubsub.publish('TRACK_DELETED', {
+      trackDeleted: { id: dbTrack.id, name: dbTrack.name },
+    });
+
+    return dbTrack;
   }
 
   /**

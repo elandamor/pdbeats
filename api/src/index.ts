@@ -1,7 +1,10 @@
 import { GraphQLServer, Options, PubSub } from 'graphql-yoga';
+import * as algoliasearch from 'algoliasearch';
 import { Prisma } from './generated/prisma';
 import * as schema from './schema';
 import { formatError } from './utils/apollo-errors';
+
+const algolia = algoliasearch('1P95FYQWIB', '0ec2d1a43dc56546e220a32c6465fc67');
 
 const options: Options = {
   formatError
@@ -17,6 +20,7 @@ const server = new GraphQLServer({
   },
   context: (req) => ({
     ...req,
+    algolia,
     db: new Prisma({
       endpoint: 'https://eu1.prisma.sh/elandamor/pdbeats/dev', // the endpoint of the Prisma API
       debug: false, // log all GraphQL queries & mutations sent to the Prisma API

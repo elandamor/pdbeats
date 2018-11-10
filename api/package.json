@@ -6,6 +6,7 @@
     "playground": "graphql playground"
   },
   "dependencies": {
+    "algoliasearch": "3.30.0",
     "extendable-error": "0.1.5",
     "graphql": "0.13.2",
     "graphql-import": "0.7.1",
@@ -14,6 +15,7 @@
     "prisma-binding": "1.5.19"
   },
   "devDependencies": {
+    "@types/algoliasearch": "3.30.1",
     "dotenv": "6.1.0",
     "dotenv-cli": "1.4.0",
     "graphql-cli": "2.17.0",
