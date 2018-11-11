@@ -132,13 +132,13 @@ export class TrackService {
               name,
             },
           },
-          `
+          `{
             name
             artists { name }
             featuring { name }
             album { name }
             genre
-          `,
+          }`,
         );
 
         const index = context.algolia.initIndex('tracks');
@@ -186,6 +186,43 @@ export class TrackService {
       });
     }
 
+    // Check mainArtists and featuringArtists currently in db for given track.
+    const { artists: currentArtists, featuring: currentFeaturing } = await context.db.query.track({
+      where: {
+        id,
+      }
+    },
+    `{
+      artists {
+        id
+        alias
+      }
+      featuring {
+        id
+        alias
+      }
+    }`);
+    // Find values that are in EXISTING_ARTISTS but not in artists
+    const EXISTING_ARTISTS = currentArtists.filter((obj) =>
+      !artists.some((obj2) => obj.alias === obj2.alias)
+    );
+    // Find values that are in EXISTING_FEATURED_ARTISTS but not in artists
+    const EXISTING_FEATURED_ARTISTS = currentFeaturing.filter((obj) =>
+      !featuring.some((obj2) => obj.alias === obj2.alias)
+    );
+    // Get artists that no longer exist in user input (to disconnect)
+    const artistsToDisconnect = EXISTING_ARTISTS.map((artist) => {
+      const object = { id: artist.id };
+
+      return object;
+    });
+    // Get featured artists that no longer exist in user input (to disconnect)
+    const featuringArtistsToDisconnect = EXISTING_FEATURED_ARTISTS.map((artist) => {
+      const object = { id: artist.id };
+
+      return object;
+    });
+
     const mainArtists = await this.artistFactory(artists, context);
     const featuringArtists = await this.artistFactory(featuring, context);
 
@@ -196,6 +233,9 @@ export class TrackService {
             mainArtists && {
               artists: {
                 connect: mainArtists,
+                ...(artistsToDisconnect.length > 0 && {
+                  disconnect: artistsToDisconnect,
+                })
               }
             }
           ),
@@ -204,6 +244,9 @@ export class TrackService {
             featuringArtists && {
               featuring: {
                 connect: featuringArtists,
+                ...(featuringArtistsToDisconnect.length > 0 && {
+                  disconnect: featuringArtistsToDisconnect,
+                })
               }
             }
           ),
@@ -212,13 +255,7 @@ export class TrackService {
         },
         where: { id },
       },
-      `
-        name
-        artists { name }
-        featuring { name }
-        album { name }
-        genre
-      `,
+      info,
     );
 
     const index = context.algolia.initIndex('tracks');
