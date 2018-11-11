@@ -1,5 +1,5 @@
 import { Context } from '../../utils';
-import { NodeNotFoundError, TrackExistsError } from '../../utils/errors';
+import { NodeNotFoundError, TrackExistsError, UnknownError } from '../../utils/errors';
 
 export class TrackService {
   /**
@@ -60,9 +60,11 @@ export class TrackService {
         index.addObject({
           objectID: dbTrack.id,
           object: dbTrack,
-        }, (err, content) => {
+        }, (err) => {
           if (err) {
-            console.error(err);
+            throw new UnknownError({
+              message: err.message,
+            })
           }
         });
 
@@ -87,8 +89,7 @@ export class TrackService {
                   url: album.artwork.url,
                   uploadedBy: {
                     connect: {
-                      // TODO: Request userId from client instead of hard-coding
-                      id: 'cjo6yn74ycxqx0a42rrsl3blv',
+                      id: context.userId,
                     }
                   }
                 }
@@ -146,7 +147,9 @@ export class TrackService {
           object: dbTrack,
         }, (err) => {
           if (err) {
-            console.error(err);
+            throw new UnknownError({
+              message: err.message,
+            })
           }
         });
 
@@ -224,7 +227,9 @@ export class TrackService {
       object: dbTrack,
     }, (err) => {
       if (err) {
-        console.error(err);
+        throw new UnknownError({
+          message: err.message,
+        })
       }
     });
 
@@ -254,7 +259,9 @@ export class TrackService {
     const index = context.algolia.initIndex('tracks');
     index.deleteObject(id, (err) => {
       if (err) {
-        console.error(err);
+        throw new UnknownError({
+          message: err.message,
+        })
       }
     });
 

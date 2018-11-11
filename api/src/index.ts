@@ -27,6 +27,7 @@ const server = new GraphQLServer({
       // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
     }),
     pubsub,
+    userId: 'cjo6yn74ycxqx0a42rrsl3blv',
   }),
 })
 

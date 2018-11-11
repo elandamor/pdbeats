@@ -3,7 +3,7 @@ import ExtendableError from 'extendable-error';
 
 const isString = (d) => Object.prototype.toString.call(d) === '[object String]';
 const isObject = (d) => Object.prototype.toString.call(d) === '[object Object]';
-const isEmptyObject = (d) => Object.getOwnPropertyNames(d).length > 0;
+const isEmptyObject = (d) => Object.getOwnPropertyNames(d).length < 1;
 
 export interface ErrorConfig {
   message: string;

@@ -1,23 +1,48 @@
 # import Album, AlbumConnection from "../../generated/prisma.graphql"
 
-# The "Query" type is the root of all GraphQL queries.
+scalar Duration
+scalar NonEmptyString
+
 type Query {
-  # Album
   album(id: ID!): Album
   albums(first: Int, last: Int, before: ID, after: ID): AlbumConnection
 }
 
 type Mutation {
-  createAlbum(input: AddAlbumInput!): Album
+  createAlbum(input: AlbumCreatePayload!): Album
   deleteAlbum(id: ID!): Album
-  updateAlbum(input: EditAlbumInput!): Album
+  updateAlbum(input: AlbumUpdatePayload!): Album
 }
 
-input AddAlbumInput {
-  name: String!
+input ArtistPayload {
+  alias: NonEmptyString!
+  name: NonEmptyString!
 }
 
-input EditAlbumInput {
+input ArtworkPayload {
+  url: NonEmptyString!
+}
+
+input TrackPayload {
+  artists: [ArtistPayload!]!
+  duration: Duration!
+  featuring: [ArtistPayload!]
+  name: NonEmptyString!
+  trackNumber: Int!
+}
+
+input AlbumCreatePayload {
+  alias: NonEmptyString!
+  artists: [ArtistPayload!]!
+  artwork: ArtworkPayload!
+  name: NonEmptyString!
+  releaseDate: DateTime!
+  releaseType: ReleaseType!
+  tracks: [TrackPayload!]!
+}
+
+input AlbumUpdatePayload {
   id: ID!
-  name: String!
+  alias: NonEmptyString!
+  name: NonEmptyString!
 }

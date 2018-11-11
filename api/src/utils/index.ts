@@ -8,4 +8,5 @@ export interface Context {
   pubsub: PubSub
   request: any
   response: any
+  userId: string
 }
