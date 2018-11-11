@@ -121,7 +121,7 @@ export class AlbumService {
    * @param info
    */
   public async update(input, context: Context, info) {
-    const { id, name } = input;
+    const { alias, artists, id, name, releaseDate, releaseType } = input;
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
@@ -130,13 +130,76 @@ export class AlbumService {
       });
     }
 
-    return context.db.mutation.updateAlbum(
+    // Check artists currently in db for given album.
+    const { artists: currentArtists } = await context.db.query.album({
+      where: {
+        id,
+      }
+    },
+    `{
+      artists {
+        id
+        alias
+      }
+    }`);
+    // Find values that are in EXISTING_ARTISTS but not in artists
+    const EXISTING_ARTISTS = currentArtists.filter((obj) =>
+      !artists.some((obj2) => obj.alias === obj2.alias)
+    );
+    // Get artists that no longer exist in user input (to disconnect)
+    const artistsToDisconnect = EXISTING_ARTISTS.map((artist) => {
+      const object = { id: artist.id };
+
+      return object;
+    });
+
+    const albumArtists = await this.artistFactory(artists, context);
+
+    const dbAlbum = await context.db.mutation.updateAlbum(
       {
-        data: { name },
+        data: {
+          alias,
+          ...(
+            albumArtists && {
+              artists: {
+                connect: albumArtists,
+                ...(artistsToDisconnect.length > 0 && {
+                  disconnect: artistsToDisconnect,
+                })
+              }
+            }
+          ),
+          // artwork: {
+          //   // Check if artwork is from gallery, which would mean we have an id
+          //   // to connect to, otherwise we are uploading a new image
+          // },
+          // genres,
+          name,
+          releaseDate,
+          releaseType
+        },
         where: { id },
       },
       info,
     );
+
+    const index = context.algolia.initIndex('albums');
+    index.saveObject({
+      objectID: id,
+      object: dbAlbum,
+    }, (err) => {
+      if (err) {
+        throw new UnknownError({
+          message: err.message,
+        })
+      }
+    });
+
+    context.pubsub.publish('ALBUM_UPDATED', {
+      albumUpdated: dbAlbum,
+    });
+
+    return dbAlbum;
   }
 
   /**

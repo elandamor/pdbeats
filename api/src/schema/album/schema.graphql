@@ -44,5 +44,8 @@ input AlbumCreatePayload {
 input AlbumUpdatePayload {
   id: ID!
   alias: NonEmptyString!
+  artists: [ArtistPayload!]!
   name: NonEmptyString!
+  releaseDate: DateTime!
+  releaseType: ReleaseType!
 }
