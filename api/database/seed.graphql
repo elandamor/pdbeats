@@ -28,6 +28,34 @@ mutation {
         "alias": "steve-aoki",
         "name": "Steve Aoki"
       }],
+      "featuring": [{
+        "alias": "lady-antebellum",
+        "name": "Lady Antebellum"
+      }],
+      "name": "Our Love Glows",
+      "duration": "2:53",
+      "trackNumber": 9
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "era-istrefi",
+        "name": "Era Istrefi"
+      }],
+      "name": "Anything More",
+      "duration": "2:59",
+      "trackNumber": 10
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "ina-wroldsen",
+        "name": "Ina Wroldsen"
+      }],
       "name": "Lie to Me",
       "duration": "2:59",
       "trackNumber": 13
