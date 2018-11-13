@@ -1,5 +1,9 @@
-const cloudName = process.env.UPLOAD_BUCKET;
-const unsignedUploadPreset = process.env.UPLOAD_PRESET || '';
+const cloudName = process.env.CLOUDINARY_BUCKET;
+const unsignedUploadPreset = process.env.CLOUDINARY_PRESET || '';
+
+const XHR_MAX_PROGRESS = 100.0;
+const XHR_READY_STATE = 4;
+const XHR_SUCCESS = 200;
 
 // eslint-disable-next-line no-unused-vars
 export const uploadFile = (file: any, observer: any) =>
@@ -12,7 +16,7 @@ export const uploadFile = (file: any, observer: any) =>
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
     xhr.upload.onprogress = (event) => {
-      const progress = Math.round((event.loaded * 100.0) / event.total);
+      const progress = Math.round((event.loaded * XHR_MAX_PROGRESS) / event.total);
 
       observer.next(progress);
     };
@@ -22,7 +26,7 @@ export const uploadFile = (file: any, observer: any) =>
     };
 
     xhr.onreadystatechange = () => {
-      if (xhr.readyState === 4 && xhr.status === 200) {
+      if (xhr.readyState === XHR_READY_STATE && xhr.status === XHR_SUCCESS) {
         const response = JSON.parse(xhr.responseText);
 
         observer.complete();

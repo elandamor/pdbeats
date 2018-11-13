@@ -2,20 +2,79 @@
  * Home
  */
 
-import React, { Component } from 'react';
-// import { Helmet } from 'react-helmet';
+import React, { PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
+import { Observable } from 'rxjs';
 // Styles
 import Wrapper from './styles';
 
-// For debugging only.
-// import { makeDebugger } from '../../lib';
-// const debug = makeDebugger('Home');
+import { debug } from '../../lib';
+import { uploadFile } from '../../lib/uploader';
 
-class Home extends Component<{}, {}> {
+class Home extends PureComponent<{}, {}> {
+  protected uploadField: any;
+  protected wrapper: any;
+
   public render() {
     return (
-      <Wrapper />
+      <Wrapper
+        ref={(c: any) => {
+          this.wrapper = c;
+        }}
+      >
+        <Helmet>
+          <title>Home</title>
+        </Helmet>
+        <input
+          type="file"
+          ref={(c) => {
+            this.uploadField = c;
+          }}
+          multiple
+        />
+        <button onClick={this.doUpload}>Upload</button>
+      </Wrapper>
     );
+  }
+
+  private doUpload = async () => {
+    const container = this.wrapper;
+    const files = Array.from(this.uploadField.files);
+
+    if (files.length > 0) {
+      const promises: Array<any> = [];
+
+      files.map((file) => {
+        // Create a progress bar for file
+        const progress = document.createElement('progress');
+        progress.className = 'c-progress';
+        progress.setAttribute('min', '0');
+        progress.setAttribute('max', '100');
+
+        container.appendChild(progress);
+
+        // Setup observers for each file
+        Observable.create(async (observer: any) => {
+          promises.push(uploadFile(file, observer));
+        }).subscribe({
+          complete: () => {
+            if (container) {
+              container.removeChild(progress);
+            }
+          },
+          error: (value: any) => {
+            debug(value);
+          },
+          next: (value: any) => {
+            progress.value = value;
+          },
+        });
+      });
+
+      return Promise.all(promises).then((urls) => {
+        debug({ urls });
+      });
+    }
   }
 }
 
