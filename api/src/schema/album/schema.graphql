@@ -14,6 +14,10 @@ type Mutation {
   updateAlbum(input: AlbumUpdatePayload!): Album
 }
 
+type Subscription {
+  albumCreated: Album
+}
+
 input ArtistPayload {
   alias: NonEmptyString!
   name: NonEmptyString!
@@ -21,6 +25,11 @@ input ArtistPayload {
 
 input ArtworkPayload {
   url: NonEmptyString!
+}
+
+input ArtworkUpdatePayload {
+  id: ID
+  url: NonEmptyString
 }
 
 input TrackPayload {
@@ -35,6 +44,7 @@ input AlbumCreatePayload {
   alias: NonEmptyString!
   artists: [ArtistPayload!]!
   artwork: ArtworkPayload!
+  genres: [NonEmptyString!]
   name: NonEmptyString!
   releaseDate: DateTime!
   releaseType: ReleaseType!
@@ -45,6 +55,7 @@ input AlbumUpdatePayload {
   id: ID!
   alias: NonEmptyString!
   artists: [ArtistPayload!]!
+  artwork: ArtworkUpdatePayload
   name: NonEmptyString!
   releaseDate: DateTime!
   releaseType: ReleaseType!

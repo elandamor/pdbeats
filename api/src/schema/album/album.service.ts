@@ -11,7 +11,7 @@ export class AlbumService {
    */
   public async create(input, context: Context, info) {
     // TODO: Sanitize input from frontend
-    const { alias, artists, artwork, name, releaseDate, releaseType, tracks } = input;
+    const { alias, artists, artwork, genres, name, releaseDate, releaseType, tracks } = input;
     // Check if album exists.
     const albumExists = await context.db.exists.Album({ alias });
 
@@ -78,6 +78,11 @@ export class AlbumService {
               }
             },
             duration,
+            ...(genres && {
+              genres: {
+                set: genres,
+              }
+            }),
             name,
             numTracks,
             releaseDate,
@@ -121,7 +126,7 @@ export class AlbumService {
    * @param info
    */
   public async update(input, context: Context, info) {
-    const { alias, artists, id, name, releaseDate, releaseType } = input;
+    const { alias, artists, artwork, id, name, releaseDate, releaseType } = input;
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
@@ -131,7 +136,7 @@ export class AlbumService {
     }
 
     // Check artists currently in db for given album.
-    const { artists: currentArtists } = await context.db.query.album({
+    const { artists: currentArtists, artwork: currentArtwork } = await context.db.query.album({
       where: {
         id,
       }
@@ -141,13 +146,16 @@ export class AlbumService {
         id
         alias
       }
+      artwork {
+        id
+      }
     }`);
-    // Find values that are in EXISTING_ARTISTS but not in artists
-    const EXISTING_ARTISTS = currentArtists.filter((obj) =>
+    // Find values that are in currentArtists but not in artists
+    const MISSING_ARTISTS = currentArtists.filter((obj) =>
       !artists.some((obj2) => obj.alias === obj2.alias)
     );
     // Get artists that no longer exist in user input (to disconnect)
-    const artistsToDisconnect = EXISTING_ARTISTS.map((artist) => {
+    const artistsToDisconnect = MISSING_ARTISTS.map((artist) => {
       const object = { id: artist.id };
 
       return object;
@@ -169,10 +177,22 @@ export class AlbumService {
               }
             }
           ),
-          // artwork: {
-          //   // Check if artwork is from gallery, which would mean we have an id
-          //   // to connect to, otherwise we are uploading a new image
-          // },
+          artwork: {
+            ...(artwork.id ? {
+              connect: {
+                id: artwork.id,
+              }
+            } : {
+              create: {
+                url: artwork.url,
+                uploadedBy: {
+                  connect: {
+                    id: context.userId,
+                  }
+                }
+              }
+            })
+          },
           // genres,
           name,
           releaseDate,
