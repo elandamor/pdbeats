@@ -10,7 +10,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import FontFaceObserver from 'fontfaceobserver';
+import { ApolloProvider } from 'react-apollo';
+
 import 'sanitize.css/sanitize.css';
+
+// Import apollo-client
+import client from './configs/apollo';
 
 // Import root app
 import App from './containers/App';
@@ -34,9 +39,11 @@ const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
   ReactDOM.render(
-    <Router>
-      <App />
-    </Router>,
+    <ApolloProvider client={client}>
+      <Router>
+        <App />
+      </Router>
+    </ApolloProvider>,
     MOUNT_NODE,
   );
 };
