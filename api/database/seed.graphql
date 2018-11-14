@@ -6,12 +6,33 @@ mutation {
       "name": "Steve Aoki"
     }],
     "artwork": {
-      "url": "cloudinary__publicId"
+      "url": "texuohrqozjarva7limv"
     },
     "name": "Neon Future III",
-    "releaseDate": "2018-07-29T07:21:57.571Z",
+    "releaseDate": "2018-11-09",
     "releaseType": "ALBUM",
+    "genres": ["Dance"]
     "tracks": [{
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "name": "Neon Future III (Intro)",
+      "duration": "4:16",
+      "trackNumber": 1
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "louis-tomlinson",
+        "name": "Louis Tomlinson"
+      }],
+      "name": "Just Hold On",
+      "duration": "3:19",
+      "trackNumber": 2
+    }, {
       "artists": [{
         "alias": "steve-aoki",
         "name": "Steve Aoki"
@@ -21,8 +42,71 @@ mutation {
         "name": "BTS"
       }],
       "name": "Waste It on Me",
-      "duration": "3:21",
+      "duration": "3:13",
       "trackNumber": 3
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "kiiara",
+        "name": "Kiiara"
+      }],
+      "name": "Be Somebody",
+      "duration": "3:18",
+      "trackNumber": 4
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "lil-yatchy",
+        "name": "Lil Yatchy"
+      }, {
+        "alias": "ajr",
+        "name": "AJR"
+      }],
+      "name": "Pretender",
+      "duration": "3:09",
+      "trackNumber": 5
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "mike-posner",
+        "name": "MIke Posner"
+      }],
+      "name": "A Lover and a Memory",
+      "duration": "3:28",
+      "trackNumber": 6
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "blink-182",
+        "name": "blink-182"
+      }],
+      "name": "Why Are We so Broken",
+      "duration": "3:48",
+      "trackNumber": 7
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "jim-adkins",
+        "name": "Jim Adkins"
+      }],
+      "name": "Golden Days",
+      "duration": "3:24",
+      "trackNumber": 8
     }, {
       "artists": [{
         "alias": "steve-aoki",
@@ -45,8 +129,31 @@ mutation {
         "name": "Era Istrefi"
       }],
       "name": "Anything More",
-      "duration": "2:59",
+      "duration": "3:00",
       "trackNumber": 10
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }, {
+        "alias": "lauren-jauregui",
+        "name": "Lauren Jauregui"
+      }],
+      "name": "All Night",
+      "duration": "3:25",
+      "trackNumber": 11
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "bella-thorne",
+        "name": "Bella Thorne"
+      }],
+      "name": "Do Not Disturb",
+      "duration": "2:44",
+      "trackNumber": 12
     }, {
       "artists": [{
         "alias": "steve-aoki",
@@ -59,6 +166,34 @@ mutation {
       "name": "Lie to Me",
       "duration": "2:59",
       "trackNumber": 13
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }, {
+        "alias": "daddy-yankee",
+        "name": "Daddy Yankee"
+      }, {
+        "alias": "play-n-skillz",
+        "name": "Play-N-Skillz"
+      }, {
+        "alias": "elvis-crespo",
+        "name": "Elvis Crespo"
+      }],
+      "name": "Azukita",
+      "duration": "3:46",
+      "trackNumber": 14
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }, {
+        "alias": "twiig",
+        "name": "TWIIG"
+      }],
+      "name": "Hoovela",
+      "duration": "3:27",
+      "trackNumber": 15
     }, {
       "artists": [{
         "alias": "don-diablo",
@@ -77,6 +212,18 @@ mutation {
       "name": "What We Started",
       "duration": "3:23",
       "trackNumber": 16
+    }, {
+      "artists": [{
+        "alias": "steve-aoki",
+        "name": "Steve Aoki"
+      }],
+      "featuring": [{
+        "alias": "bill-nye",
+        "name": "Bill Nye"
+      }],
+      "name": "Noble Gas",
+      "duration": "3:39",
+      "trackNumber": 17
     }]
   }) {
     id
@@ -94,20 +241,4 @@ mutation {
       trackNumber
     }
   }
-
-  # second: createPost(data: {
-  #   title: "Join us at GraphQL Europe 🇪🇺 "
-  #   text: "Get a 10%-discount with this promo code on graphql-europe.org: gql-boilerplates"
-  #   isPublished: true
-  # }) {
-  #   id
-  # }
-
-  # third: createPost(data: {
-  #   title: "Solving world hunger"
-  #   text: "This is a draft..."
-  #   isPublished: false
-  # }) {
-  #   id
-  # }
 }
