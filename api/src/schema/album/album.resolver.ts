@@ -24,6 +24,11 @@ export default {
     albums: (_, args, context: Context, info) =>
       service.findMany(args, context, info),
   },
+  Subscription: {
+    albumCreated: {
+      subscribe: (_,__,{ pubsub }) => pubsub.asyncIterator('ALBUM_CREATED'),
+    }
+  },
   Node: {
     __resolveType() {
       return null;

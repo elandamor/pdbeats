@@ -1,4 +1,4 @@
-# import Query, Mutation from "./schema/album/schema.graphql"
+# import Query, Mutation, Subscription from "./schema/album/schema.graphql"
 # import Query, Mutation from "./schema/artist/schema.graphql"
 # import Query, Mutation, Subscription from "./schema/track/schema.graphql"
 
