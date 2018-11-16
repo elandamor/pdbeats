@@ -10,6 +10,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "commit": "npx git-cz",
     "start": "cross-env NODE_ENV=development react-scripts start",
     "start:prod": "cross-env NODE_ENV=production react-scripts start"
   },
@@ -50,6 +51,7 @@
     "whatwg-fetch": "3.0.0"
   },
   "devDependencies": {
+    "commitizen": "3.0.4",
     "pd-react-scripts": "0.0.18"
   }
 }
