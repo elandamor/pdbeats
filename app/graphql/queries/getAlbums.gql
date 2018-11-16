@@ -1,0 +1,37 @@
+query getAlbums {
+  albums {
+    edges {
+      node {
+        id
+        alias
+        artists{
+          name
+        }
+        artwork {
+          id
+          url
+        }
+        genres
+        duration
+        name
+        numTracks
+        tracks {
+          artists {
+            name
+          }
+          featuring {
+            name
+          }
+          duration
+          name
+          trackNumber
+        }
+        releaseDate
+        releaseType
+      }
+    }
+    aggregate {
+      count
+    }
+  }
+}
