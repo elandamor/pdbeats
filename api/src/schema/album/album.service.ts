@@ -126,7 +126,7 @@ export class AlbumService {
    * @param info
    */
   public async update(input, context: Context, info) {
-    const { alias, artists, artwork, id, name, releaseDate, releaseType } = input;
+    const { alias, artists, artwork, genres, id, name, releaseDate, releaseType } = input;
     const albumExists = await context.db.exists.Album({ id });
 
     if (!albumExists) {
@@ -136,7 +136,7 @@ export class AlbumService {
     }
 
     // Check artists currently in db for given album.
-    const { artists: currentArtists, artwork: currentArtwork } = await context.db.query.album({
+    const { artists: currentArtists } = await context.db.query.album({
       where: {
         id,
       }
@@ -145,9 +145,6 @@ export class AlbumService {
       artists {
         id
         alias
-      }
-      artwork {
-        id
       }
     }`);
     // Find values that are in currentArtists but not in artists
@@ -193,7 +190,11 @@ export class AlbumService {
               }
             })
           },
-          // genres,
+          ...(genres && {
+            genres: {
+              set: genres,
+            }
+          }),
           name,
           releaseDate,
           releaseType

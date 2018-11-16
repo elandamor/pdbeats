@@ -55,7 +55,8 @@ input AlbumUpdatePayload {
   id: ID!
   alias: NonEmptyString!
   artists: [ArtistPayload!]!
-  artwork: ArtworkUpdatePayload
+  artwork: ArtworkUpdatePayload!
+  genres: [NonEmptyString!]
   name: NonEmptyString!
   releaseDate: DateTime!
   releaseType: ReleaseType!
