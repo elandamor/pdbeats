@@ -15,6 +15,7 @@ import Wrapper from './styles';
 // import { makeDebugger } from '../../lib';
 // const debug = makeDebugger('App');
 
+/* tslint:disable:no-magic-numbers */
 export const breakpoints = (width: number) => {
   if (width < 600) {
     return 'v-xsmall';
@@ -33,6 +34,7 @@ export const breakpoints = (width: number) => {
   }
   return 'v-unknown';
 };
+/* tslint:enable:no-magic-numbers */
 
 /* tslint:disable:object-literal-sort-keys */
 const themeLight = {
