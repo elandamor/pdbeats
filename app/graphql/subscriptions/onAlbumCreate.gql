@@ -1,0 +1,9 @@
+subscription {
+  albumCreated {
+    id
+    artists {
+      name
+    }
+    name
+  }
+}
