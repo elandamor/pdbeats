@@ -95,6 +95,7 @@ class Home extends PureComponent<{}, {}> {
                           height="80"
                           width="80"
                           crop="scale"
+                          fetchFormat="auto"
                         />
                         <div className="c-details">
                           <h3>{album.name}</h3>
