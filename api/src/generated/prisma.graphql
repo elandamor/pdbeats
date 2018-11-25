@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/elandamor/pdbeats/dev
-# timestamp: Wed Nov 07 2018 01:39:34 GMT+0200 (CAT)
+# timestamp: Mon Nov 19 2018 09:58:45 GMT+0200 (CAT)
 
 type AggregateAlbum {
   count: Int!
@@ -63,14 +63,31 @@ input AlbumCreateInput {
   releaseDate: DateTime!
   releaseType: ReleaseType!
   genres: AlbumCreategenresInput
-  artists: ArtistCreateManyInput
+  artists: ArtistCreateManyWithoutAlbumsInput
   artwork: ImageCreateOneInput
   tracks: TrackCreateManyWithoutAlbumInput
+}
+
+input AlbumCreateManyWithoutArtistsInput {
+  create: [AlbumCreateWithoutArtistsInput!]
+  connect: [AlbumWhereUniqueInput!]
 }
 
 input AlbumCreateOneWithoutTracksInput {
   create: AlbumCreateWithoutTracksInput
   connect: AlbumWhereUniqueInput
+}
+
+input AlbumCreateWithoutArtistsInput {
+  alias: String!
+  duration: Int!
+  name: String!
+  numTracks: Int!
+  releaseDate: DateTime!
+  releaseType: ReleaseType!
+  genres: AlbumCreategenresInput
+  artwork: ImageCreateOneInput
+  tracks: TrackCreateManyWithoutAlbumInput
 }
 
 input AlbumCreateWithoutTracksInput {
@@ -81,7 +98,7 @@ input AlbumCreateWithoutTracksInput {
   releaseDate: DateTime!
   releaseType: ReleaseType!
   genres: AlbumCreategenresInput
-  artists: ArtistCreateManyInput
+  artists: ArtistCreateManyWithoutAlbumsInput
   artwork: ImageCreateOneInput
 }
 
@@ -126,6 +143,257 @@ type AlbumPreviousValues {
   releaseType: ReleaseType!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input AlbumScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AlbumScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AlbumScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AlbumScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  alias: String
+
+  """All values that are not equal to given value."""
+  alias_not: String
+
+  """All values that are contained in given list."""
+  alias_in: [String!]
+
+  """All values that are not contained in given list."""
+  alias_not_in: [String!]
+
+  """All values less than the given value."""
+  alias_lt: String
+
+  """All values less than or equal the given value."""
+  alias_lte: String
+
+  """All values greater than the given value."""
+  alias_gt: String
+
+  """All values greater than or equal the given value."""
+  alias_gte: String
+
+  """All values containing the given string."""
+  alias_contains: String
+
+  """All values not containing the given string."""
+  alias_not_contains: String
+
+  """All values starting with the given string."""
+  alias_starts_with: String
+
+  """All values not starting with the given string."""
+  alias_not_starts_with: String
+
+  """All values ending with the given string."""
+  alias_ends_with: String
+
+  """All values not ending with the given string."""
+  alias_not_ends_with: String
+  duration: Int
+
+  """All values that are not equal to given value."""
+  duration_not: Int
+
+  """All values that are contained in given list."""
+  duration_in: [Int!]
+
+  """All values that are not contained in given list."""
+  duration_not_in: [Int!]
+
+  """All values less than the given value."""
+  duration_lt: Int
+
+  """All values less than or equal the given value."""
+  duration_lte: Int
+
+  """All values greater than the given value."""
+  duration_gt: Int
+
+  """All values greater than or equal the given value."""
+  duration_gte: Int
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  numTracks: Int
+
+  """All values that are not equal to given value."""
+  numTracks_not: Int
+
+  """All values that are contained in given list."""
+  numTracks_in: [Int!]
+
+  """All values that are not contained in given list."""
+  numTracks_not_in: [Int!]
+
+  """All values less than the given value."""
+  numTracks_lt: Int
+
+  """All values less than or equal the given value."""
+  numTracks_lte: Int
+
+  """All values greater than the given value."""
+  numTracks_gt: Int
+
+  """All values greater than or equal the given value."""
+  numTracks_gte: Int
+  releaseDate: DateTime
+
+  """All values that are not equal to given value."""
+  releaseDate_not: DateTime
+
+  """All values that are contained in given list."""
+  releaseDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  releaseDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  releaseDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  releaseDate_lte: DateTime
+
+  """All values greater than the given value."""
+  releaseDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  releaseDate_gte: DateTime
+  releaseType: ReleaseType
+
+  """All values that are not equal to given value."""
+  releaseType_not: ReleaseType
+
+  """All values that are contained in given list."""
+  releaseType_in: [ReleaseType!]
+
+  """All values that are not contained in given list."""
+  releaseType_not_in: [ReleaseType!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type AlbumSubscriptionPayload {
@@ -179,9 +447,19 @@ input AlbumUpdateInput {
   releaseDate: DateTime
   releaseType: ReleaseType
   genres: AlbumUpdategenresInput
-  artists: ArtistUpdateManyInput
+  artists: ArtistUpdateManyWithoutAlbumsInput
   artwork: ImageUpdateOneInput
   tracks: TrackUpdateManyWithoutAlbumInput
+}
+
+input AlbumUpdateManyDataInput {
+  alias: String
+  duration: Int
+  name: String
+  numTracks: Int
+  releaseDate: DateTime
+  releaseType: ReleaseType
+  genres: AlbumUpdategenresInput
 }
 
 input AlbumUpdateManyMutationInput {
@@ -194,11 +472,39 @@ input AlbumUpdateManyMutationInput {
   genres: AlbumUpdategenresInput
 }
 
+input AlbumUpdateManyWithoutArtistsInput {
+  create: [AlbumCreateWithoutArtistsInput!]
+  connect: [AlbumWhereUniqueInput!]
+  disconnect: [AlbumWhereUniqueInput!]
+  delete: [AlbumWhereUniqueInput!]
+  update: [AlbumUpdateWithWhereUniqueWithoutArtistsInput!]
+  updateMany: [AlbumUpdateManyWithWhereNestedInput!]
+  deleteMany: [AlbumScalarWhereInput!]
+  upsert: [AlbumUpsertWithWhereUniqueWithoutArtistsInput!]
+}
+
+input AlbumUpdateManyWithWhereNestedInput {
+  where: AlbumScalarWhereInput!
+  data: AlbumUpdateManyDataInput!
+}
+
 input AlbumUpdateOneRequiredWithoutTracksInput {
   create: AlbumCreateWithoutTracksInput
   connect: AlbumWhereUniqueInput
   update: AlbumUpdateWithoutTracksDataInput
   upsert: AlbumUpsertWithoutTracksInput
+}
+
+input AlbumUpdateWithoutArtistsDataInput {
+  alias: String
+  duration: Int
+  name: String
+  numTracks: Int
+  releaseDate: DateTime
+  releaseType: ReleaseType
+  genres: AlbumUpdategenresInput
+  artwork: ImageUpdateOneInput
+  tracks: TrackUpdateManyWithoutAlbumInput
 }
 
 input AlbumUpdateWithoutTracksDataInput {
@@ -209,13 +515,24 @@ input AlbumUpdateWithoutTracksDataInput {
   releaseDate: DateTime
   releaseType: ReleaseType
   genres: AlbumUpdategenresInput
-  artists: ArtistUpdateManyInput
+  artists: ArtistUpdateManyWithoutAlbumsInput
   artwork: ImageUpdateOneInput
+}
+
+input AlbumUpdateWithWhereUniqueWithoutArtistsInput {
+  where: AlbumWhereUniqueInput!
+  data: AlbumUpdateWithoutArtistsDataInput!
 }
 
 input AlbumUpsertWithoutTracksInput {
   update: AlbumUpdateWithoutTracksDataInput!
   create: AlbumCreateWithoutTracksInput!
+}
+
+input AlbumUpsertWithWhereUniqueWithoutArtistsInput {
+  where: AlbumWhereUniqueInput!
+  update: AlbumUpdateWithoutArtistsDataInput!
+  create: AlbumCreateWithoutArtistsInput!
 }
 
 input AlbumWhereInput {
@@ -483,6 +800,7 @@ input AlbumWhereUniqueInput {
 
 type Artist implements Node {
   id: ID!
+  albums(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Album!]
   alias: String!
   avatar: Image
   featuresIn(where: TrackWhereInput, orderBy: TrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Track!]
@@ -511,13 +829,14 @@ input ArtistCreateInput {
   alias: String!
   name: String!
   genres: ArtistCreategenresInput
+  albums: AlbumCreateManyWithoutArtistsInput
   avatar: ImageCreateOneInput
   featuresIn: TrackCreateManyWithoutFeaturingInput
   tracks: TrackCreateManyWithoutArtistsInput
 }
 
-input ArtistCreateManyInput {
-  create: [ArtistCreateInput!]
+input ArtistCreateManyWithoutAlbumsInput {
+  create: [ArtistCreateWithoutAlbumsInput!]
   connect: [ArtistWhereUniqueInput!]
 }
 
@@ -531,10 +850,20 @@ input ArtistCreateManyWithoutTracksInput {
   connect: [ArtistWhereUniqueInput!]
 }
 
+input ArtistCreateWithoutAlbumsInput {
+  alias: String!
+  name: String!
+  genres: ArtistCreategenresInput
+  avatar: ImageCreateOneInput
+  featuresIn: TrackCreateManyWithoutFeaturingInput
+  tracks: TrackCreateManyWithoutArtistsInput
+}
+
 input ArtistCreateWithoutFeaturesInInput {
   alias: String!
   name: String!
   genres: ArtistCreategenresInput
+  albums: AlbumCreateManyWithoutArtistsInput
   avatar: ImageCreateOneInput
   tracks: TrackCreateManyWithoutArtistsInput
 }
@@ -543,6 +872,7 @@ input ArtistCreateWithoutTracksInput {
   alias: String!
   name: String!
   genres: ArtistCreategenresInput
+  albums: AlbumCreateManyWithoutArtistsInput
   avatar: ImageCreateOneInput
   featuresIn: TrackCreateManyWithoutFeaturingInput
 }
@@ -576,6 +906,181 @@ type ArtistPreviousValues {
   name: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input ArtistScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ArtistScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ArtistScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ArtistScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  alias: String
+
+  """All values that are not equal to given value."""
+  alias_not: String
+
+  """All values that are contained in given list."""
+  alias_in: [String!]
+
+  """All values that are not contained in given list."""
+  alias_not_in: [String!]
+
+  """All values less than the given value."""
+  alias_lt: String
+
+  """All values less than or equal the given value."""
+  alias_lte: String
+
+  """All values greater than the given value."""
+  alias_gt: String
+
+  """All values greater than or equal the given value."""
+  alias_gte: String
+
+  """All values containing the given string."""
+  alias_contains: String
+
+  """All values not containing the given string."""
+  alias_not_contains: String
+
+  """All values starting with the given string."""
+  alias_starts_with: String
+
+  """All values not starting with the given string."""
+  alias_not_starts_with: String
+
+  """All values ending with the given string."""
+  alias_ends_with: String
+
+  """All values not ending with the given string."""
+  alias_not_ends_with: String
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
 }
 
 type ArtistSubscriptionPayload {
@@ -617,15 +1122,6 @@ input ArtistSubscriptionWhereInput {
   node: ArtistWhereInput
 }
 
-input ArtistUpdateDataInput {
-  alias: String
-  name: String
-  genres: ArtistUpdategenresInput
-  avatar: ImageUpdateOneInput
-  featuresIn: TrackUpdateManyWithoutFeaturingInput
-  tracks: TrackUpdateManyWithoutArtistsInput
-}
-
 input ArtistUpdategenresInput {
   set: [String!]
 }
@@ -634,18 +1130,16 @@ input ArtistUpdateInput {
   alias: String
   name: String
   genres: ArtistUpdategenresInput
+  albums: AlbumUpdateManyWithoutArtistsInput
   avatar: ImageUpdateOneInput
   featuresIn: TrackUpdateManyWithoutFeaturingInput
   tracks: TrackUpdateManyWithoutArtistsInput
 }
 
-input ArtistUpdateManyInput {
-  create: [ArtistCreateInput!]
-  connect: [ArtistWhereUniqueInput!]
-  disconnect: [ArtistWhereUniqueInput!]
-  delete: [ArtistWhereUniqueInput!]
-  update: [ArtistUpdateWithWhereUniqueNestedInput!]
-  upsert: [ArtistUpsertWithWhereUniqueNestedInput!]
+input ArtistUpdateManyDataInput {
+  alias: String
+  name: String
+  genres: ArtistUpdategenresInput
 }
 
 input ArtistUpdateManyMutationInput {
@@ -654,12 +1148,25 @@ input ArtistUpdateManyMutationInput {
   genres: ArtistUpdategenresInput
 }
 
+input ArtistUpdateManyWithoutAlbumsInput {
+  create: [ArtistCreateWithoutAlbumsInput!]
+  connect: [ArtistWhereUniqueInput!]
+  disconnect: [ArtistWhereUniqueInput!]
+  delete: [ArtistWhereUniqueInput!]
+  update: [ArtistUpdateWithWhereUniqueWithoutAlbumsInput!]
+  updateMany: [ArtistUpdateManyWithWhereNestedInput!]
+  deleteMany: [ArtistScalarWhereInput!]
+  upsert: [ArtistUpsertWithWhereUniqueWithoutAlbumsInput!]
+}
+
 input ArtistUpdateManyWithoutFeaturesInInput {
   create: [ArtistCreateWithoutFeaturesInInput!]
   connect: [ArtistWhereUniqueInput!]
   disconnect: [ArtistWhereUniqueInput!]
   delete: [ArtistWhereUniqueInput!]
   update: [ArtistUpdateWithWhereUniqueWithoutFeaturesInInput!]
+  updateMany: [ArtistUpdateManyWithWhereNestedInput!]
+  deleteMany: [ArtistScalarWhereInput!]
   upsert: [ArtistUpsertWithWhereUniqueWithoutFeaturesInInput!]
 }
 
@@ -669,13 +1176,30 @@ input ArtistUpdateManyWithoutTracksInput {
   disconnect: [ArtistWhereUniqueInput!]
   delete: [ArtistWhereUniqueInput!]
   update: [ArtistUpdateWithWhereUniqueWithoutTracksInput!]
+  updateMany: [ArtistUpdateManyWithWhereNestedInput!]
+  deleteMany: [ArtistScalarWhereInput!]
   upsert: [ArtistUpsertWithWhereUniqueWithoutTracksInput!]
+}
+
+input ArtistUpdateManyWithWhereNestedInput {
+  where: ArtistScalarWhereInput!
+  data: ArtistUpdateManyDataInput!
+}
+
+input ArtistUpdateWithoutAlbumsDataInput {
+  alias: String
+  name: String
+  genres: ArtistUpdategenresInput
+  avatar: ImageUpdateOneInput
+  featuresIn: TrackUpdateManyWithoutFeaturingInput
+  tracks: TrackUpdateManyWithoutArtistsInput
 }
 
 input ArtistUpdateWithoutFeaturesInDataInput {
   alias: String
   name: String
   genres: ArtistUpdategenresInput
+  albums: AlbumUpdateManyWithoutArtistsInput
   avatar: ImageUpdateOneInput
   tracks: TrackUpdateManyWithoutArtistsInput
 }
@@ -684,13 +1208,14 @@ input ArtistUpdateWithoutTracksDataInput {
   alias: String
   name: String
   genres: ArtistUpdategenresInput
+  albums: AlbumUpdateManyWithoutArtistsInput
   avatar: ImageUpdateOneInput
   featuresIn: TrackUpdateManyWithoutFeaturingInput
 }
 
-input ArtistUpdateWithWhereUniqueNestedInput {
+input ArtistUpdateWithWhereUniqueWithoutAlbumsInput {
   where: ArtistWhereUniqueInput!
-  data: ArtistUpdateDataInput!
+  data: ArtistUpdateWithoutAlbumsDataInput!
 }
 
 input ArtistUpdateWithWhereUniqueWithoutFeaturesInInput {
@@ -703,10 +1228,10 @@ input ArtistUpdateWithWhereUniqueWithoutTracksInput {
   data: ArtistUpdateWithoutTracksDataInput!
 }
 
-input ArtistUpsertWithWhereUniqueNestedInput {
+input ArtistUpsertWithWhereUniqueWithoutAlbumsInput {
   where: ArtistWhereUniqueInput!
-  update: ArtistUpdateDataInput!
-  create: ArtistCreateInput!
+  update: ArtistUpdateWithoutAlbumsDataInput!
+  create: ArtistCreateWithoutAlbumsInput!
 }
 
 input ArtistUpsertWithWhereUniqueWithoutFeaturesInInput {
@@ -894,6 +1419,9 @@ input ArtistWhereInput {
 
   """All values greater than or equal the given value."""
   updatedAt_gte: DateTime
+  albums_every: AlbumWhereInput
+  albums_some: AlbumWhereInput
+  albums_none: AlbumWhereInput
   avatar: ImageWhereInput
   featuresIn_every: TrackWhereInput
   featuresIn_some: TrackWhereInput
@@ -975,6 +1503,141 @@ type ImagePreviousValues {
   updatedAt: DateTime!
 }
 
+input ImageScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ImageScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ImageScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ImageScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  url: String
+
+  """All values that are not equal to given value."""
+  url_not: String
+
+  """All values that are contained in given list."""
+  url_in: [String!]
+
+  """All values that are not contained in given list."""
+  url_not_in: [String!]
+
+  """All values less than the given value."""
+  url_lt: String
+
+  """All values less than or equal the given value."""
+  url_lte: String
+
+  """All values greater than the given value."""
+  url_gt: String
+
+  """All values greater than or equal the given value."""
+  url_gte: String
+
+  """All values containing the given string."""
+  url_contains: String
+
+  """All values not containing the given string."""
+  url_not_contains: String
+
+  """All values starting with the given string."""
+  url_starts_with: String
+
+  """All values not starting with the given string."""
+  url_not_starts_with: String
+
+  """All values ending with the given string."""
+  url_ends_with: String
+
+  """All values not ending with the given string."""
+  url_not_ends_with: String
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
 type ImageSubscriptionPayload {
   mutation: MutationType!
   node: Image
@@ -1024,17 +1687,28 @@ input ImageUpdateInput {
   uploadedBy: UserUpdateOneRequiredInput
 }
 
+input ImageUpdateManyDataInput {
+  url: String
+}
+
 input ImageUpdateManyInput {
   create: [ImageCreateInput!]
   connect: [ImageWhereUniqueInput!]
   disconnect: [ImageWhereUniqueInput!]
   delete: [ImageWhereUniqueInput!]
   update: [ImageUpdateWithWhereUniqueNestedInput!]
+  updateMany: [ImageUpdateManyWithWhereNestedInput!]
+  deleteMany: [ImageScalarWhereInput!]
   upsert: [ImageUpsertWithWhereUniqueNestedInput!]
 }
 
 input ImageUpdateManyMutationInput {
   url: String
+}
+
+input ImageUpdateManyWithWhereNestedInput {
+  where: ImageScalarWhereInput!
+  data: ImageUpdateManyDataInput!
 }
 
 input ImageUpdateOneInput {
@@ -1209,41 +1883,41 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createArtist(data: ArtistCreateInput!): Artist!
   createTrack(data: TrackCreateInput!): Track!
   createAlbum(data: AlbumCreateInput!): Album!
   createPlaylist(data: PlaylistCreateInput!): Playlist!
   createUser(data: UserCreateInput!): User!
-  createArtist(data: ArtistCreateInput!): Artist!
   createImage(data: ImageCreateInput!): Image!
+  updateArtist(data: ArtistUpdateInput!, where: ArtistWhereUniqueInput!): Artist
   updateTrack(data: TrackUpdateInput!, where: TrackWhereUniqueInput!): Track
   updateAlbum(data: AlbumUpdateInput!, where: AlbumWhereUniqueInput!): Album
   updatePlaylist(data: PlaylistUpdateInput!, where: PlaylistWhereUniqueInput!): Playlist
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  updateArtist(data: ArtistUpdateInput!, where: ArtistWhereUniqueInput!): Artist
   updateImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
+  deleteArtist(where: ArtistWhereUniqueInput!): Artist
   deleteTrack(where: TrackWhereUniqueInput!): Track
   deleteAlbum(where: AlbumWhereUniqueInput!): Album
   deletePlaylist(where: PlaylistWhereUniqueInput!): Playlist
   deleteUser(where: UserWhereUniqueInput!): User
-  deleteArtist(where: ArtistWhereUniqueInput!): Artist
   deleteImage(where: ImageWhereUniqueInput!): Image
+  upsertArtist(where: ArtistWhereUniqueInput!, create: ArtistCreateInput!, update: ArtistUpdateInput!): Artist!
   upsertTrack(where: TrackWhereUniqueInput!, create: TrackCreateInput!, update: TrackUpdateInput!): Track!
   upsertAlbum(where: AlbumWhereUniqueInput!, create: AlbumCreateInput!, update: AlbumUpdateInput!): Album!
   upsertPlaylist(where: PlaylistWhereUniqueInput!, create: PlaylistCreateInput!, update: PlaylistUpdateInput!): Playlist!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  upsertArtist(where: ArtistWhereUniqueInput!, create: ArtistCreateInput!, update: ArtistUpdateInput!): Artist!
   upsertImage(where: ImageWhereUniqueInput!, create: ImageCreateInput!, update: ImageUpdateInput!): Image!
+  updateManyArtists(data: ArtistUpdateManyMutationInput!, where: ArtistWhereInput): BatchPayload!
   updateManyTracks(data: TrackUpdateManyMutationInput!, where: TrackWhereInput): BatchPayload!
   updateManyAlbums(data: AlbumUpdateManyMutationInput!, where: AlbumWhereInput): BatchPayload!
   updateManyPlaylists(data: PlaylistUpdateManyMutationInput!, where: PlaylistWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  updateManyArtists(data: ArtistUpdateManyMutationInput!, where: ArtistWhereInput): BatchPayload!
   updateManyImages(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
+  deleteManyArtists(where: ArtistWhereInput): BatchPayload!
   deleteManyTracks(where: TrackWhereInput): BatchPayload!
   deleteManyAlbums(where: AlbumWhereInput): BatchPayload!
   deleteManyPlaylists(where: PlaylistWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
-  deleteManyArtists(where: ArtistWhereInput): BatchPayload!
   deleteManyImages(where: ImageWhereInput): BatchPayload!
 }
 
@@ -1392,6 +2066,279 @@ type PlaylistPreviousValues {
   updatedAt: DateTime!
 }
 
+input PlaylistScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PlaylistScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PlaylistScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PlaylistScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  alias: String
+
+  """All values that are not equal to given value."""
+  alias_not: String
+
+  """All values that are contained in given list."""
+  alias_in: [String!]
+
+  """All values that are not contained in given list."""
+  alias_not_in: [String!]
+
+  """All values less than the given value."""
+  alias_lt: String
+
+  """All values less than or equal the given value."""
+  alias_lte: String
+
+  """All values greater than the given value."""
+  alias_gt: String
+
+  """All values greater than or equal the given value."""
+  alias_gte: String
+
+  """All values containing the given string."""
+  alias_contains: String
+
+  """All values not containing the given string."""
+  alias_not_contains: String
+
+  """All values starting with the given string."""
+  alias_starts_with: String
+
+  """All values not starting with the given string."""
+  alias_not_starts_with: String
+
+  """All values ending with the given string."""
+  alias_ends_with: String
+
+  """All values not ending with the given string."""
+  alias_not_ends_with: String
+  collaborative: Boolean
+
+  """All values that are not equal to given value."""
+  collaborative_not: Boolean
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+  duration: Int
+
+  """All values that are not equal to given value."""
+  duration_not: Int
+
+  """All values that are contained in given list."""
+  duration_in: [Int!]
+
+  """All values that are not contained in given list."""
+  duration_not_in: [Int!]
+
+  """All values less than the given value."""
+  duration_lt: Int
+
+  """All values less than or equal the given value."""
+  duration_lte: Int
+
+  """All values greater than the given value."""
+  duration_gt: Int
+
+  """All values greater than or equal the given value."""
+  duration_gte: Int
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  numTracks: Int
+
+  """All values that are not equal to given value."""
+  numTracks_not: Int
+
+  """All values that are contained in given list."""
+  numTracks_in: [Int!]
+
+  """All values that are not contained in given list."""
+  numTracks_not_in: [Int!]
+
+  """All values less than the given value."""
+  numTracks_lt: Int
+
+  """All values less than or equal the given value."""
+  numTracks_lte: Int
+
+  """All values greater than the given value."""
+  numTracks_gt: Int
+
+  """All values greater than or equal the given value."""
+  numTracks_gte: Int
+  privacy: Privacy
+
+  """All values that are not equal to given value."""
+  privacy_not: Privacy
+
+  """All values that are contained in given list."""
+  privacy_in: [Privacy!]
+
+  """All values that are not contained in given list."""
+  privacy_not_in: [Privacy!]
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
 type PlaylistSubscriptionPayload {
   mutation: MutationType!
   node: Playlist
@@ -1444,6 +2391,16 @@ input PlaylistUpdateInput {
   tracks: TrackUpdateManyWithoutInPlaylistInput
 }
 
+input PlaylistUpdateManyDataInput {
+  alias: String
+  collaborative: Boolean
+  description: String
+  duration: Int
+  name: String
+  numTracks: Int
+  privacy: Privacy
+}
+
 input PlaylistUpdateManyMutationInput {
   alias: String
   collaborative: Boolean
@@ -1460,6 +2417,8 @@ input PlaylistUpdateManyWithoutCreatorInput {
   disconnect: [PlaylistWhereUniqueInput!]
   delete: [PlaylistWhereUniqueInput!]
   update: [PlaylistUpdateWithWhereUniqueWithoutCreatorInput!]
+  updateMany: [PlaylistUpdateManyWithWhereNestedInput!]
+  deleteMany: [PlaylistScalarWhereInput!]
   upsert: [PlaylistUpsertWithWhereUniqueWithoutCreatorInput!]
 }
 
@@ -1469,7 +2428,14 @@ input PlaylistUpdateManyWithoutTracksInput {
   disconnect: [PlaylistWhereUniqueInput!]
   delete: [PlaylistWhereUniqueInput!]
   update: [PlaylistUpdateWithWhereUniqueWithoutTracksInput!]
+  updateMany: [PlaylistUpdateManyWithWhereNestedInput!]
+  deleteMany: [PlaylistScalarWhereInput!]
   upsert: [PlaylistUpsertWithWhereUniqueWithoutTracksInput!]
+}
+
+input PlaylistUpdateManyWithWhereNestedInput {
+  where: PlaylistScalarWhereInput!
+  data: PlaylistUpdateManyDataInput!
 }
 
 input PlaylistUpdateWithoutCreatorDataInput {
@@ -1810,23 +2776,23 @@ enum Privacy {
 }
 
 type Query {
+  artists(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Artist]!
   tracks(where: TrackWhereInput, orderBy: TrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Track]!
   albums(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Album]!
   playlists(where: PlaylistWhereInput, orderBy: PlaylistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Playlist]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  artists(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Artist]!
   images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
+  artist(where: ArtistWhereUniqueInput!): Artist
   track(where: TrackWhereUniqueInput!): Track
   album(where: AlbumWhereUniqueInput!): Album
   playlist(where: PlaylistWhereUniqueInput!): Playlist
   user(where: UserWhereUniqueInput!): User
-  artist(where: ArtistWhereUniqueInput!): Artist
   image(where: ImageWhereUniqueInput!): Image
+  artistsConnection(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArtistConnection!
   tracksConnection(where: TrackWhereInput, orderBy: TrackOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TrackConnection!
   albumsConnection(where: AlbumWhereInput, orderBy: AlbumOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AlbumConnection!
   playlistsConnection(where: PlaylistWhereInput, orderBy: PlaylistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PlaylistConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  artistsConnection(where: ArtistWhereInput, orderBy: ArtistOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ArtistConnection!
   imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
 
   """Fetches an object given its ID"""
@@ -1845,11 +2811,11 @@ enum ReleaseType {
 }
 
 type Subscription {
+  artist(where: ArtistSubscriptionWhereInput): ArtistSubscriptionPayload
   track(where: TrackSubscriptionWhereInput): TrackSubscriptionPayload
   album(where: AlbumSubscriptionWhereInput): AlbumSubscriptionPayload
   playlist(where: PlaylistSubscriptionWhereInput): PlaylistSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-  artist(where: ArtistSubscriptionWhereInput): ArtistSubscriptionPayload
   image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
 }
 
@@ -2011,6 +2977,255 @@ type TrackPreviousValues {
   updatedAt: DateTime!
 }
 
+input TrackScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [TrackScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [TrackScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [TrackScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  discNumber: Int
+
+  """All values that are not equal to given value."""
+  discNumber_not: Int
+
+  """All values that are contained in given list."""
+  discNumber_in: [Int!]
+
+  """All values that are not contained in given list."""
+  discNumber_not_in: [Int!]
+
+  """All values less than the given value."""
+  discNumber_lt: Int
+
+  """All values less than or equal the given value."""
+  discNumber_lte: Int
+
+  """All values greater than the given value."""
+  discNumber_gt: Int
+
+  """All values greater than or equal the given value."""
+  discNumber_gte: Int
+  duration: Int
+
+  """All values that are not equal to given value."""
+  duration_not: Int
+
+  """All values that are contained in given list."""
+  duration_in: [Int!]
+
+  """All values that are not contained in given list."""
+  duration_not_in: [Int!]
+
+  """All values less than the given value."""
+  duration_lt: Int
+
+  """All values less than or equal the given value."""
+  duration_lte: Int
+
+  """All values greater than the given value."""
+  duration_gt: Int
+
+  """All values greater than or equal the given value."""
+  duration_gte: Int
+  explicit: Boolean
+
+  """All values that are not equal to given value."""
+  explicit_not: Boolean
+  genre: String
+
+  """All values that are not equal to given value."""
+  genre_not: String
+
+  """All values that are contained in given list."""
+  genre_in: [String!]
+
+  """All values that are not contained in given list."""
+  genre_not_in: [String!]
+
+  """All values less than the given value."""
+  genre_lt: String
+
+  """All values less than or equal the given value."""
+  genre_lte: String
+
+  """All values greater than the given value."""
+  genre_gt: String
+
+  """All values greater than or equal the given value."""
+  genre_gte: String
+
+  """All values containing the given string."""
+  genre_contains: String
+
+  """All values not containing the given string."""
+  genre_not_contains: String
+
+  """All values starting with the given string."""
+  genre_starts_with: String
+
+  """All values not starting with the given string."""
+  genre_not_starts_with: String
+
+  """All values ending with the given string."""
+  genre_ends_with: String
+
+  """All values not ending with the given string."""
+  genre_not_ends_with: String
+  isPlayable: Boolean
+
+  """All values that are not equal to given value."""
+  isPlayable_not: Boolean
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  trackNumber: Int
+
+  """All values that are not equal to given value."""
+  trackNumber_not: Int
+
+  """All values that are contained in given list."""
+  trackNumber_in: [Int!]
+
+  """All values that are not contained in given list."""
+  trackNumber_not_in: [Int!]
+
+  """All values less than the given value."""
+  trackNumber_lt: Int
+
+  """All values less than or equal the given value."""
+  trackNumber_lte: Int
+
+  """All values greater than the given value."""
+  trackNumber_gt: Int
+
+  """All values greater than or equal the given value."""
+  trackNumber_gte: Int
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+
+  """All values that are not equal to given value."""
+  updatedAt_not: DateTime
+
+  """All values that are contained in given list."""
+  updatedAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  updatedAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  updatedAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  updatedAt_lte: DateTime
+
+  """All values greater than the given value."""
+  updatedAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  updatedAt_gte: DateTime
+}
+
 type TrackSubscriptionPayload {
   mutation: MutationType!
   node: Track
@@ -2064,6 +3279,16 @@ input TrackUpdateInput {
   inPlaylist: PlaylistUpdateManyWithoutTracksInput
 }
 
+input TrackUpdateManyDataInput {
+  discNumber: Int
+  duration: Int
+  explicit: Boolean
+  genre: String
+  isPlayable: Boolean
+  name: String
+  trackNumber: Int
+}
+
 input TrackUpdateManyMutationInput {
   discNumber: Int
   duration: Int
@@ -2080,6 +3305,8 @@ input TrackUpdateManyWithoutAlbumInput {
   disconnect: [TrackWhereUniqueInput!]
   delete: [TrackWhereUniqueInput!]
   update: [TrackUpdateWithWhereUniqueWithoutAlbumInput!]
+  updateMany: [TrackUpdateManyWithWhereNestedInput!]
+  deleteMany: [TrackScalarWhereInput!]
   upsert: [TrackUpsertWithWhereUniqueWithoutAlbumInput!]
 }
 
@@ -2089,6 +3316,8 @@ input TrackUpdateManyWithoutArtistsInput {
   disconnect: [TrackWhereUniqueInput!]
   delete: [TrackWhereUniqueInput!]
   update: [TrackUpdateWithWhereUniqueWithoutArtistsInput!]
+  updateMany: [TrackUpdateManyWithWhereNestedInput!]
+  deleteMany: [TrackScalarWhereInput!]
   upsert: [TrackUpsertWithWhereUniqueWithoutArtistsInput!]
 }
 
@@ -2098,6 +3327,8 @@ input TrackUpdateManyWithoutFeaturingInput {
   disconnect: [TrackWhereUniqueInput!]
   delete: [TrackWhereUniqueInput!]
   update: [TrackUpdateWithWhereUniqueWithoutFeaturingInput!]
+  updateMany: [TrackUpdateManyWithWhereNestedInput!]
+  deleteMany: [TrackScalarWhereInput!]
   upsert: [TrackUpsertWithWhereUniqueWithoutFeaturingInput!]
 }
 
@@ -2107,7 +3338,14 @@ input TrackUpdateManyWithoutInPlaylistInput {
   disconnect: [TrackWhereUniqueInput!]
   delete: [TrackWhereUniqueInput!]
   update: [TrackUpdateWithWhereUniqueWithoutInPlaylistInput!]
+  updateMany: [TrackUpdateManyWithWhereNestedInput!]
+  deleteMany: [TrackScalarWhereInput!]
   upsert: [TrackUpsertWithWhereUniqueWithoutInPlaylistInput!]
+}
+
+input TrackUpdateManyWithWhereNestedInput {
+  where: TrackScalarWhereInput!
+  data: TrackUpdateManyDataInput!
 }
 
 input TrackUpdateWithoutAlbumDataInput {

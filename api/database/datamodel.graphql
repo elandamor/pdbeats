@@ -1,5 +1,6 @@
 type Artist {
   id: ID! @unique
+  albums: [Album!]! @relation(name: "AlbumCreatedBy")
   alias: String! @unique
   avatar: Image
   featuresIn: [Track!]! @relation(name: "FeaturesIn")
@@ -30,7 +31,7 @@ type Track {
 type Album {
   id: ID! @unique
   alias: String! @unique
-  artists: [Artist!]!
+  artists: [Artist!]! @relation(name: "AlbumCreatedBy")
   duration: Int!
   genres: [String!]
   artwork: Image
