@@ -135,7 +135,7 @@ class App extends Component<IProps, IState> {
             >
               <GlobalStyles />
               <ErrorBoundary>
-                <Suspense fallback={<LoadingBar />}>
+                <Suspense fallback={<LoadingBar isLoading />}>
                   <Routes
                     location={isModal ? this.previousLocation : location}
                     routes={routes}

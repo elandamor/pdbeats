@@ -13,14 +13,15 @@ import Wrapper from './styles';
 
 interface IProps {
   className?: string;
+  isLoading?: boolean;
 }
 
-const LoadingBar: SFC<IProps> = ({ className }) => (
-  <Wrapper className={classNames('c-loadingBar', className)} />
+const LoadingBar: SFC<IProps> = ({ className, isLoading }) => (
+  <Wrapper
+    className={classNames('c-loadingBar', className, {
+      '-loading': isLoading,
+    })}
+  />
 );
-
-LoadingBar.defaultProps = {
-  className: '',
-};
 
 export default LoadingBar;

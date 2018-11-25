@@ -4,6 +4,7 @@ export default createGlobalStyle`
   * {
     -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
+    /* outline: thin dashed red; */
   }
 
   *::-webkit-scrollbar {
@@ -21,6 +22,7 @@ export default createGlobalStyle`
 
   :root {
     --body-background: ${(props: any) => props.theme.palette.backgroundColor};
+    --brand-success: #34e79a;
   }
 
   html,
