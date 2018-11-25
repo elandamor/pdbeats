@@ -77,13 +77,19 @@ export class ArtistService {
    */
   public findMany(input, context: Context, info) {
     const { first, last, after, before } = input;
+
     return context.db.query.artistsConnection(
       {
         after,
         before,
         first,
         last,
-        orderBy: 'createdAt_DESC',
+        orderBy: 'name_ASC',
+        where: {
+          albums_some: {
+            numTracks_gt: 0
+          }
+        }
       },
       info,
     );
