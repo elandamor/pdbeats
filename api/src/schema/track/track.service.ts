@@ -333,7 +333,7 @@ export class TrackService {
         before,
         first,
         last,
-        orderBy: 'createdAt_DESC',
+        orderBy: 'name_ASC',
       },
       info,
     );
