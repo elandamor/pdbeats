@@ -29,4 +29,21 @@ export default {
       return null;
     }
   },
+  Artist: {
+    albums: (parents, args, context: Context, info) => {
+      const { id } = parents;
+
+      return context.db.query.albums({
+        where: {
+          tracks_some: {
+            artists_some: { id },
+          },
+          // OR: [
+          //   { tracks_some: { artists_some: { id } } },
+          //   { tracks_some: { featuring_some: { id } } }
+          // ]
+        }
+      }, info)
+    },
+  }
 };
