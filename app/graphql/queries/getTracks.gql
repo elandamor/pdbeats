@@ -1,0 +1,23 @@
+query getTracks {
+  tracks {
+    edges {
+      node {
+        id
+        artists {
+          id
+          name
+        }
+        featuring {
+          id
+          name
+        }
+        name
+        album {
+          artwork {
+            url
+          }
+        }
+      }
+    }
+  }
+}
