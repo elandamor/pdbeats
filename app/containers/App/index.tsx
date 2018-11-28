@@ -5,12 +5,16 @@ import Measure from 'react-measure';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 // Components
-import { ErrorBoundary, LoadingBar, Routes } from '../../components';
+import { ErrorBoundary, LoadingBar, Player, Routes } from '../../components';
 // Routes
 import routes from './routes';
 // Styles
 import GlobalStyles from '../../global-styles';
 import Wrapper from './styles';
+
+// Testing audio
+// @ts-ignore
+import * as audio from '!file-loader?name=[name].[ext]!./ella-mai-trip.opus';
 
 // import { makeDebugger } from '../../lib';
 // const debug = makeDebugger('App');
@@ -141,6 +145,9 @@ class App extends Component<IProps, IState> {
                     routes={routes}
                   />
                 </Suspense>
+              </ErrorBoundary>
+              <ErrorBoundary>
+                <Player audio={audio} />
               </ErrorBoundary>
             </Wrapper>
           )}

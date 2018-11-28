@@ -42,7 +42,7 @@ class Artist extends PureComponent<{}, {}> {
         >
           {({ data, error, loading }) => {
             if (loading) { return <LoadingBar isLoading /> }
-            if (error) { return <div>An error occured...</div> }
+            if (error) { return <div>An error occured...{debug(error)}</div> }
 
             debug({ data });
 

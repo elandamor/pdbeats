@@ -14,7 +14,7 @@ import getTracksGQL from '../../graphql/queries/getTracks.gql';
 // Styles
 import Wrapper from './styles';
 
-// import { debug } from '../../lib';
+import { debug } from '../../lib';
 
 class Songs extends PureComponent<{}, {}> {
   protected uploadField: any;
@@ -35,12 +35,12 @@ class Songs extends PureComponent<{}, {}> {
         >
           {({ data, error, loading }) => {
             if (loading) { return <LoadingBar isLoading /> }
-            if (error) { return <div>An error occured...</div> }
+            if (error) { return <div>An error occured...{debug(error)}</div> }
 
             const { tracks: { edges } } = data;
 
             return (
-              <React.Fragment>
+              <div className="c-tracks">
                 {edges.map((edge: any) => {
                   const { node: track } = edge;
 
@@ -96,7 +96,7 @@ class Songs extends PureComponent<{}, {}> {
                     </div>
                   )
                 })}
-              </React.Fragment>
+              </div>
             );
           }}
         </Query>

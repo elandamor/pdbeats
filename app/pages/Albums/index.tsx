@@ -16,7 +16,7 @@ import getAlbumsGQL from '../../graphql/queries/getAlbums.gql';
 // Styles
 import Wrapper from './styles';
 
-// import { debug } from '../../lib';
+import { debug } from '../../lib';
 
 class Albums extends PureComponent<{}, {}> {
   protected uploadField: any;
@@ -35,12 +35,16 @@ class Albums extends PureComponent<{}, {}> {
         <Query query={getAlbumsGQL}>
           {({ data, error, loading }) => {
             if (loading) { return <LoadingBar isLoading /> }
-            if (error) { return <div>An error occured...</div> }
+            if (error) { return <div>An error occured...{debug(error)}</div> }
 
             const { albums: { edges } } = data;
 
             return (
-              <Grid columns={2} gap={12}>
+              <Grid
+                className="c-albums"
+                columns={2}
+                gap={12}
+              >
                 {edges.map((edge: any) => {
                   const { node: album } = edge;
 
