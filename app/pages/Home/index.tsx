@@ -11,6 +11,8 @@ import { Navigation } from '../../components';
 // Styles
 import Wrapper from './styles';
 
+import { OnDeckContext, SONGS } from '../../contexts/OnDeck.context';
+
 // import { debug } from '../../lib';
 
 class Home extends PureComponent<{}, {}> {
@@ -34,6 +36,22 @@ class Home extends PureComponent<{}, {}> {
             { href: '/songs', label: 'Songs' },
           ]}
         />
+        <OnDeckContext.Consumer>
+          {({ setOnDeck }) => (
+            <React.Fragment>
+              {
+                SONGS.map((song, index) => (
+                  <div
+                    key={song.title}
+                    onClick={() => setOnDeck(song)}
+                  >
+                    {++index}. {song.title}
+                  </div>
+                ))
+              }
+            </React.Fragment>
+          )}
+        </OnDeckContext.Consumer>
       </Wrapper>
     );
   }

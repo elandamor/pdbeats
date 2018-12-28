@@ -38,6 +38,7 @@ class Albums extends PureComponent<{}, {}> {
             if (error) { return <div>An error occured...{debug(error)}</div> }
 
             const { albums: { edges } } = data;
+            debug({ data });
 
             return (
               <Grid

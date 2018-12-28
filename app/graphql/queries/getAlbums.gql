@@ -1,5 +1,5 @@
 query getAlbums {
-  albums {
+  albums @client {
     edges {
       node {
         id

@@ -1,8 +1,11 @@
 export { default as Button } from './Button';
+export { default as Controls } from './Controls';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as Grid } from './Grid';
 export { default as Image } from './Image';
 export { default as LoadingBar } from './LoadingBar';
 export { default as Navigation } from './Navigation';
 export { default as Player } from './Player';
+export { default as ProgressBar } from './ProgressBar';
 export { default as Routes } from './Routes';
+export { default as VolumeBar } from './VolumeBar';

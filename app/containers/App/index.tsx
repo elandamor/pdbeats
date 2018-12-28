@@ -12,9 +12,7 @@ import routes from './routes';
 import GlobalStyles from '../../global-styles';
 import Wrapper from './styles';
 
-// Testing audio
-// @ts-ignore
-import * as audio from '!file-loader?name=[name].[ext]!./ella-mai-trip.opus';
+import OnDeckProvider, { OnDeckContext } from '../../contexts/OnDeck.context';
 
 // import { makeDebugger } from '../../lib';
 // const debug = makeDebugger('App');
@@ -132,24 +130,30 @@ class App extends Component<IProps, IState> {
           }}
         >
           {({ measureRef }) => (
-            <Wrapper
-              className={classNames('c-app__container', breakpoints(width))}
-              // @ts-ignore
-              ref={measureRef}
-            >
-              <GlobalStyles />
-              <ErrorBoundary>
-                <Suspense fallback={<LoadingBar isLoading />}>
-                  <Routes
-                    location={isModal ? this.previousLocation : location}
-                    routes={routes}
-                  />
-                </Suspense>
-              </ErrorBoundary>
-              <ErrorBoundary>
-                <Player audio={audio} />
-              </ErrorBoundary>
-            </Wrapper>
+            <OnDeckProvider>
+              <OnDeckContext.Consumer>
+                {({ onDeck, upNext }) => (
+                  <Wrapper
+                    className={classNames('c-app__container', breakpoints(width))}
+                    // @ts-ignore
+                    ref={measureRef}
+                  >
+                    <GlobalStyles />
+                    <ErrorBoundary>
+                      <Suspense fallback={<LoadingBar isLoading />}>
+                        <Routes
+                          location={isModal ? this.previousLocation : location}
+                          routes={routes}
+                        />
+                      </Suspense>
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                      <Player onDeck={onDeck} playlist={upNext} />
+                    </ErrorBoundary>
+                  </Wrapper>
+                )}
+              </OnDeckContext.Consumer>
+            </OnDeckProvider>
           )}
         </Measure>
       </ThemeProvider>

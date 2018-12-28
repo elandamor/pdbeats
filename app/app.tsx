@@ -9,7 +9,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import FontFaceObserver from 'fontfaceobserver';
 import { ApolloProvider } from 'react-apollo';
 
 import 'sanitize.css/sanitize.css';
@@ -25,15 +24,6 @@ import App from './containers/App';
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
-
-// Observe loading of Montserrat (to remove Montserrat, remove the <link> tag in
-// the index.html file and this observer)
-const montserratObserver = new FontFaceObserver('Montserrat', {});
-
-// When Montserrat is loaded, add a font-family using Montserrat to the body
-montserratObserver.load().then(() => {
-  document.body.classList.add('fontLoaded');
-});
 
 const MOUNT_NODE = document.getElementById('app');
 

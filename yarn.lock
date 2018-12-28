@@ -9381,6 +9381,11 @@ react-dom@16.6.3:
     prop-types "^15.6.2"
     scheduler "^0.11.2"
 
+react-feather@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-feather/-/react-feather-1.1.5.tgz#f7f9384c17d2d061b5b8298f46efc0e497f48469"
+  integrity sha512-hAPWatSFnhTNp9Ub96B7LMgOnWzXonA/LxqC2ANfUuc57jJocuWyO96yow2flUUDpitodh9mf6iOZzkyGYmAng==
+
 react-helmet@5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-5.2.0.tgz#a81811df21313a6d55c5f058c4aeba5d6f3d97a7"
