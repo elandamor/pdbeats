@@ -10,10 +10,16 @@ import Button from '../Button';
 import Controls from '../Controls';
 import ProgressBar from '../ProgressBar';
 import VolumeBar from '../VolumeBar';
+import { SONGS } from '../../contexts/OnDeck.context';
 
-import { debug } from '../../lib';
+// import { debug } from '../../lib';
 
 const LoSto__VolumeKey = 'pdDB__volume';
+
+/**
+ * nowPlaying: Array containing now playing song
+ * upNext: Array of upcoming songs added to upNext
+ */
 
 interface IProps {
   onDeck?: object;
@@ -23,6 +29,7 @@ interface IProps {
 
 interface IState {
   currentlyPlayingType: 'album' | 'podcast' | 'track'
+  isMuted: boolean;
   [key: string]: any;
 }
 
@@ -35,6 +42,7 @@ interface IState {
  */
 
 class Player extends Component<IProps, IState> {
+  protected componentIsMounted: boolean;
   protected index: number;
   protected onDeck: object;
   protected playlist: Array<any>;
@@ -42,11 +50,13 @@ class Player extends Component<IProps, IState> {
 
   protected progressMax = 100;
   protected volumeMax = 10;
+  // tslint:disable-next-line:no-magic-numbers
+  protected volumeMid = this.volumeMax / 2;
 
   state:IState = {
-    currentTrack: null,
-    currentTrackDuration: 0,
-    currentTrackSeek: 0,
+    nowPlaying: null,
+    nowPlayingDuration: 0,
+    nowPlayingSeek: 0,
     currentlyPlayingType: 'track',
     isMuted: false,
     isPlaying: false,
@@ -54,7 +64,9 @@ class Player extends Component<IProps, IState> {
     volume: localStorage.getItem(LoSto__VolumeKey) || this.volumeMax,
   }
 
-  componentDidMount() {
+  public componentDidMount() {
+    this.componentIsMounted = true;
+
     const { onDeck, playlist } = this.props;
 
     this.onDeck = onDeck || {};
@@ -72,18 +84,31 @@ class Player extends Component<IProps, IState> {
     const { onDeck: currentOnDeck } = this.props;
 
     if (previousOnDeck && currentOnDeck) {
+      // @ts-ignore
       if (previousOnDeck.id !== currentOnDeck.id) {
-        this.playlist.push(currentOnDeck);
+        // Get where currentTrack is being played from. Album, Songs, Playlist?
+        // then load(Album/Songs/Playlist) to upNext(playlist).
+        // ! This should not be hard-coded
+        this.playlist = SONGS;
+        // Play selected track.
         this.skipTo(this.playlist.indexOf(currentOnDeck));
       }
     }
   }
 
+  public componentWillUnmount() {
+    this.componentIsMounted = false;
+  }
+
+  public setState(nextState: any, cb?: () => void) {
+    if (this.componentIsMounted) {
+      super.setState(nextState, cb);
+    }
+  }
+
   public render() {
     const { className } = this.props;
-    const { currentlyPlayingType, currentTrack } = this.state;
-
-    debug(this.playlist);
+    const { currentlyPlayingType, nowPlaying } = this.state;
 
     return (
       <Wrapper
@@ -96,29 +121,16 @@ class Player extends Component<IProps, IState> {
         />
         <div>
           {
-            currentTrack && `${currentTrack.artist.name} - ${currentTrack.title}`
+            nowPlaying && `${nowPlaying.artist.name} - ${nowPlaying.title}`
           }
         </div>
         <div>
-          <span>{secondsToTime(this.state.currentTrackSeek || 0)}</span>
-          <span>{secondsToTime(this.state.currentTrackDuration)}</span>
+          <span>{secondsToTime(this.state.nowPlayingSeek || 0)}</span>
+          <span>{secondsToTime(this.state.nowPlayingDuration)}</span>
         </div>
         <Controls
           isPlaying={this.state.isPlaying}
-          onChange={(action) => {
-            if (action === 'next') {
-              this.skip('next');
-            }
-            if (action === 'pause') {
-              this.pause();
-            }
-            if (action === 'play') {
-              this.play();
-            }
-            if (action === 'prev') {
-              this.skip('prev');
-            }
-          }}
+          onChange={(action) => this.handleControls(action)}
         />
         <Button
           className={classNames('c-btn--mute', {
@@ -133,10 +145,12 @@ class Player extends Component<IProps, IState> {
           !this.state.isMuted && this.state.volume < 1 && <Volume />
         }
         {
-          !this.state.isMuted && this.state.volume >= 1 && this.state.volume <= 5 && <Volume1 />
+          !this.state.isMuted && this.state.volume >= 1 &&
+          this.state.volume <= this.volumeMid && <Volume1 />
         }
         {
-          !this.state.isMuted && this.state.volume > 5 && <Volume2 />
+          !this.state.isMuted && this.state.volume > this.volumeMid &&
+          <Volume2 />
         }
         </Button>
         <VolumeBar
@@ -166,8 +180,31 @@ class Player extends Component<IProps, IState> {
   }
 
   /**
+   * Handles playback control events.
+   * @param {String} action The playback event that has occured.
+   */
+  private handleControls = (action: string) => {
+    switch (action) {
+      case 'next':
+        this.skip('next');
+        break;
+      case 'pause':
+        this.pause();
+        break;
+      case 'play':
+        this.play();
+        break;
+      case 'prev':
+        this.skip('prev');
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
    * Play a song in the playlist.
-   * @param  {Number} index Index of the song in the playlist (leave empty to play the first or current).
+   * @param {Number} index Index of the song in the playlist..
    */
   private play(index?: number) {
     let track: Howl;
@@ -189,13 +226,13 @@ class Player extends Component<IProps, IState> {
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         onload: () => {
           this.setState({
-            currentTrackDuration: track.duration(),
-            currentlyPlayingType: 'track',
+            nowPlayingDuration: track.duration(),
+            currentlyPlayingType: data.__typename.toLowerCase(),
           });
         },
         onplay: () => {
           this.setState(() => ({
-            currentTrackDuration: track.duration(),
+            nowPlayingDuration: track.duration(),
             isPlaying: true
           }));
 
@@ -209,10 +246,18 @@ class Player extends Component<IProps, IState> {
         },
         onend: () => {
           this.setState(() => ({
-            isPlaying: true,
+            nowPlayingDuration: 0,
+            nowPlayingSeek: 0,
+            isPlaying: false,
             progress: 0,
-          }),
-          () => this.skip('next'));
+          }), () => {
+            // Remove nowPlaying from deck
+            // this.playlist.splice(this.playlist.indexOf(track), 1);
+
+            // if (this.playlist.length > 0) {
+            //   this.skip('next');
+            // }
+          });
         },
         onseek: () => {
           // Start updating the progress of the track.
@@ -226,7 +271,7 @@ class Player extends Component<IProps, IState> {
 
     // Update player info
     this.setState({
-      currentTrack: {
+      nowPlaying: {
         __typename: data.__typename,
         artist: data.artist,
         title: data.title,
@@ -294,7 +339,7 @@ class Player extends Component<IProps, IState> {
    * Toggle the volume mute on/off.
    */
   private toggleMute() {
-    this.setState(({ isMuted }) => ({
+    this.setState(({ isMuted }: IState) => ({
       isMuted: !isMuted,
     }), () => {
       Howler.mute(this.state.isMuted);
@@ -311,7 +356,7 @@ class Player extends Component<IProps, IState> {
 
     // Convert the percent into a seek position.
     if (track.playing()) {
-      track.seek(this.state.currentTrackDuration * per);
+      track.seek(track.duration() * per);
     }
   }
 
@@ -325,11 +370,11 @@ class Player extends Component<IProps, IState> {
     // Determine our current seek position.
     const seek = track.seek() || 0;
     // @ts-ignore
-    const progress = parseInt(((seek / this.state.currentTrackDuration) * this.progressMax) || 0, 10);
+    const progress = parseInt(((seek / track.duration()) * this.progressMax) || 0, 10);
 
     this.setState({
       // @ts-ignore
-      currentTrackSeek: Math.round(seek || 0),
+      nowPlayingSeek: Math.round(seek || 0),
       progress
     })
 
