@@ -8,4 +8,5 @@ export { default as Navigation } from './Navigation';
 export { default as Player } from './Player';
 export { default as ProgressBar } from './ProgressBar';
 export { default as Routes } from './Routes';
+export { default as Track } from './Track';
 export { default as VolumeBar } from './VolumeBar';

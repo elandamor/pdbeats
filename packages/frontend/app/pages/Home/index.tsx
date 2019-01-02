@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet';
 // @ts-ignore
 import { Image } from 'cloudinary-react';
 // Components
-import { Navigation } from '../../components';
+import { Navigation, Track } from '../../components';
 // Styles
 import Wrapper from './styles';
 
@@ -37,16 +37,16 @@ class Home extends PureComponent<{}, {}> {
           ]}
         />
         <OnDeckContext.Consumer>
-          {({ setOnDeck }) => (
+          {({ onDeck, setOnDeck }) => (
             <React.Fragment>
               {
-                SONGS.map((song, index) => (
-                  <div
-                    key={song.title}
+                SONGS.map((song) => (
+                  <Track
+                    key={song.name}
+                    current={onDeck.name === song.name}
+                    data={song}
                     onClick={() => setOnDeck(song)}
-                  >
-                    {++index}. {song.title}
-                  </div>
+                  />
                 ))
               }
             </React.Fragment>
