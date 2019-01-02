@@ -132,7 +132,7 @@ class App extends Component<IProps, IState> {
           {({ measureRef }) => (
             <OnDeckProvider>
               <OnDeckContext.Consumer>
-                {({ onDeck, upNext }) => (
+                {({ upNext }) => (
                   <Wrapper
                     className={classNames('c-app__container', breakpoints(width))}
                     // @ts-ignore
@@ -148,7 +148,7 @@ class App extends Component<IProps, IState> {
                       </Suspense>
                     </ErrorBoundary>
                     <ErrorBoundary>
-                      <Player onDeck={onDeck} playlist={upNext} />
+                      <Player playlist={upNext} />
                     </ErrorBoundary>
                   </Wrapper>
                 )}

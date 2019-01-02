@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import { Howl, Howler } from 'howler';
 import { Volume, Volume1, Volume2, VolumeX } from 'react-feather';
@@ -10,9 +10,11 @@ import Button from '../Button';
 import Controls from '../Controls';
 import ProgressBar from '../ProgressBar';
 import VolumeBar from '../VolumeBar';
-import { SONGS } from '../../contexts/OnDeck.context';
+import { OnDeckContext, SONGS } from '../../contexts/OnDeck.context';
 
-// import { debug } from '../../lib';
+import { debug } from '../../lib';
+
+import * as audio from '!file-loader?name=[name].[ext]!../../data/ella-mai-bood-up.opus';
 
 const LoSto__VolumeKey = 'pdDB__volume';
 
@@ -41,7 +43,7 @@ interface IState {
  * <Player playlist={PLAYLIST} />
  */
 
-class Player extends Component<IProps, IState> {
+class Player extends PureComponent<IProps, IState> {
   protected componentIsMounted: boolean;
   protected index: number;
   protected onDeck: object;
@@ -53,8 +55,10 @@ class Player extends Component<IProps, IState> {
   // tslint:disable-next-line:no-magic-numbers
   protected volumeMid = this.volumeMax / 2;
 
+  static contextType = OnDeckContext;
+
   state:IState = {
-    nowPlaying: null,
+    nowPlaying: {},
     nowPlayingDuration: 0,
     nowPlayingSeek: 0,
     currentlyPlayingType: 'track',
@@ -80,19 +84,17 @@ class Player extends Component<IProps, IState> {
     Howler.unload();
   }
 
-  public componentDidUpdate({ onDeck: previousOnDeck }: IProps) {
-    const { onDeck: currentOnDeck } = this.props;
+  public componentDidUpdate() {
+    const { onDeck: ctxOnDeck } = this.context;
+    const { nowPlaying: currentOnDeck } = this.state;
 
-    if (previousOnDeck && currentOnDeck) {
-      // @ts-ignore
-      if (previousOnDeck.id !== currentOnDeck.id) {
-        // Get where currentTrack is being played from. Album, Songs, Playlist?
-        // then load(Album/Songs/Playlist) to upNext(playlist).
-        // ! This should not be hard-coded
-        this.playlist = SONGS;
-        // Play selected track.
-        this.skipTo(this.playlist.indexOf(currentOnDeck));
-      }
+    if (ctxOnDeck && ctxOnDeck.name !== currentOnDeck.name) {
+      // Get where currentTrack is being played from. Album, Songs, Playlist?
+      // then load(Album/Songs/Playlist) to upNext(playlist).
+      // ! This should not be hard-coded
+      this.playlist = SONGS;
+      // Play selected track.
+      this.skipTo(this.playlist.indexOf(ctxOnDeck));
     }
   }
 
@@ -120,9 +122,44 @@ class Player extends Component<IProps, IState> {
           progress={this.state.progress}
         />
         <div>
-          {
-            nowPlaying && `${nowPlaying.artist.name} - ${nowPlaying.title}`
-          }
+          {nowPlaying.artists && nowPlaying.artists.map((artist: any) => (
+              <span
+                key={artist.id}
+                className="a-artist"
+              >
+                <span>
+                  {artist.name}
+                </span>
+              </span>
+            )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
+          <div>
+            {
+              nowPlaying.name && (
+                <React.Fragment>
+                  {nowPlaying.name}
+                  {
+                    nowPlaying.featuring &&
+                    nowPlaying.featuring.length > 0 && (
+                      <React.Fragment>
+                        &nbsp;
+                        (
+                        <span className="a-feat">feat. </span>
+                        {nowPlaying.featuring.map((artist: any) => (
+                          <span
+                            key={artist.id}
+                            className="a-artist"
+                          >
+                            {artist.name}
+                          </span>
+                        )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
+                        )
+                      </React.Fragment>
+                    )
+                  }
+                </React.Fragment>
+              )
+            }
+          </div>
         </div>
         <div>
           <span>{secondsToTime(this.state.nowPlayingSeek || 0)}</span>
@@ -213,6 +250,7 @@ class Player extends Component<IProps, IState> {
     const data: any = this.playlist[index];
 
     if (!data) {
+      debug('noData');
       return;
     }
 
@@ -222,12 +260,13 @@ class Player extends Component<IProps, IState> {
       track = data.howl;
     } else {
       track = data.howl = new Howl({
-        src: [data.source],
+        // ! Change this to data.source in production.
+        src: [audio],
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         onload: () => {
           this.setState({
             nowPlayingDuration: track.duration(),
-            currentlyPlayingType: data.__typename.toLowerCase(),
+            currentlyPlayingType: data.__typename ? data.__typename.toLowerCase() : 'track',
           });
         },
         onplay: () => {
@@ -272,11 +311,12 @@ class Player extends Component<IProps, IState> {
     // Update player info
     this.setState({
       nowPlaying: {
-        __typename: data.__typename,
-        artist: data.artist,
-        title: data.title,
+        __typename: data.__typename || 'track',
+        ...data
       },
-    })
+    });
+
+    this.context.setOnDeck(data);
 
     // Keep track of the index we are currently playing.
     this.index = index;
@@ -322,7 +362,7 @@ class Player extends Component<IProps, IState> {
    */
   private skipTo(index: number) {
     // Stop the current track.
-    if (this.playlist[this.index].howl) {
+    if (this.playlist[this.index] && this.playlist[this.index].howl) {
       this.playlist[this.index].howl.stop();
     }
 
