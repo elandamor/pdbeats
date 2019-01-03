@@ -1,0 +1,101 @@
+type Artist {
+  id: ID! @unique
+  albums: [Album!]! @relation(name: "AlbumCreatedBy")
+  alias: String! @unique
+  avatar: Image
+  featuresIn: [Track!]! @relation(name: "FeaturesIn")
+  genres: [String!]
+  name: String!
+  tracks: [Track!]! @relation(name: "ByArtist", onDelete: CASCADE)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Track {
+  id: ID! @unique
+  album: Album! @relation(name: "InAlbum")
+  artists: [Artist!]! @relation(name: "ByArtist")
+  discNumber: Int
+  duration: Int!
+  explicit: Boolean! @default(value: "false")
+  featuring: [Artist!]! @relation(name: "FeaturesIn")
+  genre: String! @default(value: "Other")
+  inPlaylist: [Playlist!]! @relation(name: "InPlaylist")
+  isPlayable: Boolean! @default(value: "true")
+  name: String!
+  trackNumber: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Album {
+  id: ID! @unique
+  alias: String! @unique
+  artists: [Artist!]! @relation(name: "AlbumCreatedBy")
+  duration: Int!
+  genres: [String!]
+  artwork: Image
+  name: String!
+  numTracks: Int!
+  releaseDate: DateTime!
+  releaseType: ReleaseType!
+  tracks: [Track!]! @relation(name: "InAlbum", onDelete: CASCADE)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Image {
+  id: ID! @unique
+  uploadedBy: User!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Playlist {
+  id: ID! @unique
+  alias: String! @unique
+  artwork: [Image!]!
+  collaborative: Boolean! @default(value: "false")
+  creator: User! @relation(name: "CreatedBy")
+  description: String
+  duration: Int!
+  name: String!
+  numTracks: Int!
+  privacy: Privacy! @default(value: "PRIVATE")
+  tracks: [Track!]! @relation(name: "InPlaylist")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# type PlaylistTrack {
+#   addedAt: DateTime!
+#   addedBy: User!
+#   track: Track!
+# }
+
+type User {
+  id: ID! @unique
+  isAdmin: Boolean! @default(value: "false")
+  name: String!
+  playlists: [Playlist!]! @relation(name: "CreatedBy")
+  username: String! @unique
+  verified: Boolean! @default(value: "false")
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum ReleaseType {
+  ALBUM
+  EP
+  LP
+  PODCAST
+  SINGLE
+}
+
+enum Privacy {
+  PRIVATE
+  PUBLIC
+  UNLISTED
+}
+

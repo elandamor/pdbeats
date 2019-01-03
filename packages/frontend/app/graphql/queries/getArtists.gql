@@ -1,0 +1,18 @@
+query getArtists {
+  artists @client {
+    edges {
+      node {
+        id
+        alias
+        avatar {
+          url
+        }
+        name
+        albums {
+          id
+          name
+        }
+      }
+    }
+  }
+}

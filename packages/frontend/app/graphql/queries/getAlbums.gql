@@ -1,0 +1,36 @@
+query getAlbums {
+  albums @client {
+    edges {
+      node {
+        id
+        alias
+        artwork {
+          id
+          url
+        }
+        artists {
+          id
+          name
+        }
+        genres
+        name
+        releaseDate
+        releaseType
+        tracks(orderBy: trackNumber_ASC) {
+          id
+          artists {
+            id
+            name
+          }
+          featuring {
+            id
+            name
+          }
+          name
+          duration
+          trackNumber
+        }
+      }
+    }
+  }
+}
