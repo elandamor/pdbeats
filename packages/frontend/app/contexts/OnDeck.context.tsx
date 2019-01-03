@@ -1,7 +1,7 @@
 import React from 'react';
 
-// import { makeDebugger } from '../lib';
-// const debug = makeDebugger('deck-context');
+import { makeDebugger } from '../lib';
+const debug = makeDebugger('deck-context');
 
 // Testing audio
 // @ts-ignore
@@ -315,9 +315,13 @@ class Provider extends React.Component<IProps, IState> {
   state = DEFAULT_STATE;
 
   public setOnDeck = (source: object) => {
-    if (!source) {
+    const { onDeck } = this.state;
+
+    if (!source || source.id === onDeck.id) {
       return false;
     }
+
+    debug({ onDeck, source });
 
     this.setState(() => ({
       onDeck: source,

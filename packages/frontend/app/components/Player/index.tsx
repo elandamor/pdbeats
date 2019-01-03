@@ -10,11 +10,11 @@ import Button from '../Button';
 import Controls from '../Controls';
 import ProgressBar from '../ProgressBar';
 import VolumeBar from '../VolumeBar';
-import { OnDeckContext, SONGS } from '../../contexts/OnDeck.context';
+import { OnDeckContext } from '../../contexts/OnDeck.context';
 
 import { debug } from '../../lib';
 
-import * as audio from '!file-loader?name=[name].[ext]!../../data/ella-mai-bood-up.opus';
+import * as audio from '!file-loader?name=[name].[ext]!../../data/kygo-happy-now.opus';
 
 const LoSto__VolumeKey = 'pdDB__volume';
 
@@ -86,15 +86,17 @@ class Player extends PureComponent<IProps, IState> {
 
   public componentDidUpdate() {
     const { onDeck: ctxOnDeck } = this.context;
-    const { nowPlaying: currentOnDeck } = this.state;
+    const { nowPlaying: previousOnDeck } = this.state;
 
-    if (ctxOnDeck && ctxOnDeck.name !== currentOnDeck.name) {
-      // Get where currentTrack is being played from. Album, Songs, Playlist?
-      // then load(Album/Songs/Playlist) to upNext(playlist).
-      // ! This should not be hard-coded
-      this.playlist = SONGS;
-      // Play selected track.
-      this.skipTo(this.playlist.indexOf(ctxOnDeck));
+    if (ctxOnDeck && previousOnDeck) {
+      if (ctxOnDeck.id && ctxOnDeck.id !== previousOnDeck.id) {
+        // TODO Get where currentTrack is being played from Album, Songs, Playlist?
+        // TODO load(Album/Songs/Playlist) to upNext(playlist).
+        // TODO Do not double push a track that already exists at end of list.
+        this.playlist.push(ctxOnDeck);
+        // Play selected track.
+        this.skipTo(this.playlist.indexOf(ctxOnDeck));
+      }
     }
   }
 
@@ -290,6 +292,11 @@ class Player extends PureComponent<IProps, IState> {
             isPlaying: false,
             progress: 0,
           }), () => {
+            this.context.setOnDeck({});
+
+            this.setState({
+              nowPlaying: {},
+            });
             // Remove nowPlaying from deck
             // this.playlist.splice(this.playlist.indexOf(track), 1);
 

@@ -3,6 +3,11 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   padding: 6px 0;
 
+  .c-tracks {
+    margin: 0;
+    padding: 0;
+  }
+
   .c-track {
     align-items: center;
     color: #555;

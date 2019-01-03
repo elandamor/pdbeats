@@ -7,11 +7,9 @@ import { Helmet } from 'react-helmet';
 // @ts-ignore
 import { Image } from 'cloudinary-react';
 // Components
-import { Navigation, Track } from '../../components';
+import { Navigation } from '../../components';
 // Styles
 import Wrapper from './styles';
-
-import { OnDeckContext, SONGS } from '../../contexts/OnDeck.context';
 
 // import { debug } from '../../lib';
 
@@ -36,22 +34,6 @@ class Home extends PureComponent<{}, {}> {
             { href: '/songs', label: 'Songs' },
           ]}
         />
-        <OnDeckContext.Consumer>
-          {({ onDeck, setOnDeck }) => (
-            <React.Fragment>
-              {
-                SONGS.map((song) => (
-                  <Track
-                    key={song.name}
-                    current={onDeck.name === song.name}
-                    data={song}
-                    onClick={() => setOnDeck(song)}
-                  />
-                ))
-              }
-            </React.Fragment>
-          )}
-        </OnDeckContext.Consumer>
       </Wrapper>
     );
   }

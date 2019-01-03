@@ -5,16 +5,15 @@
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import { Query } from 'react-apollo';
-// @ts-ignore
-import { Image } from 'cloudinary-react';
 // Components
-import { LoadingBar } from '../../components';
+import { LoadingBar, Track } from '../../components';
 // Queries
 import getTracksGQL from '../../graphql/queries/getTracks.gql';
 // Styles
 import Wrapper from './styles';
 
 import { debug } from '../../lib';
+import { OnDeckContext } from '../../contexts/OnDeck.context';
 
 class Songs extends PureComponent<{}, {}> {
   protected uploadField: any;
@@ -40,63 +39,26 @@ class Songs extends PureComponent<{}, {}> {
             const { tracks: { edges } } = data;
 
             return (
-              <div className="c-tracks">
-                {edges.map((edge: any) => {
-                  const { node: track } = edge;
+              <OnDeckContext.Consumer>
+                {({ onDeck, setOnDeck }) => (
+                  <ul className="c-tracks">
+                    {
+                      edges.map((edge: any) => {
+                        const { node: track } = edge;
 
-                  return (
-                    <div key={track.id} className="c-track">
-                      <div className="c-cover__wrapper">
-                        <Image
-                          cloudName={process.env.CLOUDINARY_BUCKET}
-                          publicId={`/pdbeats/covers/${track.album.artwork.url}`}
-                          height="40"
-                          width="40"
-                          crop="scale"
-                          fetchFormat="auto"
-                        />
-                      </div>
-                      <div className="c-details">
-                        <span className="a-name">
-                          {track.name}
-                          {
-                            track.featuring &&
-                            track.featuring.length > 0 && (
-                              <React.Fragment>
-                                &nbsp;
-                                (
-                                <span className="a-feat">feat. </span>
-                                {track.featuring.map((artist: any) => (
-                                  <span
-                                    key={artist.id}
-                                    className="a-artist"
-                                  >
-                                    {artist.name}
-                                  </span>
-                                )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
-                                )
-                              </React.Fragment>
-                            )
-                          }
-                        </span>
-                        <br />
-                        <small className="c-artists">
-                        {
-                          track.artists.map((artist: any) => (
-                            <span
-                              key={artist.id}
-                              className="a-artist"
-                            >
-                              {artist.name}
-                            </span>
-                          )).reduce((prev: any, curr: any) => [prev, ', ', curr])
-                        }
-                        </small>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
+                        return (
+                          <Track
+                            key={track.id}
+                            current={onDeck.id === track.id}
+                            data={track}
+                            onClick={() => setOnDeck(track)}
+                          />
+                        )
+                      })
+                    }
+                  </ul>
+                )}
+              </OnDeckContext.Consumer>
             );
           }}
         </Query>

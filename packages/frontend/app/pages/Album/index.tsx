@@ -10,13 +10,14 @@ import getYear from 'date-fns/get_year';
 // @ts-ignore
 import { Image } from 'cloudinary-react';
 // Components
-import { LoadingBar } from '../../components';
+import { LoadingBar, Track } from '../../components';
 // Queries
 import getAlbumGQL from '../../graphql/queries/getAlbum.gql';
 // Styles
 import Wrapper from './styles';
 
-import { debug, secondsToTime } from '../../lib';
+import { debug } from '../../lib';
+import { OnDeckContext } from '../../contexts/OnDeck.context';
 
 class Album extends PureComponent<{}, {}> {
   protected uploadField: any;
@@ -29,7 +30,7 @@ class Album extends PureComponent<{}, {}> {
     }: any = this.props;
 
     const hasLocationState = Boolean(locationState);
-    debug(this.props);
+    // debug(this.props);
 
     return (
       <Wrapper
@@ -57,7 +58,7 @@ class Album extends PureComponent<{}, {}> {
             if (loading) { return <LoadingBar isLoading /> }
             if (error) { return <div>An error occured...{debug(error)}</div> }
 
-            debug({ data })
+            // debug({ data })
 
             const { album } = data;
 
@@ -113,60 +114,22 @@ class Album extends PureComponent<{}, {}> {
                   </div>
                 </header>
                 <section>
-                  <ul className="c-tracks">
-                    {
-                      album.tracks.map((track: any) => (
-                        <li
-                          key={track.id}
-                          className="c-track"
-                        >
-                          <span className="a-trackNumber">
-                            {track.trackNumber}
-                          </span>
-                          <div className="c-details">
-                            <span className="a-name">
-                              {track.name}
-                              {
-                                track.featuring &&
-                                track.featuring.length > 0 && (
-                                  <React.Fragment>
-                                    &nbsp;
-                                    (
-                                    <span className="a-feat">feat. </span>
-                                    {track.featuring.map((artist: any) => (
-                                      <span
-                                        key={artist.id}
-                                        className="a-artist"
-                                      >
-                                        {artist.name}
-                                      </span>
-                                    )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
-                                    )
-                                  </React.Fragment>
-                                )
-                              }
-                            </span>
-                            <br />
-                            <small className="c-artists">
-                            {
-                              track.artists.map((artist: any) => (
-                                <span
-                                  key={artist.id}
-                                  className="a-artist"
-                                >
-                                  {artist.name}
-                                </span>
-                              )).reduce((prev: any, curr: any) => [prev, ', ', curr])
-                            }
-                            </small>
-                          </div>
-                          <span className="a-duration">
-                            {secondsToTime(track.duration)}
-                          </span>
-                        </li>
-                      ))
-                    }
-                  </ul>
+                  <OnDeckContext.Consumer>
+                    {({ onDeck, setOnDeck }) => (
+                      <ul className="c-tracks">
+                        {
+                          album.tracks.map((track: any) => (
+                            <Track
+                              key={track.id}
+                              current={onDeck.id === track.id}
+                              data={track}
+                              onClick={() => setOnDeck(track)}
+                            />
+                          ))
+                        }
+                      </ul>
+                    )}
+                  </OnDeckContext.Consumer>
                 </section>
               </article>
             );
