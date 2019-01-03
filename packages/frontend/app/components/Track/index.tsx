@@ -1,7 +1,10 @@
 import React, { SFC } from 'react';
 import classNames from 'classnames';
+// @ts-ignore
+import { Image } from 'cloudinary-react';
 // Styles
 import Wrapper from './styles';
+import { debug, secondsToTime } from '../../lib';
 
 /**
  * @render react
@@ -18,15 +21,33 @@ interface IProps {
 
 const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) => (
   <Wrapper
-    className={classNames('', className, {
+    className={classNames('c-track', className, {
       '-current': current,
     })}
     onClick={() => handleClick}
     {...rest}
   >
-    <span className="a-trackNumber">
-      {data.trackNumber}
-    </span>
+    {
+      data.trackNumber && (
+        <span className="a-trackNumber">
+          {data.trackNumber}
+        </span>
+      )
+    }
+    {
+      data.album && (
+        <div className="c-cover__wrapper">
+          <Image
+            cloudName={process.env.CLOUDINARY_BUCKET}
+            publicId={`/pdbeats/covers/${data.album.artwork.url}`}
+            height="40"
+            width="40"
+            crop="scale"
+            fetchFormat="auto"
+          />
+        </div>
+      )
+    }
     <div className="c-details">
       <span className="a-name">
         {data.name}
@@ -64,9 +85,13 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
       }
       </small>
     </div>
-    <span className="a-duration">
-      {data.duration}
-    </span>
+    {
+      data.duration && (
+        <span className="a-duration">
+          {secondsToTime(data.duration)}
+        </span>
+      )
+    }
   </Wrapper>
 );
 

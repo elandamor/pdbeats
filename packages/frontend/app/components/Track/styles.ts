@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
+  align-items: center;
   color: #555;
+  display: flex;
   font-size: 14px;
-  padding: 8px 0;
+  padding: 6px 12px;
 
   &.-current {
-    border: 2px solid red;
+    background-color: rgba(0,0,0,.04);
   }
 
   .a-trackNumber,
@@ -19,6 +21,17 @@ const Wrapper = styled.div`
     padding: 0 12px;
     text-align: left;
     width: 40px;
+  }
+
+  .c-cover__wrapper {
+    background-color: ${(props) => props.theme.palette.cardBorderColor};
+    height: 40px;
+    margin-right: 12px;
+    width: 40px;
+  }
+
+  img {
+    flex: none;
   }
 
   .c-details {
