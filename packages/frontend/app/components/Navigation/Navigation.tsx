@@ -4,6 +4,21 @@ import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
 
+// tslint:disable-next-line:interface-over-type-literal
+type Link = {
+  className?: string,
+  exact?: boolean,
+  href: string,
+  icon?: any,
+  label: string,
+};
+
+interface IProps {
+  className?: string;
+  hideLabels?: boolean;
+  links: Link[];
+}
+
 /**
  * @render react
  * @name Navigation component
@@ -18,20 +33,7 @@ import Wrapper from './styles';
  * />
  */
 
-// tslint:disable-next-line:interface-over-type-literal
-type Link = {
-  className?: string,
-  exact?: boolean,
-  href: string,
-  label: string,
-};
-
-interface IProps {
-  className?: string;
-  links: Link[];
-}
-
-const Navigation: SFC<IProps> = ({ className, links }) => (
+const Navigation: SFC<IProps> = ({ className, hideLabels, links }) => (
   <Wrapper className={classNames('c-nav', className)}>
     <ul>
       {
@@ -43,7 +45,20 @@ const Navigation: SFC<IProps> = ({ className, links }) => (
               className={classNames('a-nav-item', link.className)}
               to={link.href}
             >
-              {link.label}
+              {
+                link.icon && (
+                  <span className="c-icon">
+                    {link.icon}
+                  </span>
+                )
+              }
+              {
+                !hideLabels && (
+                  <span className="a-label">
+                    {link.label}
+                  </span>
+                )
+              }
             </NavLink>
           </li>
         ))
