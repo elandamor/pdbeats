@@ -27,7 +27,7 @@ const VolumeBar: SFC<IProps> = ({
   volumeMax = defaultVolumeMax,
   onChange: handleChange
 }) => (
-  <Wrapper className={classNames('', className)}>
+  <Wrapper className={classNames('c-volumeBar', className)}>
     <progress
       max={volumeMax}
       value={volume}
