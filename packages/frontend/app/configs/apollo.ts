@@ -1,11 +1,13 @@
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { persistCache } from 'apollo-cache-persist';
 import { HttpLink } from 'apollo-link-http';
 import { withClientState } from 'apollo-link-state';
 import { ApolloLink } from 'apollo-link';
 import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import localForage from 'localforage';
 
 import ALBUMS from '../data/albums';
 import ARTISTS from '../data/artists';
@@ -65,6 +67,13 @@ const link = split(
   wsLink,
   devHttpLink,
 );
+
+persistCache({
+  cache,
+  key: 'pdDB__cache',
+  // @ts-ignore
+  storage: localForage,
+});
 
 const client = new ApolloClient({
   link,
