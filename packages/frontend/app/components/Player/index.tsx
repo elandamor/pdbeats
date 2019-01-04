@@ -15,6 +15,7 @@ import { OnDeckContext } from '../../contexts/OnDeck.context';
 import { debug } from '../../lib';
 
 import * as audio from '!file-loader?name=[name].[ext]!../../data/kygo-happy-now.opus';
+import Track from '../Track';
 
 const LoSto__VolumeKey = 'pdDB__volume';
 
@@ -116,56 +117,27 @@ class Player extends PureComponent<IProps, IState> {
 
     return (
       <Wrapper
-        className={classNames('', className)}
+        className={classNames('c-player', className)}
         data-type={currentlyPlayingType}
       >
         <ProgressBar
           onChange={this.handleChange}
           progress={this.state.progress}
         />
-        <div>
-          {nowPlaying.artists && nowPlaying.artists.map((artist: any) => (
-              <span
-                key={artist.id}
-                className="a-artist"
-              >
-                <span>
-                  {artist.name}
-                </span>
-              </span>
-            )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
-          <div>
-            {
-              nowPlaying.name && (
-                <React.Fragment>
-                  {nowPlaying.name}
-                  {
-                    nowPlaying.featuring &&
-                    nowPlaying.featuring.length > 0 && (
-                      <React.Fragment>
-                        &nbsp;
-                        (
-                        <span className="a-feat">feat. </span>
-                        {nowPlaying.featuring.map((artist: any) => (
-                          <span
-                            key={artist.id}
-                            className="a-artist"
-                          >
-                            {artist.name}
-                          </span>
-                        )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
-                        )
-                      </React.Fragment>
-                    )
-                  }
-                </React.Fragment>
-              )
-            }
-          </div>
+        <div className="c-nowPlaying">
+          {
+            nowPlaying.id && (
+              <Track
+                key={nowPlaying.id}
+                data={nowPlaying}
+                onClick={() => null}
+              />
+            )
+          }
         </div>
         <div>
-          <span>{secondsToTime(this.state.nowPlayingSeek || 0)}</span>
-          <span>{secondsToTime(this.state.nowPlayingDuration)}</span>
+          <span className="a-time -current">{secondsToTime(this.state.nowPlayingSeek || 0)}</span>
+          <span className="a-time -duration">{secondsToTime(this.state.nowPlayingDuration)}</span>
         </div>
         <Controls
           isPlaying={this.state.isPlaying}

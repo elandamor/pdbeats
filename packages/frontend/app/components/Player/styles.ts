@@ -2,14 +2,34 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   align-items: center;
-  background: ${(props) => props.theme.palette.cardBackground};
-  bottom: 0;
+  background: rgba(255,255,255,.875);
   display: flex;
-  left: 0;
   min-height: 56px;
-  position: fixed;
+  position: relative;
   width: 100%;
-  z-index: 10;
+
+  .c-progressBar {
+    left: 0;
+    position: absolute;
+    top: -22px;
+  }
+
+  .c-btn.-prev,
+  .c-btn--mute,
+  .c-volumeBar,
+  .a-time {
+    display: none;
+  }
+
+  .c-nowPlaying {
+    flex-basis: 100%;
+    overflow: hidden;
+
+    .a-duration,
+    .a-trackNumber {
+      display: none;
+    }
+  }
 `;
 
 export default Wrapper;
