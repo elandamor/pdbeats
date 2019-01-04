@@ -1,14 +1,11 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-align-items: center;
+  align-items: center;
   display: flex;
   height: 40px;
-  left: 0;
   margin: 0 auto;
-  position: absolute;
-  right: 0;
-  top: -40px;
+  position: relative;
   width: 100%;
 
   progress[value],
@@ -48,6 +45,7 @@ align-items: center;
       appearance: none;
       background: #ffffff;
       border: thin solid #000000;
+      display: none;
       height: 16px;
       width: 16px;
       border-radius: 48px;

@@ -27,7 +27,7 @@ const ProgressBar: SFC<IProps> = ({
   progressMax = defaultProgressMax,
   onChange: handleChange
 }) => (
-  <Wrapper className={classNames('', className)}>
+  <Wrapper className={classNames('c-progressBar', className)}>
     <progress
       className="c-progress__background"
       max={progressMax}
