@@ -1,6 +1,6 @@
 import React, { SFC } from 'react';
 import classNames from 'classnames';
-import { Pause, Play } from 'react-feather';
+import { Pause, Play, FastForward } from 'react-feather';
 // Styles
 import Wrapper from './styles';
 import Button from '../Button';
@@ -41,7 +41,7 @@ const Controls: SFC<IProps> = ({
       className={classNames('-next')}
       onClick={() => handleClick('next')}
     >
-      Next
+      <FastForward />
     </Button>
   </Wrapper>
 );
