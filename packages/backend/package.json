@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "author": "Thandolwethu Mpofu",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "nodemon -e ts,graphql -x ts-node src/index.ts",
     "dev": "npm-run-all --parallel start playground",
