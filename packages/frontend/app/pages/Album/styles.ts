@@ -24,6 +24,7 @@ const Wrapper = styled.div`
       margin-bottom: 8px;
 
       img {
+        border-radius: 3px;
         flex: none;
         margin: 0 12px;
       }
@@ -87,6 +88,11 @@ const Wrapper = styled.div`
       padding: 0 12px;
       text-align: left;
       width: 40px;
+    }
+
+    .c-currentIndicator {
+      background-color: #f5f5f5;
+      color: #333;
     }
 
     .c-details {

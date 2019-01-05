@@ -16,6 +16,11 @@ query getAlbum($id: ID!) {
     releaseType
     tracks(orderBy: trackNumber_ASC) {
       id
+      album {
+        artwork {
+          url
+        }
+      }
       artists {
         id
         name

@@ -5,7 +5,7 @@ import Measure from 'react-measure';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 // Components
-import { ErrorBoundary, LoadingBar, Navigation, Player, Routes } from '../../components';
+import { ErrorBoundary, Header , LoadingBar, Navigation, Player, Routes} from '../../components';
 // Routes
 import routes from './routes';
 // Styles
@@ -13,7 +13,7 @@ import GlobalStyles from '../../global-styles';
 import Wrapper, { BottomSheet, Pages } from './styles';
 
 import OnDeckProvider, { OnDeckContext } from '../../contexts/OnDeck.context';
-import { Home, Grid, List, Music } from 'react-feather';
+import { Grid, Home, List, Music } from 'react-feather';
 
 // import { makeDebugger } from '../../lib';
 // const debug = makeDebugger('App');
@@ -140,6 +140,9 @@ class App extends Component<IProps, IState> {
                     ref={measureRef}
                   >
                     <GlobalStyles />
+                    <ErrorBoundary>
+                      <Header />
+                    </ErrorBoundary>
                     <Pages>
                       <ErrorBoundary>
                         <Suspense fallback={<LoadingBar isLoading />}>

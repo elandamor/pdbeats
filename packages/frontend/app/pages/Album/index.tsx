@@ -124,6 +124,7 @@ class Album extends PureComponent<{}, {}> {
                               current={onDeck.id === track.id}
                               data={track}
                               onClick={() => setOnDeck(track)}
+                              hideAlbumCover
                             />
                           ))
                         }

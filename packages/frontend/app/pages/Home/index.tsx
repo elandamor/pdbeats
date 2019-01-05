@@ -4,8 +4,6 @@
 
 import React, { PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
-// @ts-ignore
-import { Image } from 'cloudinary-react';
 // Components
 import { Navigation } from '../../components';
 // Styles
