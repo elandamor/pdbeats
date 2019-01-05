@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   display: flex;
   font-size: 14px;
   padding: 6px 12px;
+  position: relative;
 
   &.-current {
     background-color: rgba(0,0,0,.04);
@@ -25,8 +26,11 @@ const Wrapper = styled.div`
 
   .c-cover__wrapper {
     background-color: ${(props) => props.theme.palette.cardBorderColor};
+    border-radius: 3px;
+    flex: none;
     height: 40px;
     margin-right: 12px;
+    overflow: hidden;
     width: 40px;
   }
 
@@ -59,6 +63,22 @@ const Wrapper = styled.div`
 
   .a-duration {
     padding: 0 12px;
+  }
+`;
+
+export const CurrentIndicator = styled.div`
+  align-items: center;
+  background-color: rgba(0,0,0,.675);
+  color: #fff;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  position: absolute;
+  width: 40px;
+
+  svg {
+    height: 16px;
+    width: 16px;
   }
 `;
 

@@ -3,8 +3,10 @@ import classNames from 'classnames';
 // @ts-ignore
 import { Image } from 'cloudinary-react';
 // Styles
-import Wrapper from './styles';
-import { debug, secondsToTime } from '../../lib';
+import Wrapper, { CurrentIndicator } from './styles';
+import { secondsToTime } from '../../lib';
+import { Volume2 } from 'react-feather';
+import Equalizer from '../Equalizer';
 
 /**
  * @render react
@@ -28,14 +30,14 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
     {...rest}
   >
     {
-      data.trackNumber && (
+      data.trackNumber && !rest.hideTrackNumber && (
         <span className="a-trackNumber">
           {data.trackNumber}
         </span>
       )
     }
     {
-      data.album && (
+      data.album && !rest.hideAlbumCover && (
         <div className="c-cover__wrapper">
           <Image
             cloudName={process.env.CLOUDINARY_BUCKET}
@@ -46,6 +48,11 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
             fetchFormat="auto"
           />
         </div>
+      )
+    }
+    {
+      current && (
+        <Equalizer />
       )
     }
     <div className="c-details">
@@ -86,7 +93,7 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
       </small>
     </div>
     {
-      data.duration && (
+      data.duration && !rest.hideDuration && (
         <span className="a-duration">
           {secondsToTime(data.duration)}
         </span>
