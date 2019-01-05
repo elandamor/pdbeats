@@ -9,13 +9,14 @@ import { secondsToTime } from '../../lib';
 import Button from '../Button';
 import Controls from '../Controls';
 import ProgressBar from '../ProgressBar';
+import Track from '../Track';
 import VolumeBar from '../VolumeBar';
+
 import { OnDeckContext } from '../../contexts/OnDeck.context';
 
 import { debug } from '../../lib';
 
 import * as audio from '!file-loader?name=[name].[ext]!../../data/kygo-happy-now.opus';
-import Track from '../Track';
 
 const LoSto__VolumeKey = 'pdDB__volume';
 
@@ -131,6 +132,8 @@ class Player extends PureComponent<IProps, IState> {
                 key={nowPlaying.id}
                 data={nowPlaying}
                 onClick={() => null}
+                hideDuration
+                hideTrackNumber
               />
             )
           }

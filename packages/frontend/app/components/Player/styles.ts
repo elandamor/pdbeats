@@ -25,9 +25,14 @@ const Wrapper = styled.div`
     flex-basis: 100%;
     overflow: hidden;
 
-    .a-duration,
-    .a-trackNumber {
+    .a-duration {
       display: none;
+    }
+
+    .c-details {
+      .a-name {
+        font-size: 16px;
+      }
     }
   }
 `;
