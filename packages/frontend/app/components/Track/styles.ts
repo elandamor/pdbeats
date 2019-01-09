@@ -8,10 +8,6 @@ const Wrapper = styled.div`
   padding: 6px 12px;
   position: relative;
 
-  &.-current {
-    background-color: rgba(0,0,0,.04);
-  }
-
   .a-trackNumber,
   .a-duration {
     flex: none;
@@ -31,6 +27,7 @@ const Wrapper = styled.div`
     height: 40px;
     margin-right: 12px;
     overflow: hidden;
+    transition: transform .195s ease-out;
     width: 40px;
   }
 
@@ -63,6 +60,14 @@ const Wrapper = styled.div`
 
   .a-duration {
     padding: 0 12px;
+  }
+
+  &.-current {
+    background-color: rgba(0,0,0,.125);
+
+    .c-cover__wrapper {
+      transform: scale(0.9);
+    }
   }
 `;
 

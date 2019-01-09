@@ -16,7 +16,7 @@ const bounce = keyframes`
 
 const Wrapper = styled.div`
   align-items: center;
-  background: #f5f5f5;
+  background-color: hsla(0, 0%, 96%, 0.85);
   border-radius: 3px;
   display: flex;
   height: 40px;
@@ -27,7 +27,7 @@ const Wrapper = styled.div`
   will-change: opacity;
 
   &.-paused {
-    opacity: .75;
+    opacity: 0;
 
     div::after,
     div::before {
