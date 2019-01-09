@@ -3,9 +3,8 @@ import classNames from 'classnames';
 // @ts-ignore
 import { Image } from 'cloudinary-react';
 // Styles
-import Wrapper, { CurrentIndicator } from './styles';
+import Wrapper from './styles';
 import { secondsToTime } from '../../lib';
-import { Volume2 } from 'react-feather';
 import Equalizer from '../Equalizer';
 
 /**
@@ -25,6 +24,7 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
   <Wrapper
     className={classNames('c-track', className, {
       '-current': current,
+      '-paused': current && rest.playState === 'paused',
     })}
     onClick={() => handleClick}
     {...rest}
@@ -52,7 +52,7 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
     }
     {
       current && (
-        <Equalizer />
+        <Equalizer pause={current && rest.playState === 'paused'} />
       )
     }
     <div className="c-details">

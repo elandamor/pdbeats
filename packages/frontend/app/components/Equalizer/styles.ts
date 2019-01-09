@@ -22,7 +22,18 @@ const Wrapper = styled.div`
   height: 40px;
   justify-content: center;
   position: absolute;
+  transition: opacity .195s ease-in;
   width: 40px;
+  will-change: opacity;
+
+  &.-paused {
+    opacity: .75;
+
+    div::after,
+    div::before {
+      animation-play-state: paused;
+    }
+  }
 `;
 
 export const Bar1 = styled.div`
@@ -41,6 +52,7 @@ export const Bar1 = styled.div`
 
     animation: ${bounce} 0.75s ease-in infinite;
     transform: translateY(100%);
+    will-change: transform;
   }
 
   &::before {

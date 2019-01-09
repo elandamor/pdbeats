@@ -14,11 +14,12 @@ import Wrapper, { Bar1, Bar2 } from './styles';
 interface IProps {
   className?: string;
   isLoading?: boolean;
+  pause?: boolean;
 }
 
-const Equalizer: SFC<IProps> = ({ className }) => (
+const Equalizer: SFC<IProps> = ({ className, pause }) => (
   <Wrapper
-    className={classNames('c-equalizer', className)}
+    className={classNames('c-equalizer', className, { '-paused': pause } )}
   >
     <Bar1 />
     <Bar2 />

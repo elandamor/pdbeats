@@ -250,7 +250,7 @@ class Player extends PureComponent<IProps, IState> {
           this.setState(() => ({
             nowPlayingDuration: track.duration(),
             isPlaying: true
-          }));
+          }), () => this.context.updatePlayState('playing'));
 
           // Start updating the progress of the track.
           requestAnimationFrame(this.step);
@@ -258,7 +258,7 @@ class Player extends PureComponent<IProps, IState> {
         onpause: () => {
           this.setState(() => ({
             isPlaying: false
-          }));
+          }), () => this.context.updatePlayState('paused'));
         },
         onend: () => {
           this.setState(() => ({

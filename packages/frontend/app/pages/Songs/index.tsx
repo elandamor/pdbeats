@@ -40,7 +40,7 @@ class Songs extends PureComponent<{}, {}> {
 
             return (
               <OnDeckContext.Consumer>
-                {({ onDeck, setOnDeck }) => (
+                {({ onDeck, playState, setOnDeck }) => (
                   <ul className="c-tracks">
                     {
                       edges.map((edge: any) => {
@@ -52,6 +52,7 @@ class Songs extends PureComponent<{}, {}> {
                             current={onDeck.id === track.id}
                             data={track}
                             onClick={() => setOnDeck(track)}
+                            playState={playState}
                           />
                         )
                       })
