@@ -29,9 +29,20 @@ interface IState {
 class Provider extends React.Component<IProps, IState> {
   state = DEFAULT_STATE;
 
+  /**
+   * Resets state to DEFAULT_STATE
+   */
+  public reset = () => {
+    this.setState(DEFAULT_STATE);
+  }
+
+  /**
+   * Updates nowPlaying (onDeck) with a source
+   */
   public setOnDeck = (source: Track) => {
     const { onDeck } = this.state;
 
+    // @ts-ignore
     if (!source || source.id === onDeck.id) {
       return false;
     }
@@ -41,6 +52,9 @@ class Provider extends React.Component<IProps, IState> {
     return true;
   }
 
+  /**
+   * Updates the playback state of nowPlaying source in UI
+   */
   public updatePlayState = (playState: string) => {
     if (typeof(playState) !== 'string') {
       return false;
@@ -56,6 +70,7 @@ class Provider extends React.Component<IProps, IState> {
       <OnDeckContext.Provider
         value={{
           ...this.state,
+          reset: this.reset,
           setOnDeck: this.setOnDeck,
           updatePlayState: this.updatePlayState,
         }}

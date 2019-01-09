@@ -78,6 +78,7 @@ class Player extends PureComponent<IProps, IState> {
     this.onDeck = onDeck || {};
     this.playlist = playlist;
     this.index = 0;
+    this.context.reset();
 
     const defaultVolume = localStorage.getItem(LoSto__VolumeKey) || this.volumeMax;
     // @ts-ignore
