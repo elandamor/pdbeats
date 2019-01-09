@@ -1,3 +1,4 @@
+export { default as Album } from './Album';
 export { default as Button } from './Button';
 export { default as Controls } from './Controls';
 export { default as ErrorBoundary } from './ErrorBoundary';

@@ -38,7 +38,6 @@ class Albums extends PureComponent<{}, {}> {
             if (error) { return <div>An error occured...{debug(error)}</div> }
 
             const { albums: { edges } } = data;
-            debug({ data });
 
             return (
               <Grid
@@ -46,39 +45,41 @@ class Albums extends PureComponent<{}, {}> {
                 columns={2}
                 gap={12}
               >
-                {edges.map((edge: any) => {
-                  const { node: album } = edge;
+                {
+                  edges.map((edge: any) => {
+                    const { node: album } = edge;
 
-                  return (
-                    <Link
-                      key={album.id}
-                      to={{
-                        pathname: `/albums/${album.id}`,
-                      }}
-                    >
-                      <figure
-                        className="c-album"
+                    return (
+                      <Link
+                        key={album.id}
+                        to={{
+                          pathname: `/albums/${album.id}`,
+                        }}
                       >
-                        <Image
-                          cloudName={process.env.CLOUDINARY_BUCKET}
-                          publicId={`/pdbeats/covers/${album.artwork.url}`}
-                          height="160"
-                          width="160"
-                          crop="scale"
-                          fetchFormat="auto"
-                        />
-                        <figcaption>
-                          <div className="c-details">
-                            <h4>{album.name}</h4>
-                            <small className="a-releaseDate">
-                              {getYear(album.releaseDate)}
-                            </small>
-                          </div>
-                        </figcaption>
-                      </figure>
-                    </Link>
-                  );
-                }) }
+                        <figure
+                          className="c-album"
+                        >
+                          <Image
+                            cloudName={process.env.CLOUDINARY_BUCKET}
+                            publicId={`/pdbeats/covers/${album.artwork.url}`}
+                            height="160"
+                            width="160"
+                            crop="scale"
+                            fetchFormat="auto"
+                          />
+                          <figcaption>
+                            <div className="c-details">
+                              <h4>{album.name}</h4>
+                              <small className="a-releaseDate">
+                                {getYear(album.releaseDate)}
+                              </small>
+                            </div>
+                          </figcaption>
+                        </figure>
+                      </Link>
+                    );
+                  })
+                }
               </Grid>
             );
           }}

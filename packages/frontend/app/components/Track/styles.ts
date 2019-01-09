@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+const Wrapper = styled.li`
   align-items: center;
   color: #555;
   display: flex;
   font-size: 14px;
+  list-style-type: none;
   padding: 6px 12px;
   position: relative;
 
@@ -68,22 +69,6 @@ const Wrapper = styled.div`
     .c-cover__wrapper {
       transform: scale(0.9);
     }
-  }
-`;
-
-export const CurrentIndicator = styled.div`
-  align-items: center;
-  background-color: rgba(0,0,0,.675);
-  color: #fff;
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  position: absolute;
-  width: 40px;
-
-  svg {
-    height: 16px;
-    width: 16px;
   }
 `;
 
