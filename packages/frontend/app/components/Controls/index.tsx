@@ -1,9 +1,9 @@
 import React, { SFC } from 'react';
 import classNames from 'classnames';
-import { Pause, Play, FastForward } from 'react-feather';
 // Styles
 import Wrapper from './styles';
 import Button from '../Button';
+import Icon from '../Icon';
 
 /**
  * @render react
@@ -24,24 +24,28 @@ const Controls: SFC<IProps> = ({
   isPlaying,
   onChange: handleClick,
 }) => (
-  <Wrapper className={classNames('', className)}>
+  <Wrapper className={classNames('c-controls', className)}>
     <Button
       className={classNames('-prev')}
       onClick={() => handleClick('prev')}
     >
-      Prev
+      <Icon icon="fastBackward" viewBox="0 0 21 13" />
     </Button>
     <Button
       className={classNames(`-${isPlaying ? 'pause' : 'play'}`)}
       onClick={() => handleClick(isPlaying ? 'pause' : 'play')}
     >
-      { isPlaying ? <Pause /> : <Play /> }
+      {
+        isPlaying
+        ? <Icon icon="pause" viewBox="0 0 16 18" />
+        : <Icon icon="play" viewBox="0 0 20 22" />
+      }
     </Button>
     <Button
       className={classNames('-next')}
       onClick={() => handleClick('next')}
     >
-      <FastForward />
+      <Icon icon="fastForward" viewBox="0 0 21 13" />
     </Button>
   </Wrapper>
 );

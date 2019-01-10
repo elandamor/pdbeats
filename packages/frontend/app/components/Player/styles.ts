@@ -35,6 +35,39 @@ const Wrapper = styled.div`
       }
     }
   }
+
+  .c-btn--mute {
+    height: 40px;
+    width: 40px;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .c-nowPlaying {
+      flex: none;
+      width: 240px;
+
+      .c-details {
+        .a-name {
+          font-size: 14px;
+        }
+      }
+    }
+
+    .c-controls {
+      flex-basis: 100%;
+      justify-content: center;
+    }
+
+    .c-volumeBar {
+      display: flex;
+      margin-left: 8px;
+    }
+
+    .c-btn.-prev,
+    .c-btn--mute {
+      display: inline-block;
+    }
+  }
 `;
 
 export default Wrapper;

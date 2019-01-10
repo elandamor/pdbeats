@@ -4,15 +4,14 @@ const Wrapper = styled.div`
   align-items: center;
   display: flex;
   height: 40px;
-  left: 0;
   margin: 0 auto;
-  position: absolute;
-  right: 0;
-  width: 144px;
+  position: relative;
+  width: 100%;
 
   progress[value],
   input[type='range'] {
     appearance: none;
+    outline: none;
     width: 100%;
   }
 
@@ -27,7 +26,7 @@ const Wrapper = styled.div`
     }
 
     &::-webkit-progress-bar {
-      background-color: #EEEEEE;
+      background-color: #E4E6E9;
     }
 
     &::-webkit-progress-value {
@@ -42,7 +41,6 @@ const Wrapper = styled.div`
     position: absolute;
     right: 0;
     top: 0;
-    width: 100%;
     z-index: 1;
 
     &::-webkit-slider-thumb {
@@ -57,6 +55,7 @@ const Wrapper = styled.div`
   }
 
   @media screen and (min-width: 768px) {
+    margin: 0 24px;
     width: 144px;
 
     input[type='range'] {

@@ -156,36 +156,41 @@ class App extends Component<IProps, IState> {
                     <ErrorBoundary>
                       <Player playlist={upNext} />
                     </ErrorBoundary>
-                    <BottomSheet>
-                      <ErrorBoundary>
-                        <Navigation
-                          links={[
-                            {
-                              exact: true,
-                              href: '/',
-                              icon: <Home />,
-                              label: 'Home'
-                            },
-                            {
-                              href: '/albums',
-                              icon: <Grid />,
-                              label: 'Albums'
-                            },
-                            {
-                              href: '/playlists',
-                              icon: <List />,
-                              label: 'Playlists'
-                            },
-                            {
-                              href: '/songs',
-                              icon: <Music />,
-                              label: 'Songs'
-                            }
-                          ]}
-                          hideLabels
-                        />
-                      </ErrorBoundary>
-                    </BottomSheet>
+                    {
+                      // tslint:disable-next-line:no-magic-numbers
+                      width < 1024 && (
+                        <BottomSheet>
+                          <ErrorBoundary>
+                            <Navigation
+                              links={[
+                                {
+                                  exact: true,
+                                  href: '/',
+                                  icon: <Home />,
+                                  label: 'Home'
+                                },
+                                {
+                                  href: '/albums',
+                                  icon: <Grid />,
+                                  label: 'Albums'
+                                },
+                                {
+                                  href: '/playlists',
+                                  icon: <List />,
+                                  label: 'Playlists'
+                                },
+                                {
+                                  href: '/songs',
+                                  icon: <Music />,
+                                  label: 'Songs'
+                                }
+                              ]}
+                              hideLabels
+                            />
+                          </ErrorBoundary>
+                        </BottomSheet>
+                      )
+                    }
                   </Wrapper>
                 )}
               </OnDeckContext.Consumer>

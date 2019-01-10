@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   progress[value],
   input[type='range'] {
     appearance: none;
+    outline: none;
     width: 100%;
   }
 
@@ -25,7 +26,7 @@ const Wrapper = styled.div`
     }
 
     &::-webkit-progress-bar {
-      background-color: #EEEEEE;
+      background-color: #E4E6E9;
     }
 
     &::-webkit-progress-value {

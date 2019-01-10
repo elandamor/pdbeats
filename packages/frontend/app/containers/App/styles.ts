@@ -11,6 +11,12 @@ const Wrapper = styled.div`
     position: absolute;
     z-index: 4;
   }
+
+  @media screen and (min-width: 1024px) {
+    .c-player {
+      bottom: 0;
+    }
+  }
 `;
 
 export const Pages = styled.div`
