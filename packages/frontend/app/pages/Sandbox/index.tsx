@@ -2,12 +2,12 @@
  * Sandbox
  */
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 // Styles
 import Wrapper from './styles';
 
-class Sandbox extends PureComponent<{}, {}> {
+class Sandbox extends Component<{}, {}> {
   public render() {
     return (
       <Wrapper>

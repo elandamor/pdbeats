@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 // Styles
 import Wrapper, { Bar1, Bar2 } from './styles';
@@ -13,11 +13,11 @@ import Wrapper, { Bar1, Bar2 } from './styles';
 
 interface IProps {
   className?: string;
-  isLoading?: boolean;
+  loading?: boolean;
   pause?: boolean;
 }
 
-const Equalizer: SFC<IProps> = ({ className, pause }) => (
+const Equalizer: FC<IProps> = ({ className, pause }) => (
   <Wrapper
     className={classNames('c-equalizer', className, { '-paused': pause } )}
   >

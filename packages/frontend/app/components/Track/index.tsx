@@ -1,11 +1,13 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
-// @ts-ignore
 import { Image } from 'cloudinary-react';
 // Styles
-import Wrapper from './styles';
-import { secondsToTime } from '../../lib';
+import Wrapper, { Duration } from './styles';
+import { secondsToTime } from '../../utils';
 import Equalizer from '../Equalizer';
+import Spacer from '../Spacer';
+import Button from '../Button';
+import { Plus } from 'react-feather';
 
 /**
  * @render react
@@ -15,35 +17,43 @@ import Equalizer from '../Equalizer';
  * <Track />
  */
 
-interface IProps {
+export interface ITrackProps {
   className?: string;
   [key: string]: any;
 };
 
-const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) => (
+const Track: FC<ITrackProps> = ({
+  className,
+  current,
+  data,
+  onSelect: handleClick,
+  hideAlbumCover,
+  hideDuration,
+  hideTrackNumber,
+  ...rest
+}) => (
   <Wrapper
     className={classNames('c-track', className, {
       '-current': current,
       '-paused': current && rest.playState === 'paused',
     })}
-    onClick={() => handleClick}
     {...rest}
   >
     {
-      data.trackNumber && !rest.hideTrackNumber && (
+      data.trackNumber && !hideTrackNumber && (
         <span className="a-trackNumber">
-          {data.trackNumber}
+          {!current && data.trackNumber}
         </span>
       )
     }
     {
-      data.album && !rest.hideAlbumCover && (
+      data.album && !hideAlbumCover && (
         <div className="c-cover__wrapper">
           <Image
             cloudName={process.env.CLOUDINARY_BUCKET}
-            publicId={`/pdbeats/covers/${data.album.artwork.url}`}
-            height="40"
-            width="40"
+            publicId={data.album.artwork.url}
+            height={rest.coverSize || '40'}
+            width={rest.coverSize || '40'}
             crop="scale"
             fetchFormat="auto"
           />
@@ -55,7 +65,7 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
         <Equalizer pause={current && rest.playState === 'paused'} />
       )
     }
-    <div className="c-details">
+    <div className="c-details" onClick={handleClick}>
       <span className="a-name">
         {data.name}
         {
@@ -78,7 +88,7 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
           )
         }
       </span>
-      <br />
+      <Spacer spacing={2} />
       <small className="c-artists">
       {
         data.artists.map((artist: any) => (
@@ -91,15 +101,32 @@ const Track: SFC<IProps> = ({ className, current, data, handleClick, ...rest }) 
         )).reduce((prev: any, curr: any) => [prev, ', ', curr])
       }
       </small>
+      {
+        rest.duration
+        && (
+          <React.Fragment>
+            <Spacer spacing={8} />
+            <Duration>{rest.duration.current} / {rest.duration.total}</Duration>
+          </React.Fragment>
+        )
+      }
     </div>
+    <Button className="c-btn--collect" iconOnly icon={<Plus />} ml={1} />
     {
-      data.duration && !rest.hideDuration && (
-        <span className="a-duration">
-          {secondsToTime(data.duration)}
-        </span>
+      !hideDuration && (
+        <React.Fragment>
+          <Spacer spacing={16} vertical />
+          <Duration>{secondsToTime(data.duration)}</Duration>
+        </React.Fragment>
       )
     }
   </Wrapper>
 );
+
+Track.defaultProps = {
+  hideAlbumCover: true,
+  hideDuration: false,
+  hideTrackNumber: false,
+};
 
 export default Track;

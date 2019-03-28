@@ -2,67 +2,55 @@
  * Songs
  */
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-import { Query } from 'react-apollo';
 // Components
-import { LoadingBar, Track } from '../../components';
+import { Inner, Track, WrappedQuery } from '../../components';
 // Queries
 import getTracksGQL from '../../graphql/queries/getTracks.gql';
 // Styles
 import Wrapper from './styles';
 
-import { debug } from '../../lib';
 import { OnDeckContext } from '../../contexts/OnDeck.context';
+import { QueryContext } from '../../components/WrappedQuery';
 
-class Songs extends PureComponent<{}, {}> {
-  protected uploadField: any;
-  protected wrapper: any;
-
+class Songs extends Component<{}, {}> {
   public render() {
     return (
-      <Wrapper
-        ref={(c: any) => {
-          this.wrapper = c;
-        }}
-      >
+      <Wrapper>
         <Helmet>
           <title>Songs</title>
         </Helmet>
-        <Query
-          query={getTracksGQL}
-        >
-          {({ data, error, loading }) => {
-            if (loading) { return <LoadingBar isLoading /> }
-            if (error) { return <div>An error occured...{debug(error)}</div> }
+        <Inner>
+          <WrappedQuery query={getTracksGQL} fetchPolicy="cache-and-network">
+            <QueryContext.Consumer>
+              {({ tracks: { edges } }: any) => (
+                <OnDeckContext.Consumer>
+                  {({ onDeck, playState, setOnDeck }) => (
+                    <ul className="c-tracks">
+                      {
+                        edges.map((edge: any) => {
+                          const { node: track } = edge;
 
-            const { tracks: { edges } } = data;
-
-            return (
-              <OnDeckContext.Consumer>
-                {({ onDeck, playState, setOnDeck }) => (
-                  <ul className="c-tracks">
-                    {
-                      edges.map((edge: any) => {
-                        const { node: track } = edge;
-
-                        return (
-                          <Track
-                            key={track.id}
-                            current={onDeck.id === track.id}
-                            data={track}
-                            onClick={() => setOnDeck(track)}
-                            playState={playState}
-                          />
-                        )
-                      })
-                    }
-                  </ul>
-                )}
-              </OnDeckContext.Consumer>
-            );
-          }}
-        </Query>
+                          return (
+                            <Track
+                              key={track.id}
+                              current={onDeck.id === track.id}
+                              data={track}
+                              onClick={() => setOnDeck(track)}
+                              playState={playState}
+                              hideAlbumCover={false}
+                            />
+                          )
+                        })
+                      }
+                    </ul>
+                  )}
+                </OnDeckContext.Consumer>
+              )}
+            </QueryContext.Consumer>
+          </WrappedQuery>
+        </Inner>
       </Wrapper>
     );
   }

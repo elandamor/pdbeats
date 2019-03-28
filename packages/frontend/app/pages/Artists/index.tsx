@@ -2,80 +2,36 @@
  * Artists
  */
 
-import React, { PureComponent } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
-import { Query } from 'react-apollo';
-import { Link } from 'react-router-dom';
-// @ts-ignore
-import { Image } from 'cloudinary-react';
+import { RouteComponentProps } from 'react-router-dom';
 // Components
-import { LoadingBar } from '../../components';
-// Queries
-import getArtistsGQL from '../../graphql/queries/getArtists.gql';
+import { LoadingBar, Routes, Inner, Spacer } from '../../components';
+import { IRouteProps } from '../../components/Routes';
 // Styles
 import Wrapper from './styles';
+import GetArtists from '../../containers/GetArtists/Loadable';
 
-import { debug } from '../../lib';
+interface IProps extends RouteComponentProps {
+  routes: IRouteProps[];
+}
 
-class Artists extends PureComponent<{}, {}> {
-  protected uploadField: any;
-  protected wrapper: any;
-
+class Artists extends Component<IProps, {}> {
   public render() {
+    const { match, routes } = this.props;
+
     return (
-      <Wrapper
-        ref={(c: any) => {
-          this.wrapper = c;
-        }}
-      >
+      <Wrapper>
         <Helmet>
           <title>Artists</title>
         </Helmet>
-        <Query
-          query={getArtistsGQL}
-        >
-          {({ data, error, loading }) => {
-            if (loading) { return <LoadingBar isLoading /> }
-            if (error) { return <div>An error occured...{debug(error)}</div> }
-
-            debug({ data });
-
-            const { artists: { edges } } = data;
-
-            return (
-              <div className="c-artists">
-                {edges.map((edge: any) => {
-                  const { node: artist } = edge;
-
-                  return (
-                    <Link
-                      key={artist.id}
-                      to={`/artists/${artist.id}`}
-                    >
-                      <div className="c-artist">
-                        <div className="c-avatar__wrapper">
-                          {
-                            artist.avatar && (
-                              <Image
-                                cloudName={process.env.CLOUDINARY_BUCKET}
-                                publicId={`/pdbeats/avatars/${artist.avatar.url}`}
-                                height="40"
-                                width="40"
-                                crop="scale"
-                                fetchFormat="auto"
-                              />
-                            )
-                          }
-                        </div>
-                        <span className="a-artist__name">{artist.name}</span>
-                      </div>
-                    </Link>
-                  )
-                })}
-              </div>
-            );
-          }}
-        </Query>
+        <Inner>
+          { match.isExact && <GetArtists /> }
+          <Suspense fallback={<LoadingBar loading />}>
+            <Routes routes={routes} />
+          </Suspense>
+          <Spacer spacing={40} />
+        </Inner>
       </Wrapper>
     );
   }

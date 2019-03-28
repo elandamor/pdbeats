@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SFC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
@@ -21,7 +21,7 @@ interface IProps {
 const defaultVolumeMax = 10;
 const defaultVolume = 10;
 
-const VolumeBar: SFC<IProps> = ({
+const VolumeBar: FC<IProps> = ({
   className,
   volume = defaultVolume,
   volumeMax = defaultVolumeMax,

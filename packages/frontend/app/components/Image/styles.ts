@@ -1,31 +1,9 @@
-import styled, { keyframes } from 'styled-components';
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-`;
+import styled from "styled-components";
 
 const Wrapper = styled.img`
-  background-color: #e8e8e8;
+  background-color: ${({ theme }) => theme.colors.cardBorderColor};
   height: auto;
   width: 100%;
-
-  &.-lazy {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: none;
-    height: auto;
-    visibility: hidden;
-    width: 100%;
-  }
-
-  &.-lazy--loaded {
-    animation-duration: 3s;
-    animation-name: ${fadeIn};
-    visibility: visible;
-  }
 `;
 
 export default Wrapper;

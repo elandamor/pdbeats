@@ -1,4 +1,5 @@
 import styled , { keyframes } from 'styled-components';
+import { THEME } from '../../global-styles';
 
 const shiftRightwards = keyframes`
   0% {
@@ -19,7 +20,7 @@ const shiftRightwards = keyframes`
 `;
 
 const Wrapper = styled.div`
-  background: var(--brand-success);
+  background: ${THEME.colors.primaryLight};
   display: none;
   height: 2px;
   left: 0;

@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 
 import { ICONS } from './constants';
@@ -18,7 +18,7 @@ interface IProps {
  * <Icon />
  */
 
-const Icon: SFC<IProps> = ({
+const Icon: FC<IProps> = ({
   className,
   icon,
   // tslint:disable-next-line:no-magic-numbers

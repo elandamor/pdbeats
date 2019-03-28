@@ -1,35 +1,34 @@
 import styled from 'styled-components';
+import { THEME } from '../../global-styles';
+import { ITrackProps } from './index';
 
 const Wrapper = styled.li`
   align-items: center;
+  border-radius: 4px;
   color: #555;
   display: flex;
-  font-size: 14px;
+  font-size: ${THEME.fontSizes[1]}px;
   list-style-type: none;
-  padding: 6px 12px;
+  padding: 8px 12px;
   position: relative;
 
-  .a-trackNumber,
-  .a-duration {
-    flex: none;
-    font-size: 13px;
-  }
-
   .a-trackNumber {
+    flex: none;
+    font-size: ${THEME.fontSizes[2]}px;
     padding: 0 12px;
     text-align: left;
     width: 40px;
   }
 
   .c-cover__wrapper {
-    background-color: ${(props) => props.theme.palette.cardBorderColor};
-    border-radius: 3px;
+    background-color: ${(props) => props.theme.colors.cardBorderColor};
+    border-radius: 4px;
     flex: none;
-    height: 40px;
+    height: ${({ coverSize }: ITrackProps) => coverSize || '40'}px;
     margin-right: 12px;
     overflow: hidden;
     transition: transform .195s ease-out;
-    width: 40px;
+    width: ${({ coverSize }: ITrackProps) => coverSize || '40'}px;
   }
 
   img {
@@ -37,21 +36,23 @@ const Wrapper = styled.li`
   }
 
   .c-details {
+    cursor: pointer;
     flex-basis: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
+    z-index: 1;
   }
 
   .a-name {
-    color: #000;
-    font-size: 14px;
+    color: ${THEME.colors.black};
+    font-size: ${THEME.fontSizes[3]}px;
   }
 
   .c-artists {
-    font-size: 12px;
-    margin-top: 8px;
+    font-size: ${THEME.fontSizes[2]}px;
+    margin-top: ${THEME.space[1]}px;
   }
 
   .a-artist {
@@ -59,17 +60,33 @@ const Wrapper = styled.li`
     pointer-events: none;
   }
 
-  .a-duration {
-    padding: 0 12px;
+  .c-btn--collect {
+    border-radius: 100%;
+    height: 40px;
+    overflow: hidden;
+  }
+
+  &:after, &:before {
+    content: '';
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 0;
   }
 
   &.-current {
-    background-color: rgba(0,0,0,.125);
-
     .c-cover__wrapper {
       transform: scale(0.9);
     }
   }
+`;
+
+export const Duration = styled.div`
+  color: ${THEME.colors.blacks[5]};
+  flex: none;
+  font-size: ${THEME.fontSizes[1]}px;
 `;
 
 export default Wrapper;

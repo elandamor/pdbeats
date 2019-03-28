@@ -1,7 +1,7 @@
 import React from 'react';
 
-// import { makeDebugger } from '../lib';
-// const debug = makeDebugger('deck-context');
+import { makeDebugger } from '../utils';
+const debug = makeDebugger('OnDeckContext');
 
 interface Track {
   [key: string]: any;

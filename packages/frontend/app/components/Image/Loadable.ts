@@ -4,7 +4,6 @@
  *
  */
 
-import React from 'react';
+import React from "react";
 
-// @ts-ignore
-export default React.lazy(() => import('./index'));
+export default React.lazy(() => import("./index"));

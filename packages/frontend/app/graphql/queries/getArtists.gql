@@ -1,5 +1,5 @@
 query getArtists {
-  artists @client {
+  artists {
     edges {
       node {
         id

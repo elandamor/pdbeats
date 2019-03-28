@@ -2,88 +2,36 @@
  * Albums
  */
 
-import React, { PureComponent } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
-import { Query } from 'react-apollo';
-import { Link } from 'react-router-dom';
-import getYear from 'date-fns/get_year';
-// @ts-ignore
-import { Image } from 'cloudinary-react';
 // Components
-import { Grid, LoadingBar } from '../../components';
-// Queries
-import getAlbumsGQL from '../../graphql/queries/getAlbums.gql';
+import { LoadingBar, Inner, Routes, Spacer } from '../../components';
 // Styles
 import Wrapper from './styles';
+import GetAlbums from '../../containers/GetAlbums/Loadable';
+import { RouteComponentProps } from 'react-router-dom';
+import { IRouteProps } from '../../components/Routes';
 
-import { debug } from '../../lib';
+interface IProps extends RouteComponentProps {
+  routes: IRouteProps[];
+}
 
-class Albums extends PureComponent<{}, {}> {
-  protected uploadField: any;
-  protected wrapper: any;
-
+class Albums extends Component<IProps, {}> {
   public render() {
+    const { match, routes } = this.props;
+
     return (
-      <Wrapper
-        ref={(c: any) => {
-          this.wrapper = c;
-        }}
-      >
+      <Wrapper>
         <Helmet>
           <title>Albums</title>
         </Helmet>
-        <Query query={getAlbumsGQL}>
-          {({ data, error, loading }) => {
-            if (loading) { return <LoadingBar isLoading /> }
-            if (error) { return <div>An error occured...{debug(error)}</div> }
-
-            const { albums: { edges } } = data;
-
-            return (
-              <Grid
-                className="c-albums"
-                columns={2}
-                gap={12}
-              >
-                {
-                  edges.map((edge: any) => {
-                    const { node: album } = edge;
-
-                    return (
-                      <Link
-                        key={album.id}
-                        to={{
-                          pathname: `/albums/${album.id}`,
-                        }}
-                      >
-                        <figure
-                          className="c-album"
-                        >
-                          <Image
-                            cloudName={process.env.CLOUDINARY_BUCKET}
-                            publicId={`/pdbeats/covers/${album.artwork.url}`}
-                            height="160"
-                            width="160"
-                            crop="scale"
-                            fetchFormat="auto"
-                          />
-                          <figcaption>
-                            <div className="c-details">
-                              <h4>{album.name}</h4>
-                              <small className="a-releaseDate">
-                                {getYear(album.releaseDate)}
-                              </small>
-                            </div>
-                          </figcaption>
-                        </figure>
-                      </Link>
-                    );
-                  })
-                }
-              </Grid>
-            );
-          }}
-        </Query>
+        <Inner>
+          { match.isExact && <GetAlbums {...this.props} /> }
+          <Suspense fallback={<LoadingBar loading />}>
+            <Routes routes={routes} />
+          </Suspense>
+          <Spacer spacing={40} />
+        </Inner>
       </Wrapper>
     );
   }

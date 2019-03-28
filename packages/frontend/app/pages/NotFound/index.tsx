@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
+import { H3, Inner, GoBackButton, Spacer } from '../../components';
 
 /**
  * @render react
@@ -20,7 +21,7 @@ interface IState {
   [key: string]: any;
 }
 
-class NotFound extends PureComponent<IProps, IState> {
+class NotFound extends Component<IProps, IState> {
   state:IState = {}
 
   public render() {
@@ -32,7 +33,11 @@ class NotFound extends PureComponent<IProps, IState> {
           <title>NotFound</title>
           <meta name="description" content="Description of NotFound" />
         </Helmet>
-        <h1>404: Page not found</h1>
+        <Inner>
+          <GoBackButton />
+          <H3 mb={0}>Oops!</H3>
+          <p>The page you're looking for doesn't exist.</p>
+        </Inner>
       </Wrapper>
     );
   }

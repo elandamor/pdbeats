@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  padding: 6px 0;
-
   .c-tracks {
     margin: 0;
     padding: 0;
@@ -16,7 +14,7 @@ const Wrapper = styled.div`
     padding: 6px 12px;
 
     .c-cover__wrapper {
-      background-color: ${(props) => props.theme.palette.cardBorderColor};
+      background-color: ${(props) => props.theme.colors.cardBorderColor};
       height: 40px;
       margin-right: 12px;
       width: 40px;

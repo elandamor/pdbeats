@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
@@ -13,13 +13,13 @@ import Wrapper from './styles';
 
 interface IProps {
   className?: string;
-  isLoading?: boolean;
+  loading?: boolean;
 }
 
-const LoadingBar: SFC<IProps> = ({ className, isLoading }) => (
+const LoadingBar: FC<IProps> = ({ className, loading }) => (
   <Wrapper
     className={classNames('c-loadingBar', className, {
-      '-loading': isLoading,
+      '-loading': loading,
     })}
   />
 );

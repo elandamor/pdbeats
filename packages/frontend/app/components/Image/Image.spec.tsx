@@ -1,16 +1,19 @@
 // Image.spec.tsx
-import * as React from 'react';
-import * as renderer from 'react-test-renderer';
-import 'jest-styled-components';
+import * as React from "react";
+import { cleanup, render } from "react-testing-library";
+import { ThemeProvider } from "styled-components";
 
-import Image from './index';
+import Image from "./index";
+import { THEME } from "../../global-styles";
 
-describe('<Image />', () => {
-  it('should display an image', () => {
-    const component = renderer
-      .create(<Image src="../../images/icon-512x512.png" />)
-      .toJSON();
+afterEach(cleanup);
 
-    expect(component).toMatchSnapshot();
+describe("Image", () => {
+  it("should render an image", () => {
+    render(
+      <ThemeProvider theme={THEME}>
+        <Image src="../../images/icon-512x512.png" />
+      </ThemeProvider>
+    );
   });
 });

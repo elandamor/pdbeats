@@ -1,0 +1,14 @@
+fragment track on Album {
+  id
+  artists {
+    id
+    name
+  }
+  featuring {
+    id
+    name
+  }
+  name
+  duration
+  trackNumber
+}

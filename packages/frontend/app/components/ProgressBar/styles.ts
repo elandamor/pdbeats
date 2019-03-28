@@ -56,8 +56,10 @@ const Wrapper = styled.div`
 
   @media screen and (min-width: 768px) {
     input[type='range'] {
-      &::-webkit-slider-thumb {
-        display: block;
+      &:hover, &:active {
+        &::-webkit-slider-thumb {
+          display: block;
+        }
       }
     }
   }

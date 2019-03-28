@@ -5,17 +5,18 @@ import Measure from 'react-measure';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 // Components
-import { ErrorBoundary, Header , LoadingBar, Navigation, Player, Routes} from '../../components';
+import { ErrorBoundary, Header , LoadingBar, Navigation, Player, Routes, Sidebar} from '../../components';
 // Routes
-import routes from './routes';
+import routes from '../../routes';
 // Styles
-import GlobalStyles from '../../global-styles';
+import GlobalStyles, { THEME } from '../../global-styles';
 import Wrapper, { BottomSheet, Pages } from './styles';
 
 import OnDeckProvider, { OnDeckContext } from '../../contexts/OnDeck.context';
 import { Grid, Home, List, Music } from 'react-feather';
+import AuthenticatedUserProvider from '../../contexts/AuthenticatedUser.context';
 
-// import { makeDebugger } from '../../lib';
+// import { makeDebugger } from '../../utils';
 // const debug = makeDebugger('App');
 
 /* tslint:disable:no-magic-numbers */
@@ -38,18 +39,6 @@ export const breakpoints = (width: number) => {
   return 'v-unknown';
 };
 /* tslint:enable:no-magic-numbers */
-
-/* tslint:disable:object-literal-sort-keys */
-const themeLight = {
-  isDark: false,
-  palette: {
-    bodyBackground: '#FAFAFA',
-    brandPrimary: '#FFFFFF',
-    cardBackground: '#FFFFFF',
-    cardBorderColor: '#E4E6E9',
-  },
-};
-/* tslint:enable:object-literal-sort-keys */
 
 export interface IProps extends RouteComponentProps<any> {}
 
@@ -79,7 +68,7 @@ class App extends Component<IProps, IState> {
         height: 0,
         width: 0,
       },
-      theme: themeLight,
+      theme: THEME,
     };
 
     this.previousLocation = props.location;
@@ -131,70 +120,72 @@ class App extends Component<IProps, IState> {
           }}
         >
           {({ measureRef }) => (
-            <OnDeckProvider>
-              <OnDeckContext.Consumer>
-                {({ upNext }) => (
-                  <Wrapper
-                    className={classNames('c-app__container', breakpoints(width))}
-                    // @ts-ignore
-                    ref={measureRef}
-                  >
-                    <GlobalStyles />
-                    <ErrorBoundary>
-                      <Header />
-                    </ErrorBoundary>
-                    <Pages>
+            <AuthenticatedUserProvider>
+              <OnDeckProvider>
+                <OnDeckContext.Consumer>
+                  {({ upNext }) => (
+                    <Wrapper
+                      className={classNames('c-app__container', breakpoints(width))}
+                      // @ts-ignore
+                      ref={measureRef}
+                    >
+                      <GlobalStyles />
                       <ErrorBoundary>
-                        <Suspense fallback={<LoadingBar isLoading />}>
-                          <Routes
-                            location={isModal ? this.previousLocation : location}
-                            routes={routes}
-                          />
-                        </Suspense>
+                        <Sidebar />
                       </ErrorBoundary>
-                    </Pages>
-                    <ErrorBoundary>
-                      <Player playlist={upNext} />
-                    </ErrorBoundary>
-                    {
-                      // tslint:disable-next-line:no-magic-numbers
-                      width < 1024 && (
-                        <BottomSheet>
-                          <ErrorBoundary>
-                            <Navigation
-                              links={[
-                                {
-                                  exact: true,
-                                  href: '/',
-                                  icon: <Home />,
-                                  label: 'Home'
-                                },
-                                {
-                                  href: '/albums',
-                                  icon: <Grid />,
-                                  label: 'Albums'
-                                },
-                                {
-                                  href: '/playlists',
-                                  icon: <List />,
-                                  label: 'Playlists'
-                                },
-                                {
-                                  href: '/songs',
-                                  icon: <Music />,
-                                  label: 'Songs'
-                                }
-                              ]}
-                              hideLabels
+                      <Pages className="c-pages">
+                        <ErrorBoundary>
+                          <Suspense fallback={<LoadingBar loading />}>
+                            <Routes
+                              location={isModal ? this.previousLocation : location}
+                              routes={routes}
                             />
-                          </ErrorBoundary>
-                        </BottomSheet>
-                      )
-                    }
-                  </Wrapper>
-                )}
-              </OnDeckContext.Consumer>
-            </OnDeckProvider>
+                          </Suspense>
+                        </ErrorBoundary>
+                      </Pages>
+                      <ErrorBoundary>
+                        <Player playlist={upNext} />
+                      </ErrorBoundary>
+                      {
+                        // tslint:disable-next-line:no-magic-numbers
+                        width < 1024 && (
+                          <BottomSheet>
+                            <ErrorBoundary>
+                              <Navigation
+                                links={[
+                                  {
+                                    exact: true,
+                                    href: '/',
+                                    icon: <Home />,
+                                    label: 'Home'
+                                  },
+                                  {
+                                    href: '/albums',
+                                    icon: <Grid />,
+                                    label: 'Albums'
+                                  },
+                                  {
+                                    href: '/playlists',
+                                    icon: <List />,
+                                    label: 'Playlists'
+                                  },
+                                  {
+                                    href: '/songs',
+                                    icon: <Music />,
+                                    label: 'Songs'
+                                  }
+                                ]}
+                                hideLabels
+                              />
+                            </ErrorBoundary>
+                          </BottomSheet>
+                        )
+                      }
+                    </Wrapper>
+                  )}
+                </OnDeckContext.Consumer>
+              </OnDeckProvider>
+            </AuthenticatedUserProvider>
           )}
         </Measure>
       </ThemeProvider>

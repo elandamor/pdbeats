@@ -2,36 +2,38 @@
  * Home
  */
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
-// Components
-import { Navigation } from '../../components';
 // Styles
 import Wrapper from './styles';
+import { Inner, Flex, Card, Spacer } from '../../components';
 
-// import { debug } from '../../lib';
+// import { debug } from '../../utils';
 
-class Home extends PureComponent<{}, {}> {
-  protected wrapper: any;
-
+class Home extends Component<{}, {}> {
   public render() {
     return (
-      <Wrapper
-        ref={(c: any) => {
-          this.wrapper = c;
-        }}
-      >
+      <Wrapper>
         <Helmet>
           <title>Home</title>
         </Helmet>
-        <Navigation
-          links={[
-            { href: '/playlists', label: 'Playlists' },
-            { href: '/artists', label: 'Artists' },
-            { href: '/albums', label: 'Albums' },
-            { href: '/songs', label: 'Songs' },
-          ]}
-        />
+        <Inner>
+          <Flex>
+            <Flex marginRight={20}>
+              <Card image="../images" compact />
+            </Flex>
+            <Flex direction="column">
+              <Flex>
+                <Card image="../images" compact />
+              </Flex>
+              <Spacer spacing={20} />
+              <Flex>
+                <Card image="../images" compact />
+              </Flex>
+            </Flex>
+          </Flex>
+          <Spacer spacing={80} />
+        </Inner>
       </Wrapper>
     );
   }

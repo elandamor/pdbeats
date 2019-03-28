@@ -1,17 +1,19 @@
 import styled from 'styled-components';
+import { THEME } from '../../global-styles';
 
 const Wrapper = styled.div`
   align-items: center;
   background: rgba(255,255,255,.875);
+  backdrop-filter: blur(5px);
   display: flex;
-  min-height: 56px;
+  min-height: 80px;
   position: relative;
   width: 100%;
 
   .c-progressBar {
     left: 0;
     position: absolute;
-    top: -22px;
+    top: -21px;
   }
 
   .c-btn.-prev,
@@ -25,46 +27,31 @@ const Wrapper = styled.div`
     flex-basis: 100%;
     overflow: hidden;
 
-    .a-duration {
-      display: none;
-    }
-
     .c-details {
       .a-name {
-        font-size: 16px;
+        font-size: ${THEME.fontSizes[3]}px;
+      }
+
+      .c-artists {
+        font-size: ${THEME.fontSizes[2]}px;
+        margin-bottom: ${THEME.space[1]}px;
       }
     }
   }
 
   .c-btn--mute {
+    display: none;
     height: 40px;
     width: 40px;
   }
 
   @media screen and (min-width: 1024px) {
-    .c-nowPlaying {
-      flex: none;
-      width: 240px;
-
-      .c-details {
-        .a-name {
-          font-size: 14px;
-        }
-      }
-    }
-
-    .c-controls {
-      flex-basis: 100%;
-      justify-content: center;
-    }
-
     .c-volumeBar {
       display: flex;
       margin-left: 8px;
     }
 
-    .c-btn.-prev,
-    .c-btn--mute {
+    .c-btn.-prev {
       display: inline-block;
     }
   }

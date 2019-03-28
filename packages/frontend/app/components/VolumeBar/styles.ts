@@ -47,6 +47,7 @@ const Wrapper = styled.div`
       appearance: none;
       background: #ffffff;
       border: thin solid #000000;
+      display: none;
       height: 16px;
       width: 16px;
       border-radius: 48px;
@@ -59,8 +60,10 @@ const Wrapper = styled.div`
     width: 144px;
 
     input[type='range'] {
-      &::-webkit-slider-thumb {
-        display: block;
+      &:hover, &:active {
+        &::-webkit-slider-thumb {
+          display: block;
+        }
       }
     }
   }

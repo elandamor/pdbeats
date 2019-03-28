@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SFC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
@@ -21,7 +21,7 @@ interface IProps {
 const defaultProgressMax = 100;
 const defaultProgress = 0;
 
-const ProgressBar: SFC<IProps> = ({
+const ProgressBar: FC<IProps> = ({
   className,
   progress = defaultProgress,
   progressMax = defaultProgressMax,

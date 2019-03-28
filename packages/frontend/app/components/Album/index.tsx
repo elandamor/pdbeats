@@ -1,20 +1,24 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
-import { Query } from 'react-apollo';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import getYear from 'date-fns/get_year';
-// @ts-ignore
 import { Image } from 'cloudinary-react';
+import { Edit2, Plus } from 'react-feather';
+import { Helmet } from 'react-helmet';
 // Components
-import { LoadingBar, Track } from '../../components';
-// Queries
-import getAlbumGQL from '../../graphql/queries/getAlbum.gql';
+import Flex from '../Flex';
+import Track from '../../components/Track';
 // Styles
-import Wrapper, { Tracks } from './styles';
+import Wrapper, { Actions, Details, Metadata, Tracks } from './styles';
 
+import { AuthenticatedUserContext } from '../../contexts/AuthenticatedUser.context';
 import { OnDeckContext } from '../../contexts/OnDeck.context';
 
-import { debug } from '../../lib';
+import Button from '../Button';
+import Icon from '../Icon';
+import H4 from '../H4';
+import H6 from '../H6';
+import Spacer from '../Spacer';
 
 /**
  * @render react
@@ -24,100 +28,127 @@ import { debug } from '../../lib';
  * <Album />
  */
 
-interface IProps {
+interface IAlbumProps extends RouteComponentProps {
   className?: string;
-  id: string;
+  data: any;
 };
 
-const Album: SFC<IProps> = ({ className, id: albumID }) => (
-  <Wrapper
-    key={albumID}
-    className={classNames('c-album', className)}
-  >
-    <Query
-      query={getAlbumGQL}
-      variables={{
-        id: albumID,
-      }}
-    >
-      {({ data, error, loading }) => {
-        if (loading) { return <LoadingBar isLoading /> }
-        if (error) { return <div>An error occured...{debug(error)}</div> }
-
-        const { album } = data;
-
-        return (
-          <React.Fragment>
-            <header>
-              <Image
-                cloudName={process.env.CLOUDINARY_BUCKET}
-                publicId={`/pdbeats/covers/${album.artwork.url}`}
-                height="80"
-                width="80"
-                crop="scale"
-                fetchFormat="auto"
-              />
-              <div className="c-details">
-                <h3>{album.name}</h3>
-                <h4>
-                  {album.artists.map((artist: any) => (
-                    <span
-                      key={artist.id}
-                      className="a-artist"
-                    >
-                      <Link to={`/artists/${artist.id}`}>
-                        {artist.name}
-                      </Link>
-                    </span>
-                  )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
-                </h4>
-                {
-                  album.genres && album.genres.length > 0 && (
-                    <React.Fragment>
-                      <span className="c-genres">
-                      {
-                        album.genres.map((genre: string) => (
-                          <small className="a-genre">
-                            {genre}
-                          </small>
-                        )).reduce((prev: any, curr: any) => [prev, ', ', curr])
-                      }
+const Album: FC<IAlbumProps> = ({ className, data: album, match }) => (
+  <Wrapper className={classNames('c-album', className)}>
+    <AuthenticatedUserContext.Consumer>
+      {({ isAdmin }) => (
+        <Flex>
+          <Helmet title={`${album.name}`} />
+          <Flex marginRight={32} size="none">
+            <Image
+              cloudName={process.env.CLOUDINARY_BUCKET}
+              publicId={album.artwork.url}
+              height="400"
+              width="400"
+              crop="scale"
+              fetchFormat="auto"
+            />
+          </Flex>
+          <Flex>
+            <Flex direction="column">
+              <header>
+                <Details>
+                  <H4>{album.name}</H4>
+                  <H6>
+                    <span>by&nbsp;</span>
+                    {album.artists.map((artist: any) => (
+                      <span
+                        key={artist.id}
+                        className="a-artist"
+                      >
+                        <Link to={`/artists/${artist.id}`}>
+                          {artist.name}
+                        </Link>
                       </span>
-                      &nbsp;
-                      <span>&bull;</span>
-                      &nbsp;
-                    </React.Fragment>
-                  )
-                }
-                <small className="a-releaseDate">
-                  {getYear(album.releaseDate)}
-                </small>
-              </div>
-            </header>
-            <section>
-              <OnDeckContext.Consumer>
-                {({ onDeck, playState, setOnDeck }) => (
-                  <Tracks>
+                    )).reduce((prev: any, curr: any) => [prev, ', ', curr])}
+                  </H6>
+                  <Metadata>
                     {
-                      album.tracks.map((track: any) => (
-                        <Track
-                          key={track.id}
-                          current={onDeck.id === track.id}
-                          data={track}
-                          onClick={() => setOnDeck(track)}
-                          hideAlbumCover
-                          playState={playState}
-                        />
-                      ))
+                      album.genres && album.genres.length > 0 && (
+                        <React.Fragment>
+                          <span className="c-genres">
+                          {
+                            album.genres.map((genre: string) => (
+                              <small className="a-genre">
+                                {genre}
+                              </small>
+                            )).reduce((prev: any, curr: any) => [prev, ', ', curr])
+                          }
+                          </span>
+                          &nbsp;
+                          <span>&bull;</span>
+                          &nbsp;
+                        </React.Fragment>
+                      )
                     }
-                  </Tracks>
-                )}
-              </OnDeckContext.Consumer>
-            </section>
-          </React.Fragment>
-        );
-      }}
-    </Query>
+                    <small className="a-releaseDate">
+                      {getYear(album.releaseDate)}
+                    </small>
+                  </Metadata>
+                </Details>
+                <Actions size="none">
+                  <Button
+                    className="c-btn--collect"
+                    icon={<Plus />}
+                    iconSize={24}
+                    iconOnly
+                    mr={1}
+                  />
+                  <Button
+                    className="c-btn--play"
+                    icon={<Icon icon="play" viewBox="0 0 20 22" />}
+                    iconOnly
+                    raised
+                  />
+                  {
+                    isAdmin && (
+                      <Link to={`${match.url}/edit`}>
+                        <Button
+                          className="c-btn--edit"
+                          icon={<Edit2 />}
+                          iconOnly
+                        />
+                      </Link>
+                    )
+                  }
+                </Actions>
+              </header>
+              <Spacer spacing={24} />
+              <section>
+                <OnDeckContext.Consumer>
+                  {({ onDeck, playState, setOnDeck }) => (
+                    <Tracks>
+                      {
+                        album.tracks.map((track: any) => (
+                          <Track
+                            key={track.id}
+                            current={onDeck.id === track.id}
+                            data={track}
+                            onSelect={() => setOnDeck(Object.assign(
+                              {}, track, {
+                                album: {
+                                  artwork: {...album.artwork}
+                                }
+                              }
+                            ))}
+                            playState={playState}
+                          />
+                        ))
+                      }
+                    </Tracks>
+                  )}
+                </OnDeckContext.Consumer>
+              </section>
+            </Flex>
+          </Flex>
+        </Flex>
+      )}
+    </AuthenticatedUserContext.Consumer>
   </Wrapper>
 );
 

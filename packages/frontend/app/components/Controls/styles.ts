@@ -11,10 +11,6 @@ const Wrapper = styled.div`
   .c-btn {
     height: 40px;
     width: 40px;
-
-    &.-next {
-      margin-right: 8px;
-    }
   }
 `;
 

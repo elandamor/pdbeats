@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
@@ -15,8 +15,8 @@ interface IProps {
   className?: string;
 };
 
-const Header: SFC<IProps> = ({ className }) => (
-  <Wrapper className={classNames('', className)} />
+const Header: FC<IProps> = ({ className }) => (
+  <Wrapper className={classNames('c-header', className)} />
 );
 
 export default Header;

@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import classNames from 'classnames';
 import { Howl, Howler } from 'howler';
 import { Volume, Volume1, Volume2, VolumeX } from 'react-feather';
 // Styles
 import Wrapper from './styles';
-import { secondsToTime } from '../../lib';
+import { secondsToTime } from '../../utils';
 
 import Button from '../Button';
 import Controls from '../Controls';
@@ -14,9 +14,10 @@ import VolumeBar from '../VolumeBar';
 
 import { OnDeckContext } from '../../contexts/OnDeck.context';
 
-import { debug } from '../../lib';
+import { debug } from '../../utils';
 
 import * as audio from '!file-loader?name=[name].[ext]!../../data/kygo-happy-now.opus';
+import Flex from '../Flex';
 
 const LoSto__VolumeKey = 'pdDB__volume';
 
@@ -45,7 +46,7 @@ interface IState {
  * <Player playlist={PLAYLIST} />
  */
 
-class Player extends PureComponent<IProps, IState> {
+class Player extends Component<IProps, IState> {
   protected componentIsMounted: boolean;
   protected index: number;
   protected onDeck: object;
@@ -114,64 +115,62 @@ class Player extends PureComponent<IProps, IState> {
   }
 
   public render() {
-    const { className } = this.props;
+    const { className, ...rest } = this.props;
     const { currentlyPlayingType, nowPlaying } = this.state;
 
     return (
       <Wrapper
         className={classNames('c-player', className)}
         data-type={currentlyPlayingType}
+        {...rest}
       >
         <ProgressBar
           onChange={this.handleChange}
           progress={this.state.progress}
         />
-        <div className="c-nowPlaying">
-          {
-            nowPlaying.id && (
-              <Track
-                key={nowPlaying.id}
-                data={nowPlaying}
-                onClick={() => null}
-                hideDuration
-                hideTrackNumber
-              />
-            )
-          }
-        </div>
-        <div>
-          <span className="a-time -current">{secondsToTime(this.state.nowPlayingSeek || 0)}</span>
-          <span className="a-time -duration">{secondsToTime(this.state.nowPlayingDuration)}</span>
-        </div>
-        <Controls
-          isPlaying={this.state.isPlaying}
-          onChange={(action) => this.handleControls(action)}
-        />
-        <Button
-          className={classNames('c-btn--mute', {
-            '-muted': this.state.isMuted,
-          })}
-          onClick={() => this.toggleMute()}
-        >
-        {
-          this.state.isMuted && <VolumeX />
-        }
-        {
-          !this.state.isMuted && this.state.volume < 1 && <Volume />
-        }
-        {
-          !this.state.isMuted && this.state.volume >= 1 &&
-          this.state.volume <= this.volumeMid && <Volume1 />
-        }
-        {
-          !this.state.isMuted && this.state.volume > this.volumeMid &&
-          <Volume2 />
-        }
-        </Button>
-        <VolumeBar
-          onChange={this.handleChange}
-          volume={this.state.volume}
-        />
+        <Flex>
+          <Flex size="none" width="320px">
+            <div className="c-nowPlaying">
+              {
+                nowPlaying.id && (
+                  <Track
+                    key={nowPlaying.id}
+                    coverSize={64}
+                    data={nowPlaying}
+                    duration={{
+                      current: secondsToTime(this.state.nowPlayingSeek || 0),
+                      total: secondsToTime(this.state.nowPlayingDuration),
+                    }}
+                    hideAlbumCover={false}
+                    hideDuration
+                    hideTrackNumber
+                  />
+                )
+              }
+            </div>
+          </Flex>
+          <Flex justify="center" size={8}>
+            <Controls
+              isPlaying={this.state.isPlaying}
+              onChange={(action) => this.handleControls(action)}
+            />
+          </Flex>
+          <Flex align="center" justify="flex-end" size="none" width="320px">
+            <Button
+              className={classNames('c-btn--mute', {
+                '-muted': this.state.isMuted,
+              })}
+              onClick={() => this.toggleMute()}
+              iconOnly
+              icon={this.renderVolumeIcon()}
+              iconSize={24}
+            />
+            <VolumeBar
+              onChange={this.handleChange}
+              volume={this.state.volume}
+            />
+          </Flex>
+        </Flex>
       </Wrapper>
     );
   }
@@ -192,6 +191,15 @@ class Player extends PureComponent<IProps, IState> {
       Howler.volume(value / this.volumeMax);
       localStorage.setItem(LoSto__VolumeKey, value);
     }
+  }
+
+  private renderVolumeIcon = () => {
+    if (this.state.isMuted) return <VolumeX />;
+    if (!this.state.isMuted && this.state.volume < 1) return <Volume />;
+    if (!this.state.isMuted && this.state.volume >= 1 &&
+      this.state.volume <= this.volumeMid) return <Volume1 />;
+    if (!this.state.isMuted && this.state.volume > this.volumeMid) return <Volume2 />;
+    return <Volume />;
   }
 
   /**

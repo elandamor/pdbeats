@@ -1,0 +1,7 @@
+#import "../fragments/album.gql"
+
+mutation createAlbum($input: AlbumCreatePayload!) {
+  album: createAlbum(input: $input) {
+    ...album
+  }
+}

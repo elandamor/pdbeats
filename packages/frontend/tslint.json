@@ -1,25 +1,15 @@
 {
   "defaultSeverity": "error",
-  "extends": [
-    "tslint-config-airbnb-base",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint-config-airbnb-base", "tslint-config-prettier"],
   "jsRules": {},
   "linterOptions": {
-    "exclude": [
-      "node_modules/**/*.ts",
-      "api/src/generated/*.ts"
-    ]
+    "exclude": ["node_modules/**/*.ts", "api/src/generated/*.ts"]
   },
   "rules": {
     "import-name": false,
+    "no-magic-numbers": [true, {"ignore-jsx": true}],
     "no-unused-variable": false,
-    "ordered-imports": [
-      true,
-      {
-        "import-sources-order": "any"
-      }
-    ],
+    "ordered-imports": [true, { "import-sources-order": "any" }],
     "quotemark": [true, "single", "jsx-double"],
     "ter-arrow-parens": [true, "always"],
     "variable-name": [true, "ban-keywords", "allow-pascal-case"]

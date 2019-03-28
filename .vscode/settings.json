@@ -8,8 +8,8 @@
   },
   "editor.fontFamily": "Fira Code",
   "editor.fontLigatures": true,
-  "editor.fontSize": 15,
-  "editor.fontWeight": "400",
+  "editor.fontSize": 17,
+  "editor.fontWeight": "500",
   "typescript.tsdk": "node_modules/typescript/lib",
   "[javascript]": {
     "editor.foldingStrategy": "indentation"
