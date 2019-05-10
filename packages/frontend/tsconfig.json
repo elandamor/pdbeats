@@ -8,7 +8,7 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "app",
+    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": false,
@@ -18,10 +18,10 @@
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "typeRoots": ["node_modules/@types", "app/typings"]
+    "typeRoots": ["node_modules/@types", "src/@types"]
   },
   "include": [
-    "app/**/*",
+    "src/**/*",
   ],
   "exclude": [
     "build",
