@@ -7,7 +7,7 @@ import { onError } from 'apollo-link-error';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-import { formatError, formatMessage } from '../utils';
+import { formatError, formatMessage } from './utils';
 
 import introspectionQueryResultData from './fragmentTypes';
 
@@ -19,7 +19,7 @@ const cache = new InMemoryCache({ fragmentMatcher });
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: 'http://192.168.1.101:4000'
+  uri: 'http://localhost:4000'
 });
 
 // Create a WebSocket link:

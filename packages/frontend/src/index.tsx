@@ -11,17 +11,14 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 
-import 'sanitize.css/sanitize.css';
-
 // Import apollo-client
-import client from './configs/apollo';
+import client from './apollo.config';
 
 // Import root app
 import App from './containers/App';
 
 // Load the favicon and the .htaccess file
 import '!file-loader?name=[name].[ext]!./images/favicon.ico';
-import 'file-loader?name=[name].[ext]!./.htaccess';
 
 const MOUNT_NODE = document.getElementById('app');
 
