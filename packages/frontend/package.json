@@ -57,6 +57,6 @@
   "devDependencies": {
     "@types/howler": "2.1.0",
     "@types/styled-system": "4.0.0",
-    "pd-react-scripts": "1.2.0"
+    "pd-react-scripts": "2.1.0"
   }
 }
