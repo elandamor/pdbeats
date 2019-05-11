@@ -1,17 +1,12 @@
 import React, { FC } from 'react';
-import { Query } from 'react-apollo';
-import { DocumentNode } from 'graphql';
+import { Query, QueryProps, QueryResult } from 'react-apollo';
 
 import LoadingBar from '../LoadingBar';
 
-interface IWrappedQueryProps {
-  children: React.ReactNode;
-  fetchPolicy?: string;
-  query: DocumentNode;
-  variables?: object;
+interface IWrappedQueryProps extends QueryProps {
+  loader?: React.ReactNode;
+  overrideStates?: boolean;
 };
-
-export const QueryContext = React.createContext({ data: {} });
 
 /**
  * @render react
@@ -22,31 +17,21 @@ export const QueryContext = React.createContext({ data: {} });
  */
 
 const WrappedQuery: FC<IWrappedQueryProps> = ({ children, ...rest }) => (
-  // @ts-ignore
   <Query {...rest}>
-    {({ data, error, loading }) => {
-      if (loading) return <LoadingBar loading />;
-      if (error) return <span>{`Error!: ${error}`}</span>;
+    {(result: QueryResult) => {
+      if (!rest.overrideStates) {
+        if (result.loading) { return rest.loader || <LoadingBar /> };
+        if (result.error) return <span>{`Error!: ${result.error}`}</span>;
+      }
 
-      return (
-        <QueryContext.Provider value={data}>
-          {
-            React.Children.map(children,
-              (child: React.ReactChild, index: number) => {
-                if (React.isValidElement(child)) {
-                  return React.cloneElement(child, {
-                    ...data, key: `query_data_${index}`
-                  });
-                }
-
-                return child;
-              }
-            )
-          }
-        </QueryContext.Provider>
-      )
+      return children(result);
     }}
   </Query>
 );
+
+WrappedQuery.defaultProps = {
+  loader: undefined,
+  overrideStates: false,
+};
 
 export default WrappedQuery;
