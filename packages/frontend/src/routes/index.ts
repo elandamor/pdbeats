@@ -1,8 +1,8 @@
 // tslint:disable:object-literal-sort-keys
-import { Albums, Artists, Home, NotFound, Sandbox, Songs } from './pages';
-import { AddAlbum, EditAlbum, GetAlbum, GetArtist } from './containers';
+import { Albums, Artists, Home, NotFound, Songs } from './routes';
+import { AddAlbum, EditAlbum, GetAlbum, GetArtist } from '../containers';
 
-import { IRouteProps } from './components/Routes';
+import { IRouteProps } from '../components/Routes';
 
 const routes: IRouteProps[] = [
   {
@@ -38,9 +38,6 @@ const routes: IRouteProps[] = [
         component: GetArtist,
       },
     ]
-  }, {
-    path: '/sandbox',
-    component: Sandbox,
   }, {
     exact: true,
     path: '/songs',

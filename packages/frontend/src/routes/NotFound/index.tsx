@@ -3,7 +3,8 @@ import { Helmet } from 'react-helmet';
 import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
-import { H3, Inner, GoBackButton, Spacer } from '../../components';
+import { GoBackButton, Inner } from '../../components';
+import { H3 } from '../../typography';
 
 /**
  * @render react
