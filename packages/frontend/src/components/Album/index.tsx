@@ -16,9 +16,8 @@ import { OnDeckContext } from '../../contexts/OnDeck.context';
 
 import Button from '../Button';
 import Icon from '../Icon';
-import H4 from '../H4';
-import H6 from '../H6';
 import Spacer from '../Spacer';
+import { H4, H6 } from '../../typography';
 
 /**
  * @render react

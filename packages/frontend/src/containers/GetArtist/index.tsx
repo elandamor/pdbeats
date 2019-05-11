@@ -8,7 +8,7 @@ import { Query } from 'react-apollo';
 import getYear from 'date-fns/get_year';
 import { Link } from 'react-router-dom';
 // Components
-import { Grid, LoadingBar, GoBackButton, H3, Banner, Card, Spacer } from '../../components';
+import { Grid, LoadingBar, GoBackButton, Banner, Card, Spacer } from '../../components';
 // Queries
 import getArtistGQL from '../../graphql/queries/getArtist.gql';
 // Styles
@@ -16,6 +16,7 @@ import Wrapper from './styles';
 
 import { debug } from '../../utils';
 import { IMG_BASE_URL } from '../../constants';
+import { H3 } from '../../typography';
 
 class GetArtist extends Component<{}, {}> {
   public render() {

@@ -2,7 +2,7 @@ import React, { FC, Suspense } from 'react';
 import { Helmet } from 'react-helmet';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 // Components
-import { Album, Banner, GoBackButton, H3, LoadingBar, Routes, Spacer } from '../../components';
+import { Album, Banner, GoBackButton, LoadingBar, Routes, Spacer } from '../../components';
 // Queries
 import getAlbumGQL from '../../graphql/queries/getAlbum.gql';
 // Styles
@@ -10,6 +10,7 @@ import Wrapper from './styles';
 
 import WrappedQuery, { QueryContext } from '../../components/WrappedQuery';
 import { IRouteProps } from '../../components/Routes';
+import { H3 } from '../../typography';
 
 interface IGetAlbumProps extends RouteComponentProps {
   routes: IRouteProps[];
