@@ -1,24 +1,24 @@
 import styled, { css } from 'styled-components';
 import { space } from 'styled-system';
 import { IButtonProps } from './index';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled.button`
   ${space};
   align-items: center;
   background: transparent;
   border: none;
-  border-radius: ${THEME.space[1] / 2}px;
+  border-radius: ${theme.space[1] / 2}px;
   cursor: ${({ disabled }: IButtonProps) => disabled ? 'not-allowed' : 'pointer'};
   display: flex;
-  font-size: ${THEME.fontSizes[1]}px;
+  font-size: ${theme.fontSizes[1]}px;
   justify-content: center;
   letter-spacing: .0892857143em;
-  min-height: ${THEME.space[4] + (THEME.space[1] / 2)}px;
-  min-width: ${THEME.space[8]}px;
+  min-height: ${theme.space[4] + (theme.space[1] / 2)}px;
+  min-width: ${theme.space[8]}px;
   opacity: ${({ disabled, raised }: IButtonProps) => raised && disabled ? '0.38' : '1'};
   outline: none;
-  padding: ${THEME.space[1]}px;
+  padding: ${theme.space[1]}px;
   position: relative;
   text-transform: uppercase;
   z-index: 1;
@@ -39,13 +39,13 @@ const Wrapper = styled.button`
 
     ${({ icon, iconPosition }: IButtonProps) =>
       icon && iconPosition !== 'right' && css`
-        margin-left: ${THEME.space[1]}px;
+        margin-left: ${theme.space[1]}px;
       `
     };
 
     ${({ icon, iconPosition }: IButtonProps) =>
       icon && iconPosition === 'right' && css`
-        margin-right: ${THEME.space[1]}px;
+        margin-right: ${theme.space[1]}px;
       `
     };
   }
@@ -64,13 +64,13 @@ const Wrapper = styled.button`
     &:focus {
       &:before {
         ${({ raised }: IButtonProps) => !raised && css`
-          background-color: ${THEME.colors.blacks[3]};
+          background-color: ${theme.colors.blacks[3]};
         `};
       }
 
       &:after {
         ${({ raised }: IButtonProps) => raised && css`
-          background-color: ${THEME.colors.whites[3]};
+          background-color: ${theme.colors.whites[3]};
         `};
       }
     }
@@ -78,54 +78,54 @@ const Wrapper = styled.button`
     &:hover {
       &:before {
         ${({ raised }: IButtonProps) => !raised && css`
-          background-color: ${THEME.colors.blacks[2]};
+          background-color: ${theme.colors.blacks[2]};
         `};
       }
 
       &:after {
         ${({ raised }: IButtonProps) => raised && css`
-          background-color: ${THEME.colors.blacks[2]};
+          background-color: ${theme.colors.blacks[2]};
         `};
       }
     }
   }
 
   ${({ outlined }: IButtonProps) => outlined && css`
-    border: ${THEME.borders[1]} ${THEME.colors.blacks[3]};
-    padding: ${THEME.space[1]}px ${THEME.space[2]}px;
+    border: ${theme.borders[1]} ${theme.colors.blacks[3]};
+    padding: ${theme.space[1]}px ${theme.space[2]}px;
   `};
 
   ${({ backgroundColor, raised, textColor }: IButtonProps) => raised && css`
-    background-color: ${backgroundColor || THEME.colors.primary};
+    background-color: ${backgroundColor || theme.colors.primary};
     box-shadow:
-      0 3px 1px -2px ${THEME.colors.blacks[4]},
-      0 2px 2px 0 ${THEME.colors.blacks[3]},
-      0 1px 5px 0 ${THEME.colors.blacks[3]};
-    color: ${textColor || THEME.colors.white};
-    padding: ${THEME.space[1]}px ${THEME.space[2]}px;
+      0 3px 1px -2px ${theme.colors.blacks[4]},
+      0 2px 2px 0 ${theme.colors.blacks[3]},
+      0 1px 5px 0 ${theme.colors.blacks[3]};
+    color: ${textColor || theme.colors.white};
+    padding: ${theme.space[1]}px ${theme.space[2]}px;
   `};
 
   ${({ icon, iconPosition }: IButtonProps) =>
     icon && iconPosition !== 'right'  && css`
-      padding-left: ${THEME.space[1] / 2}px;
+      padding-left: ${theme.space[1] / 2}px;
     `
   };
 
   ${({ icon, iconPosition }: IButtonProps) =>
     icon && iconPosition === 'right'  && css`
-      padding-right: ${THEME.space[1] / 2}px;
+      padding-right: ${theme.space[1] / 2}px;
     `
   };
 
   ${({ icon, iconPosition, outlined, raised }: IButtonProps) =>
     icon && iconPosition !== 'right' && (outlined || raised) && css`
-      padding-left: ${THEME.space[1] + (THEME.space[1] / 2)}px;
+      padding-left: ${theme.space[1] + (theme.space[1] / 2)}px;
     `
   };
 
   ${({ icon, iconPosition, outlined, raised }: IButtonProps) =>
     icon && iconPosition === 'right' && (outlined || raised) && css`
-      padding-right: ${THEME.space[1] + (THEME.space[1] / 2)}px;
+      padding-right: ${theme.space[1] + (theme.space[1] / 2)}px;
     `
   };
 

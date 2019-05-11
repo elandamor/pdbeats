@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import Button from '../Button';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled(Button)`
   position: sticky;
   top: 0;
   transform: translateX(-88px);
-  background-color: ${THEME.colors.sidebarBackground};
+  background-color: ${theme.colors.sidebarBackground};
   border-radius: 100%;
   height: 56px;
   margin-bottom: -56px;

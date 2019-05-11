@@ -1,14 +1,14 @@
 import styled, { css } from 'styled-components';
 import { IInputProps } from './index';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled.div`
-  margin-bottom: ${THEME.space[2]}px;
+  margin-bottom: ${theme.space[2]}px;
   position: relative;
   width: 100%;
 
   .a-label {
-    font-size: ${THEME.fontSizes[1]}px;
+    font-size: ${theme.fontSizes[1]}px;
 
     &.sr-only {
       height: 0;
@@ -19,12 +19,12 @@ const Wrapper = styled.div`
 
   .a-checkbox,
   .a-radio {
-    border: ${THEME.borders[2]} #969696;
+    border: ${theme.borders[2]} #969696;
     border-radius: 50%;
     cursor: pointer;
     display: inline-block;
     height: 1.25rem;
-    margin-right: ${THEME.space[1]}px;
+    margin-right: ${theme.space[1]}px;
     position: relative;
     vertical-align: middle;
     width: 1.25rem;
@@ -62,12 +62,12 @@ const Wrapper = styled.div`
 
   input, textarea {
     background: transparent;
-    border: ${THEME.borders[1]} #aaaaaa;
-    border-radius: ${THEME.space[1] / 2}px;
+    border: ${theme.borders[1]} #aaaaaa;
+    border-radius: ${theme.space[1] / 2}px;
     display: block;
-    font-size: ${THEME.fontSizes[1]}px;
+    font-size: ${theme.fontSizes[1]}px;
     min-height: 36px;
-    padding: ${THEME.space[1]}px ${THEME.space[1] + THEME.space[1] / 2}px;
+    padding: ${theme.space[1]}px ${theme.space[1] + theme.space[1] / 2}px;
     position: relative;
     text-overflow: ellipsis;
     width: 100%;
@@ -87,7 +87,7 @@ const Wrapper = styled.div`
 
     &:focus,
     &:hover {
-      border: ${THEME.borders[1]} ${THEME.colors.primary};
+      border: ${theme.borders[1]} ${theme.colors.primary};
       outline: none;
     }
 
@@ -96,18 +96,18 @@ const Wrapper = styled.div`
     }
 
     &:hover ~ .a-radio {
-      border: ${THEME.borders[2]} #4a4a4a;
+      border: ${theme.borders[2]} #4a4a4a;
     }
 
     &:checked ~ .a-checkbox {
-      border-color: ${THEME.colors.primary};
-      background: ${THEME.colors.primary} url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIyMCA2IDkgMTcgNCAxMiI+PC9wb2x5bGluZT48L3N2Zz4=) center no-repeat;
+      border-color: ${theme.colors.primary};
+      background: ${theme.colors.primary} url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIyMCA2IDkgMTcgNCAxMiI+PC9wb2x5bGluZT48L3N2Zz4=) center no-repeat;
       background-size: 75%;
 
       ${({ istoggle }: IInputProps) => istoggle && css`
         &::before {
-          background: ${THEME.colors.success};
-          border-color: ${THEME.colors.success};
+          background: ${theme.colors.success};
+          border-color: ${theme.colors.success};
         }
 
         &::after {
@@ -118,7 +118,7 @@ const Wrapper = styled.div`
     }
 
     &:checked ~ .a-radio {
-      border: ${THEME.borders[2]} #1785ff;
+      border: ${theme.borders[2]} #1785ff;
 
       &::after {
         content: '';
@@ -152,14 +152,14 @@ const Wrapper = styled.div`
 `;
 
 export const HelperText = styled.span`
-  color: ${THEME.colors.blacks[8]};
+  color: ${theme.colors.blacks[8]};
   display: block;
-  font-size: ${THEME.fontSizes[0]}px;
+  font-size: ${theme.fontSizes[0]}px;
   padding:
-    ${THEME.space[1] / 2}px
-    ${THEME.space[1] + THEME.space[1] / 2}px
+    ${theme.space[1] / 2}px
+    ${theme.space[1] + theme.space[1] / 2}px
     0
-    ${THEME.space[1] + THEME.space[1] / 2}px;
+    ${theme.space[1] + theme.space[1] / 2}px;
 `;
 
 export default Wrapper;

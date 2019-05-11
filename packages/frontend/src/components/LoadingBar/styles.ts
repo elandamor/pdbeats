@@ -1,5 +1,5 @@
 import styled , { keyframes } from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const shiftRightwards = keyframes`
   0% {
@@ -20,7 +20,7 @@ const shiftRightwards = keyframes`
 `;
 
 const Wrapper = styled.div`
-  background: ${THEME.colors.primaryLight};
+  background: ${theme.colors.primaryLight};
   display: none;
   height: 2px;
   left: 0;

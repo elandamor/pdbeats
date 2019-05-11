@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 import { ITrackProps } from './index';
 
 const Wrapper = styled.li`
@@ -7,14 +7,14 @@ const Wrapper = styled.li`
   border-radius: 4px;
   color: #555;
   display: flex;
-  font-size: ${THEME.fontSizes[1]}px;
+  font-size: ${theme.fontSizes[1]}px;
   list-style-type: none;
   padding: 8px 12px;
   position: relative;
 
   .a-trackNumber {
     flex: none;
-    font-size: ${THEME.fontSizes[2]}px;
+    font-size: ${theme.fontSizes[2]}px;
     padding: 0 12px;
     text-align: left;
     width: 40px;
@@ -46,13 +46,13 @@ const Wrapper = styled.li`
   }
 
   .a-name {
-    color: ${THEME.colors.black};
-    font-size: ${THEME.fontSizes[3]}px;
+    color: ${theme.colors.black};
+    font-size: ${theme.fontSizes[3]}px;
   }
 
   .c-artists {
-    font-size: ${THEME.fontSizes[2]}px;
-    margin-top: ${THEME.space[1]}px;
+    font-size: ${theme.fontSizes[2]}px;
+    margin-top: ${theme.space[1]}px;
   }
 
   .a-artist {
@@ -84,9 +84,9 @@ const Wrapper = styled.li`
 `;
 
 export const Duration = styled.div`
-  color: ${THEME.colors.blacks[5]};
+  color: ${theme.colors.blacks[5]};
   flex: none;
-  font-size: ${THEME.fontSizes[1]}px;
+  font-size: ${theme.fontSizes[1]}px;
 `;
 
 export default Wrapper;

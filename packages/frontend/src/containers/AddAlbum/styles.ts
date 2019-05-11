@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 import { Flex } from '../../components';
 
 const Wrapper = styled.div``;
@@ -18,7 +18,7 @@ export const EditableTrack = styled(Flex)`
 
   .c-track {
     flex-basis: 100%;
-    padding-left: ${THEME.space[1]}px;
+    padding-left: ${theme.space[1]}px;
   }
 
   .c-btn {
@@ -31,7 +31,7 @@ export const EditableTrack = styled(Flex)`
 `;
 
 export const TrackForm = styled(Flex)`
-  border: ${THEME.borders[1]} #aaaaaa;
+  border: ${theme.borders[1]} #aaaaaa;
   border-radius: 4px;
 
   .c-input__wrapper {

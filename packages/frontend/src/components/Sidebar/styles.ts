@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled.aside`
   position: relative;
@@ -18,11 +18,11 @@ const Wrapper = styled.aside`
       text-decoration: none;
 
       &:hover {
-        background-color: ${THEME.colors.blacks[2]};
+        background-color: ${theme.colors.blacks[2]};
       }
 
       &.-active {
-        background-color: ${THEME.colors.blacks[3]};
+        background-color: ${theme.colors.blacks[3]};
         opacity: 1;
       }
     }
@@ -39,8 +39,8 @@ const Wrapper = styled.aside`
       padding: 16px 40px;
 
       .a-label {
-        color: ${THEME.colors.blacks[7]};
-        font-size: ${THEME.fontSizes[2]}px;
+        color: ${theme.colors.blacks[7]};
+        font-size: ${theme.fontSizes[2]}px;
       }
 
       .a-checkbox {

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 import Flex from '../Flex';
 
 const Wrapper = styled.div`
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
 
 export const Details = styled.div`
   h4, h6 {
-    /* letter-spacing: ${THEME.letterSpacings[3]}rem; */
+    /* letter-spacing: ${theme.letterSpacings[3]}rem; */
     line-height: 1;
     margin: 0;
   }
@@ -34,11 +34,11 @@ export const Details = styled.div`
   } */
 
   h6 {
-    font-size: ${THEME.fontSizes[3]}px;
+    font-size: ${theme.fontSizes[3]}px;
     margin: 8px 0;
 
     span:first-child {
-      color: ${THEME.colors.blacks[7]};
+      color: ${theme.colors.blacks[7]};
       display: none;
       font-weight: 400;
     }
@@ -65,7 +65,7 @@ export const Actions = styled(Flex)`
   }
 
   .c-btn--edit {
-    background-color: ${THEME.colors.sidebarBackground};
+    background-color: ${theme.colors.sidebarBackground};
     position: absolute;
     transform: translateX(32px);
   }

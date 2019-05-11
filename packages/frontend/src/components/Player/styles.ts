@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled.div`
   align-items: center;
@@ -29,12 +29,12 @@ const Wrapper = styled.div`
 
     .c-details {
       .a-name {
-        font-size: ${THEME.fontSizes[3]}px;
+        font-size: ${theme.fontSizes[3]}px;
       }
 
       .c-artists {
-        font-size: ${THEME.fontSizes[2]}px;
-        margin-bottom: ${THEME.space[1]}px;
+        font-size: ${theme.fontSizes[2]}px;
+        margin-bottom: ${theme.space[1]}px;
       }
     }
   }

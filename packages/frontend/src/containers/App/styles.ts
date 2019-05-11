@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled.div`
   display: grid;
@@ -35,7 +35,7 @@ const Wrapper = styled.div`
 `;
 
 export const Pages = styled.div`
-  box-shadow: 0 -6px 10px 10px ${THEME.colors.blacks[1]};
+  box-shadow: 0 -6px 10px 10px ${theme.colors.blacks[1]};
   flex-basis: 100%;
   overflow-y: scroll;
   overscroll-behavior: contain;

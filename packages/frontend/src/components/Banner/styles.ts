@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { THEME } from '../../global-styles';
+import theme from '../../theme';
 
 const Wrapper = styled.div`
   --banner-height: calc(30vw / (16 / 9));
@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   padding: 12px;
 
   &:before {
-    background-color: ${THEME.colors.cardBorderColor};
+    background-color: ${theme.colors.cardBorderColor};
     content: '';
     height: calc(var(--banner-height) + 80px);
     left: 0;
