@@ -32,7 +32,7 @@ export default createGlobalStyle`
     font-family: ${theme.fonts.sansSerif};
     font-feature-settings: 'liga', 'kern' 1;
     font-kerning: normal;
-    font-weight: ${theme.fontWeights[3]};
+    font-weight: ${theme.fontWeights[4]};
     margin: 0;
     height: 100%;
     padding: 0;
