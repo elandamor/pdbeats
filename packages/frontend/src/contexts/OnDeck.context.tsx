@@ -1,53 +1,55 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 
-import { makeDebugger } from '../utils';
+import { makeDebugger } from 'utils';
 const debug = makeDebugger('OnDeckContext');
 
-interface Track {
-  [key: string]: any;
+interface IState {
+  isPlaying: boolean;
+  playState: string;
+  reset: () => void;
+  setOnDeck: (source: ITrack) => void;
+  source: ITrack;
+  updatePlayState: (playState: string) => void;
 }
 
-const DEFAULT_STATE = {
-  onDeck: {},
-  playState: '',
-  setOnDeck: (source: Track) => true,
-  upNext: [],
+const DEFAULT_STATE: IState = {
+  isPlaying: false,
+  playState: 'idle',
+  reset: () => null,
+  setOnDeck: () => null,
+  source: { id: '' },
+  updatePlayState: () => null,
 };
 
 export const OnDeckContext = React.createContext(DEFAULT_STATE);
 
-interface IProps {
-  children: any,
+interface IProviderProps {
+  children: React.ReactNode,
 }
 
-interface IState {
-  onDeck?: Track;
-  playState?: string;
-  upNext?: Array<Track>;
-}
-
-class Provider extends React.Component<IProps, IState> {
-  state = DEFAULT_STATE;
+const Provider: FC<IProviderProps> = (props) => {
+  const [state, setState] = useState(DEFAULT_STATE);
 
   /**
    * Resets state to DEFAULT_STATE
    */
-  public reset = () => {
-    this.setState(DEFAULT_STATE);
+  const reset = () => {
+    setState(DEFAULT_STATE);
   }
 
   /**
    * Updates nowPlaying (onDeck) with a source
    */
-  public setOnDeck = (source: Track) => {
-    const { onDeck } = this.state;
+  const setOnDeck = (source: ITrack) => {
+    const { source: onDeck } = state;
 
     // @ts-ignore
     if (!source || source.id === onDeck.id) {
       return false;
     }
 
-    this.setState({ onDeck: source });
+    setState({ ...state, source });
+    debug({ source });
 
     return true;
   }
@@ -55,32 +57,32 @@ class Provider extends React.Component<IProps, IState> {
   /**
    * Updates the playback state of nowPlaying source in UI
    */
-  public updatePlayState = (playState: string) => {
+  const updatePlayState = (playState: string) => {
     if (typeof(playState) !== 'string') {
       return false;
     }
 
-    this.setState({ playState });
+    setState({
+      ...state,
+      isPlaying: Boolean(playState === 'playing'),
+      playState,
+    });
 
     return true;
   }
 
-  public render() {
-    return (
-      <OnDeckContext.Provider
-        value={{
-          ...this.state,
-          reset: this.reset,
-          setOnDeck: this.setOnDeck,
-          updatePlayState: this.updatePlayState,
-        }}
-      >
-        <React.Fragment>
-          {this.props.children}
-        </React.Fragment>
-      </OnDeckContext.Provider>
-    );
-  }
+  return (
+    <OnDeckContext.Provider
+      value={{
+        ...state,
+        reset,
+        setOnDeck,
+        updatePlayState,
+      }}
+    >
+      {props.children}
+    </OnDeckContext.Provider>
+  );
 }
 
 export default Provider;

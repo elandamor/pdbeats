@@ -1,17 +1,14 @@
 import styled from 'styled-components';
+import { borders, color, size, space, StyledSystemProps } from 'styled-system';
+import Button from 'components/Button';
 
-const Wrapper = styled.div`
-  align-items: center;
-  display: flex;
+export const PlayPauseButton = styled(Button)<StyledSystemProps>`
+  ${borders};
+  ${color};
+  ${size};
+  ${space};
 
-  * {
-    outline: none;
-  }
-
-  .c-btn {
-    height: 40px;
-    width: 40px;
+  &.-play i {
+    margin-left: 1px;
   }
 `;
-
-export default Wrapper;

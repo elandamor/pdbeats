@@ -19,12 +19,38 @@ import {
   MaxWidthProps,
   MinWidthProps,
   PositionProps,
+  SizeProps,
   SpaceProps,
   TextAlignProps,
   WidthProps,
+  GridColumnGapProps,
+  GridRowGapProps,
+  GridColumnProps,
+  GridRowProps,
+  GridAutoFlowProps,
+  GridAutoColumnsProps,
+  GridAutoRowsProps,
+  GridTemplateColumnsProps,
+  GridTemplateRowsProps,
+  GridTemplateAreasProps,
+  GridAreaProps,
 } from 'styled-system';
 
 declare module 'styled-system' {
+  export interface SSGridProps extends GridGapProps,
+    GridColumnGapProps,
+    GridRowGapProps,
+    GridColumnProps,
+    GridRowProps,
+    GridAutoFlowProps,
+    GridAutoColumnsProps,
+    GridAutoRowsProps,
+    GridTemplateColumnsProps,
+    GridTemplateRowsProps,
+    GridTemplateAreasProps,
+    GridAreaProps,
+    {}
+
   export interface StyledSystemProps extends AlignItemsProps,
     BorderProps,
     BordersProps,
@@ -44,8 +70,10 @@ declare module 'styled-system' {
     MaxWidthProps,
     MinWidthProps,
     PositionProps,
+    SizeProps,
     SpaceProps,
     TextAlignProps,
     WidthProps
     {}
+
 }

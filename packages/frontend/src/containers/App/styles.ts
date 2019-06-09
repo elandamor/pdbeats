@@ -1,24 +1,35 @@
 import styled from 'styled-components';
 import theme from '../../theme';
+import { space, StyledSystemProps, position } from 'styled-system';
+import Sidebar from 'components/Sidebar';
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  grid-template-areas: "sidebar pages";
-  height: 100vh;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
-  .c-sidebar {
-    background-color: ${({ theme }) => theme.colors.sidebarBackground};
-    grid-area: sidebar;
+  .c-player {
+    display: none;
   }
 
-  .c-header {
-    grid-area: header;
-  }
+  @media screen and (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    grid-template-areas: "sidebar pages";
+    height: 100vh;
+    overflow: hidden;
 
-  .c-pages {
-    grid-area: pages;
+    .c-sidebar {
+      background-color: ${({ theme }) => theme.colors.sidebarBackground};
+      grid-area: sidebar;
+    }
+
+    .c-header {
+      grid-area: header;
+    }
+
+    .c-pages {
+      grid-area: pages;
+    }
   }
 
   .c-player {
@@ -34,13 +45,21 @@ const Wrapper = styled.div`
   }
 `;
 
-export const Pages = styled.div`
-  box-shadow: 0 -6px 10px 10px ${theme.colors.blacks[1]};
+export const SideNav = styled(Sidebar)<StyledSystemProps>`
+  ${position};
+`;
+
+SideNav.defaultProps = {
+  position: ['fixed', null, 'relative'],
+};
+
+export const Pages = styled.div<StyledSystemProps>`
   flex-basis: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 80px;
   position: relative;
+
+  ${space};
 `;
 
 export const BottomSheet = styled.div`

@@ -48,4 +48,9 @@ export default createGlobalStyle`
     color: ${({ theme }) => theme.colors.link};
     text-decoration: none;
   }
+
+  figure {
+    margin: 0;
+    padding: 0;
+  }
 `;

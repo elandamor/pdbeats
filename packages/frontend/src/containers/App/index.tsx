@@ -2,12 +2,12 @@ import React, { Suspense } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { Normalize } from 'styled-normalize';
 // Components
-import { ErrorBoundary, LoadingBar, Player, Routes, Sidebar} from '../../components';
+import { ErrorBoundary, LoadingBar, Player, Routes, Header} from '../../components';
 // Routes
 import routes from '../../routes';
 // Styles
 import GlobalStyles from '../../global-styles';
-import Wrapper, { Pages } from './styles';
+import Wrapper, { Pages, SideNav } from './styles';
 
 import baseTheme from '../../theme';
 import { AppProviders } from '../../contexts';
@@ -28,9 +28,10 @@ const App = () => {
           <Normalize />
           <GlobalStyles />
           <ErrorBoundary>
-            <Sidebar />
+            <SideNav />
           </ErrorBoundary>
           <Pages>
+            <Header />
             <ErrorBoundary>
               <Suspense fallback={<LoadingBar />}>
                 <Routes routes={routes} />

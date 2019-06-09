@@ -30,7 +30,6 @@ class Albums extends Component<IProps, {}> {
           <Suspense fallback={<LoadingBar loading />}>
             <Routes routes={routes} />
           </Suspense>
-          <Spacer spacing={40} />
         </Inner>
       </Wrapper>
     );

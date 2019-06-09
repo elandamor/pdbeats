@@ -1,13 +1,14 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
-import { Image } from 'cloudinary-react';
 // Styles
 import Wrapper, { Duration } from './styles';
 import { secondsToTime } from '../../utils';
 import Equalizer from '../Equalizer';
+import Image from '../Image/Loadable';
 import Spacer from '../Spacer';
 import Button from '../Button';
 import { Plus } from 'react-feather';
+import { generateCloudinaryUri } from 'utils/cloudinary';
 
 /**
  * @render react
@@ -49,14 +50,7 @@ const Track: FC<ITrackProps> = ({
     {
       data.album && !hideAlbumCover && (
         <div className="c-cover__wrapper">
-          <Image
-            cloudName={process.env.CLOUDINARY_BUCKET}
-            publicId={data.album.artwork.url}
-            height={rest.coverSize || '40'}
-            width={rest.coverSize || '40'}
-            crop="scale"
-            fetchFormat="auto"
-          />
+          <Image src={generateCloudinaryUri(data.album.artwork.url)} />
         </div>
       )
     }

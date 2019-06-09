@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC } from 'react';
-import classNames from 'classnames';
+import { SpaceProps } from 'styled-system';
 // Styles
 import Wrapper from './styles';
 
@@ -8,33 +8,25 @@ import Wrapper from './styles';
  * @name ProgressBar component
  * @description ProgressBar component.
  * @example
- * <ProgressBar />
+ * <ProgressBar progress={number} />
  */
 
-interface IProps {
+interface IProgressBarProps extends SpaceProps {
   className?: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   progress: number;
   progressMax?: number;
 };
 
-const defaultProgressMax = 100;
-const defaultProgress = 0;
-
-const ProgressBar: FC<IProps> = ({
-  className,
-  progress = defaultProgress,
-  progressMax = defaultProgressMax,
-  onChange: handleChange
+const ProgressBar: FC<IProgressBarProps> = ({
+  progress,
+  progressMax,
+  onChange: handleChange,
+  ...rest
 }) => (
-  <Wrapper className={classNames('c-progressBar', className)}>
-    <progress
-      className="c-progress__background"
-      max={progressMax}
-      value={progress}
-    />
+  <Wrapper {...rest}>
+    <progress max="100" value={progress} />
     <input
-      className="c-progress__slider"
       type="range"
       id="progress"
       name="progress"
@@ -45,5 +37,10 @@ const ProgressBar: FC<IProps> = ({
     />
   </Wrapper>
 );
+
+ProgressBar.defaultProps = {
+  onChange: () => null,
+  progressMax: 100,
+};
 
 export default ProgressBar;

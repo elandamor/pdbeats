@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import theme from '../../theme';
 
 const Wrapper = styled.aside`
-  position: relative;
   .c-nav {
     ul {
       margin: 0;

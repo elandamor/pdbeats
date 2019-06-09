@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC } from 'react';
-import classNames from 'classnames';
 // Styles
 import Wrapper from './styles';
 
@@ -13,7 +12,7 @@ import Wrapper from './styles';
 
 interface IProps {
   className?: string;
-  onChange: (event:  ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event:  ChangeEvent<HTMLInputElement>) => void;
   volume: number;
   volumeMax?: number;
 };
@@ -22,16 +21,12 @@ const defaultVolumeMax = 10;
 const defaultVolume = 10;
 
 const VolumeBar: FC<IProps> = ({
-  className,
   volume = defaultVolume,
   volumeMax = defaultVolumeMax,
   onChange: handleChange
 }) => (
-  <Wrapper className={classNames('c-volumeBar', className)}>
-    <progress
-      max={volumeMax}
-      value={volume}
-    />
+  <Wrapper>
+    <progress max={volumeMax} value={volume} />
     <input
       type="range"
       id="volume"
@@ -44,5 +39,9 @@ const VolumeBar: FC<IProps> = ({
     />
   </Wrapper>
 );
+
+VolumeBar.defaultProps = {
+  onChange: () => null,
+};
 
 export default VolumeBar;

@@ -9,7 +9,7 @@ export const LAYOUT = {
   baseline: 8, // dp
 };
 
-export const THEME: DefaultTheme = {
+export const theme: DefaultTheme = {
   borders: [
     0,
     '1px solid',
@@ -21,7 +21,7 @@ export const THEME: DefaultTheme = {
   ],
   // Palette
   colors: {
-    background: '#FFFFFF',
+    background: '#FAFAFA',
     surface: '#FFFFFF',
     cardBackground: '#FFFFFF',
     cardBorderColor: '#E4E6E9',
@@ -80,7 +80,7 @@ export const THEME: DefaultTheme = {
     modes: {
       dark: {
         background: '#282c35',
-        surface: '#282c35',
+        surface: '#373c49',
         link: '#7395FF',
         text: '#FFFFFF'
       }
@@ -101,4 +101,4 @@ export const THEME: DefaultTheme = {
   space: [0].concat(GENERATORS.spacing(10, LAYOUT.baseline)),
 };
 
-export default THEME;
+export default theme;

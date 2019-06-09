@@ -50,7 +50,7 @@ const Sidebar: FC<IProps> = ({ className }) => (
           onChange={toggleUserType}
           type="checkbox"
           checked={isAdmin}
-          istoggle
+          toggle="true"
         />
       </React.Fragment>
     )}

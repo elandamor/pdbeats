@@ -8,7 +8,7 @@ import getAlbumGQL from '../../graphql/queries/getAlbum.gql';
 // Styles
 import Wrapper from './styles';
 
-import WrappedQuery, { QueryContext } from '../../components/WrappedQuery';
+import WrappedQuery from '../../components/WrappedQuery';
 import { IRouteProps } from '../../components/Routes';
 import { H3 } from '../../typography';
 
@@ -50,12 +50,10 @@ const GetAlbum: FC<IGetAlbumProps> = (props) => {
       }
       {
         match.isExact && (
-          <WrappedQuery query={getAlbumGQL} variables={{ id: albumID }}>
-            <QueryContext.Consumer>
-              {({ album }: any) => album ? (
-                <Album data={album} {...props} />
-              ): <Redirect to="/albums" />}
-            </QueryContext.Consumer>
+        <WrappedQuery query={getAlbumGQL} variables={{ id: albumID }}>
+            {({ data: { album } }: any) => album ? (
+              <Album data={album} {...props} />
+            ): <Redirect to="/albums" />}
           </WrappedQuery>
         )
       }

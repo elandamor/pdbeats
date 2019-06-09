@@ -23,4 +23,5 @@ export { default as Sidebar } from './Sidebar';
 export { default as Spacer } from './Spacer';
 export { default as Track } from './Track';
 export { default as VolumeBar } from './VolumeBar';
+export { default as WrappedMutation } from './WrappedMutation';
 export { default as WrappedQuery } from './WrappedQuery';

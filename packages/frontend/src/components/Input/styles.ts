@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
+import { space } from 'styled-system';
 import { IInputProps } from './index';
 import theme from '../../theme';
 
 const Wrapper = styled.div`
-  margin-bottom: ${theme.space[2]}px;
+  ${space};
   position: relative;
   width: 100%;
 
@@ -31,7 +32,7 @@ const Wrapper = styled.div`
   }
 
   .a-checkbox {
-    ${({ istoggle }: IInputProps) => istoggle && css`
+    ${({ toggle }: IInputProps) => toggle && css`
       border: none;
       height: 1.25rem;
       width: 2rem;
@@ -104,7 +105,7 @@ const Wrapper = styled.div`
       background: ${theme.colors.primary} url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSIyMCA2IDkgMTcgNCAxMiI+PC9wb2x5bGluZT48L3N2Zz4=) center no-repeat;
       background-size: 75%;
 
-      ${({ istoggle }: IInputProps) => istoggle && css`
+      ${({ toggle }: IInputProps) => toggle && css`
         &::before {
           background: ${theme.colors.success};
           border-color: ${theme.colors.success};

@@ -1,5 +1,6 @@
 export { default as calculatePosition } from './calculatePosition';
 export { debug, makeDebugger } from './debug';
+export { default as IOLazyImageLoader } from './IOImageLazyLoader';
 
 export { secondsToTime, timeToSeconds } from './hh-mm-ss';
 export { default as isBrowser } from './isBrowser';

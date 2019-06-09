@@ -1,7 +1,17 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
+import { StyledSystemProps } from 'styled-system';
 // Styles
 import Wrapper from './styles';
+import Inner from '../Inner';
+import Flex from '../Flex';
+
+// import { makeDebugger } from '../../utils';
+// const debug = makeDebugger('Header');
+
+interface IHeaderProps extends StyledSystemProps {
+  className?: string;
+};
 
 /**
  * @render react
@@ -11,12 +21,16 @@ import Wrapper from './styles';
  * <Header />
  */
 
-interface IProps {
-  className?: string;
-};
+const Header: FC<IHeaderProps> = ({ className, ...rest }) => {
+  return (
+    <Wrapper className={classNames('', className)} as="header" {...rest}>
+      <Inner as={Flex} />
+    </Wrapper>
+  );
+}
 
-const Header: FC<IProps> = ({ className }) => (
-  <Wrapper className={classNames('c-header', className)} />
-);
+Header.defaultProps = {
+  height: [64,88],
+}
 
 export default Header;

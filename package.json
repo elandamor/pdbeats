@@ -5,14 +5,20 @@
   ],
   "scripts": {
     "generate": "cd ./packages/frontend && npm run generate",
+    "generate:schema": "cd ./packages/frontend && npm run generate:schema",
     "build:frontend": "cd ./packages/frontend && npm run build",
     "be": "cd ./packages/backend && npm run start",
     "start:backend": "cd ./packages/backend && npm run start",
     "fe": "cd ./packages/frontend && npm run start",
+    "fe:prod": "cd ./packages/frontend && npm run start:prod",
     "start:frontend": "cd ./packages/frontend && npm run start",
     "start:frontend:prod": "cd ./packages/frontend && npm run start:prod"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "3.0.2",
+    "@semantic-release/commit-analyzer": "6.1.0",
+    "@semantic-release/git": "7.0.8",
+    "@semantic-release/release-notes-generator": "7.1.4",
     "eslint": "5.13.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.16.0",
@@ -24,7 +30,8 @@
     "lerna-changelog": "0.8.2",
     "lint-staged": "8.1.2",
     "prettier": "1.16.3",
-    "puppeteer": "1.12.1"
+    "puppeteer": "1.12.1",
+    "semantic-release": "15.13.3"
   },
   "husky": {
     "hooks": {
@@ -35,6 +42,15 @@
     "*.{js,md,css,html}": [
       "prettier --trailing-comma es5 --single-quote --write",
       "git add"
+    ]
+  },
+  "release": {
+    "branch": "develop",
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/git"
     ]
   }
 }

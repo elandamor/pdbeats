@@ -1,11 +1,11 @@
-import React, { FC, Suspense } from "react";
-import classNames from "classnames";
+import React, { FC, Suspense } from 'react';
+import classNames from 'classnames';
 // Components
-import Image from "../Image/Loadable";
-import LoadingBar from "../LoadingBar";
+import Image from '../Image/Loadable';
+import LoadingBar from '../LoadingBar';
 // Styles
-import Wrapper, { Content, Description, Title } from "./styles";
-import Icon from "../Icon/Loadable";
+import Wrapper, { Content, Description, Title } from './styles';
+import Icon from '../Icon/Loadable';
 
 export interface IProps {
   className?: string;
@@ -41,12 +41,12 @@ const Card: FC<IProps> = ({
   ...rest
 }) => (
   <Wrapper
-    className={classNames("c-card", className)}
+    className={classNames('c-card', className)}
     onClick={onClick}
     {...rest}
   >
-    <Suspense fallback={<LoadingBar loading />}>
-      {image && <Image as="div" src={image} />}
+    <Suspense fallback={<LoadingBar />}>
+      {image && <Image src={image} />}
     </Suspense>
     <Content className="c-content" contentPadding={contentPadding}>
       {title && (

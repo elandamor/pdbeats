@@ -1,7 +1,23 @@
-import React, { FC } from 'react';
-import classNames from 'classnames';
-// Styles
-import Wrapper from './styles';
+import styled , { keyframes } from 'styled-components';
+import theme from '../../theme';
+
+const shiftRightwards = keyframes`
+  0% {
+    transform: translateX(-100%)
+  }
+
+  40% {
+    transform: translateX(0)
+  }
+
+  60% {
+    transform: translateX(0)
+  }
+
+  100% {
+    transform: translateX(100%)
+  }
+`;
 
 /**
  * @render react
@@ -11,17 +27,17 @@ import Wrapper from './styles';
  * <LoadingBar />
  */
 
-interface IProps {
-  className?: string;
-  loading?: boolean;
-}
-
-const LoadingBar: FC<IProps> = ({ className, loading }) => (
-  <Wrapper
-    className={classNames('c-loadingBar', className, {
-      '-loading': loading,
-    })}
-  />
-);
+const LoadingBar = styled.div`
+  animation: ${shiftRightwards} 1s ease-in-out infinite;
+  animation-delay: .8s;
+  background: ${theme.colors.primaryLight};
+  height: 2px;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transform: translateX(100%);
+  z-index: 10;
+`;
 
 export default LoadingBar;

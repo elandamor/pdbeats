@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  .c-grid {
-    grid-auto-rows: minmax(296px, auto);
-  }
-
   .c-btn--create {
     align-items: center;
     background-color: transparent;

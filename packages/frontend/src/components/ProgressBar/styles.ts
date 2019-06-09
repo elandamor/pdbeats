@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import { space } from 'styled-system';
+import theme from 'theme';
 
 const Wrapper = styled.div`
+  ${space};
   align-items: center;
   display: flex;
-  height: 40px;
-  margin: 0 auto;
+  height: ${theme.space[4]}px;
   position: relative;
   width: 100%;
 
@@ -30,13 +32,13 @@ const Wrapper = styled.div`
     }
 
     &::-webkit-progress-value {
-      background-color: #000000;
+      background-color: ${theme.colors.black};
     }
   }
 
   input[type='range'] {
     background-color: transparent;
-    height: 40px;
+    height: ${theme.space[4]}px;
     left: 0;
     position: absolute;
     top: 0;
@@ -44,22 +46,17 @@ const Wrapper = styled.div`
 
     &::-webkit-slider-thumb {
       appearance: none;
-      background: #ffffff;
-      border: thin solid #000000;
+      background: ${theme.colors.black};
       display: none;
-      height: 16px;
-      width: 16px;
+      height: ${theme.space[2]}px;
+      width: ${theme.space[2]}px;
       border-radius: 48px;
       cursor: pointer;
     }
-  }
 
-  @media screen and (min-width: 768px) {
-    input[type='range'] {
-      &:hover, &:active {
-        &::-webkit-slider-thumb {
-          display: block;
-        }
+    &:hover, &:active {
+      &::-webkit-slider-thumb {
+        display: block;
       }
     }
   }

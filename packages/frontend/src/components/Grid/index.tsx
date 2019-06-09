@@ -20,7 +20,7 @@ import Wrapper from './styles';
 export interface Props {
   children: any;
   className?: string;
-  columns: number;
+  columns: number | (number|null)[];
   gap?: number;
 }
 
@@ -28,7 +28,8 @@ const Grid: FC<Props> = ({ children, className, columns, gap }) => (
   <Wrapper
     className={classNames('c-grid', className)}
     columns={columns}
-    gap={gap}
+    gridGap={gap}
+    rows={columns}
   >
     {children}
   </Wrapper>

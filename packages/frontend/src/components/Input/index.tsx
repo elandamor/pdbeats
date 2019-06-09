@@ -1,23 +1,26 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
+import { FieldProps } from 'formik';
 // Styles
 import Wrapper, { HelperText } from './styles';
 import Dropzone from '../Dropzone/Loadable';
 import Spacer from '../Spacer';
 import Select from '../Select/Loadable';
+import { StyledSystemProps } from 'styled-system';
 
-export interface IInputProps {
-  istoggle?: boolean;
+export interface IInputProps extends FieldProps, StyledSystemProps {
+  toggle?: boolean;
   className?: string;
   checked?: boolean;
   helperText?: string;
-  id: string;
+  id?: string;
   label: string;
-  name: string;
+  name?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
   options?: any;
   placeholder?: string;
   readonly?: boolean;
+  isMulti?: boolean;
   rows?: number;
   sronly?: boolean;
   type:
@@ -52,11 +55,13 @@ const Input: FC<IInputProps> = ({
   className,
   helperText,
   id,
+  field,
   label,
+  name,
   sronly,
   ...rest
 }) => {
-  const renderLabel = (label: string, sronly?: boolean) => (
+  const renderLabel = () => (
     <span
       className={classNames('a-label', {
         'sr-only': sronly,
@@ -67,15 +72,21 @@ const Input: FC<IInputProps> = ({
   );
 
   const renderInput = () => {
+    const inputProps = {
+      ...rest,
+      id: id || field.name,
+      name: name || field.name,
+    };
+
     switch (rest.type) {
       case 'file':
-        return <Dropzone {...rest} />;
+        return <Dropzone {...inputProps} />;
       case 'select':
-        return <Select {...rest} />;
+        return <Select {...inputProps} />;
       case 'textarea':
-        return <textarea id={id} className="a-textarea" {...rest} />;
+        return <textarea {...inputProps} />;
       default:
-        return <input id={id} className="a-input" {...rest} />;
+        return <input {...inputProps} />;
     }
   };
 
@@ -86,12 +97,12 @@ const Input: FC<IInputProps> = ({
       })}
       {...rest}
     >
-      <label htmlFor={id}>
+      <label htmlFor={id || field.name}>
         {
           (rest.type !== 'checkbox' && rest.type !== 'radio')
           && (
             <React.Fragment>
-              {renderLabel(label, sronly)}
+              {renderLabel()}
               {!sronly && <Spacer spacing={8} />}
             </React.Fragment>
           )
@@ -102,7 +113,7 @@ const Input: FC<IInputProps> = ({
           && (
             <React.Fragment>
               <span className={`a-${rest.type}`} />
-              {renderLabel(label, sronly)}
+              {renderLabel()}
             </React.Fragment>
           )
         }
@@ -111,5 +122,9 @@ const Input: FC<IInputProps> = ({
     </Wrapper>
   );
 };
+
+Input.defaultProps = {
+  mb: 2,
+}
 
 export default Input;

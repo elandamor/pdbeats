@@ -15,6 +15,7 @@ type Track {
   id: ID! @unique
   album: Album! @relation(name: "InAlbum")
   artists: [Artist!]! @relation(name: "ByArtist")
+  audio: Audio
   discNumber: Int
   duration: Int!
   explicit: Boolean! @default(value: "false")
@@ -46,6 +47,17 @@ type Album {
 
 type Image {
   id: ID! @unique
+  uploadedBy: User!
+  url: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Audio {
+  id: ID! @unique
+  bitrate: Int
+  format: String!
+  size: Int
   uploadedBy: User!
   url: String!
   createdAt: DateTime!

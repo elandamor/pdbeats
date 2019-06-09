@@ -15,8 +15,8 @@ import getArtistGQL from '../../graphql/queries/getArtist.gql';
 import Wrapper from './styles';
 
 import { debug } from '../../utils';
-import { IMG_BASE_URL } from '../../constants';
 import { H3 } from '../../typography';
+import { generateCloudinaryUri } from 'utils/cloudinary';
 
 class GetArtist extends Component<{}, {}> {
   public render() {
@@ -37,8 +37,6 @@ class GetArtist extends Component<{}, {}> {
           {({ data, error, loading }) => {
             if (loading) { return <LoadingBar loading /> }
             if (error) { return <div>An error occured...{debug(error)}</div> }
-
-            debug({ data });
 
             const { artist: { albums, name } } = data;
 
@@ -66,7 +64,7 @@ class GetArtist extends Component<{}, {}> {
                           className="c-album"
                           compact
                           contentPadding={0}
-                          image={`${IMG_BASE_URL}/c_scale,f_auto/v1/${album.artwork.url}`}
+                          image={generateCloudinaryUri(album.artwork.url)}
                         >
                           <figcaption>
                             <div className="c-details">

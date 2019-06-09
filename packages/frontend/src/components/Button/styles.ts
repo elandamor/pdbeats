@@ -18,6 +18,7 @@ const Wrapper = styled.button`
   min-width: ${theme.space[8]}px;
   opacity: ${({ disabled, raised }: IButtonProps) => raised && disabled ? '0.38' : '1'};
   outline: none;
+  overflow: hidden;
   padding: ${theme.space[1]}px;
   position: relative;
   text-transform: uppercase;

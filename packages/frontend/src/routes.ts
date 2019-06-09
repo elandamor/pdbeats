@@ -1,8 +1,8 @@
 // tslint:disable:object-literal-sort-keys
-import { Albums, Artists, Home, NotFound, Songs } from './routes';
-import { AddAlbum, EditAlbum, GetAlbum, GetArtist } from '../containers';
+import { Albums, Artists, Home, NotFound, Songs } from './pages';
+import { AddAlbum, EditAlbum, GetAlbum, GetArtist } from './containers';
 
-import { IRouteProps } from '../components/Routes';
+import { IRouteProps } from './components/Routes';
 
 const routes: IRouteProps[] = [
   {
